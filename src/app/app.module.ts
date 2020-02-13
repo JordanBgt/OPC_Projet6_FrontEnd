@@ -11,6 +11,8 @@ import { SpotComponent } from './entities/spot/spot.component';
 import { TopoComponent } from './entities/topo/topo.component';
 import { UtilisateurComponent } from './entities/utilisateur/utilisateur.component';
 import { VoieComponent } from './entities/voie/voie.component';
+import { LoginComponent } from './entities/login/login.component';
+import { RegisterComponent } from './entities/register/register.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { VoieComponent } from './entities/voie/voie.component';
     SpotComponent,
     TopoComponent,
     UtilisateurComponent,
-    VoieComponent
+    VoieComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
