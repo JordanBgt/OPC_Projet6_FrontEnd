@@ -2,10 +2,10 @@
 
 @Component({
   selector: 'app-commentaire',
-  templateUrl: './commentaire.component.html',
-  styleUrls: ['./commentaire.component.scss']
+  templateUrl: './comment.component.html',
+  styleUrls: ['./comment.component.scss']
 })
-export class CommentaireComponent implements OnInit {
+export class CommentComponent implements OnInit {
 
   constructor() { }
 

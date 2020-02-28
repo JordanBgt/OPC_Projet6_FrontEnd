@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PhotoService } from '../app/photo.service';
+import { PhotoService } from '../app/entities/photo/photo.service';
 
 describe('PhotoService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

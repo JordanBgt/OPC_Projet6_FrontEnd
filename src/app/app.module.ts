@@ -3,13 +3,13 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CommentaireComponent } from './entities/commentaire/commentaire.component';
+import { CommentComponent } from './entities/comment/comment.component';
 import { LongueurComponent } from './entities/longueur/longueur.component';
 import { PhotoComponent } from './entities/photo/photo.component';
 import { SecteurComponent } from './entities/secteur/secteur.component';
 import { SpotComponent } from './entities/spot/spot.component';
 import { TopoComponent } from './entities/topo/topo.component';
-import { UtilisateurComponent } from './entities/utilisateur/utilisateur.component';
+import { UserComponent } from './entities/user/user.component';
 import { VoieComponent } from './entities/voie/voie.component';
 import { LoginComponent } from './entities/login/login.component';
 import { RegisterComponent } from './entities/register/register.component';
@@ -17,13 +17,13 @@ import { RegisterComponent } from './entities/register/register.component';
 @NgModule({
   declarations: [
     AppComponent,
-    CommentaireComponent,
+    CommentComponent,
     LongueurComponent,
     PhotoComponent,
     SecteurComponent,
     SpotComponent,
     TopoComponent,
-    UtilisateurComponent,
+    UserComponent,
     VoieComponent,
     LoginComponent,
     RegisterComponent

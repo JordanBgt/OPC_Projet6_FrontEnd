@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SpotService } from '../app/spot.service';
+import { SpotService } from '../app/entities/spot/spot.service';
 
 describe('SpotService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
