@@ -5,7 +5,7 @@ export interface IVoie {
   id?: number;
   name?: string;
   cotation?: string;
-  secteur?: Secteur;
+  secteurId?: number;
   longeurs?: Longueur[];
 }
 
@@ -14,7 +14,7 @@ export class Voie implements IVoie {
     public id?: number,
     public name?: string,
     public cotation?: string,
-    public secteur?: Secteur,
+    public secteurId?: number,
     public longueurs?: Longueur[]
   ) {
   }

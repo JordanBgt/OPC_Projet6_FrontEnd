@@ -7,7 +7,7 @@ export interface IUser {
   username?: string;
   password?: string;
   email?: string;
-  role?: Role;
+  role?: Role[];
   toposCreated?: Topo[];
   toposRent?: Topo[];
   spotsCreated?: Spot[];
@@ -17,9 +17,9 @@ export class User implements IUser {
   constructor(
     public id?: number,
     public username?: string,
-    public passwort?: string,
+    public password?: string,
     public email?: string,
-    public role?: Role,
+    public role?: Role[],
     public toposCreated?: Topo[],
     public toposRent?: Topo[],
     public spotsCreated?: Spot[]

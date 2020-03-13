@@ -12,8 +12,8 @@ export interface ITopo {
   country?: string;
   region?: string;
   spots?: Spot[];
-  topoCreator?: User;
-  topoTenant?: User;
+  creatorId?: number;
+  tenantId?: number;
   publicationDate?: Date;
   photo?: Photo;
 }
@@ -29,8 +29,8 @@ export class Topo implements ITopo {
     public country?: string,
     public region?: string,
     public spots?: Spot[],
-    public topoCreator?: User,
-    public topoTenant?: User,
+    public creatorId?: number,
+    public tenantId?: number,
     public publicationDate?: Date,
     public photo?: Photo
   ) {

@@ -6,7 +6,6 @@ export interface IComment {
   description?: string;
   date?: Date;
   user?: User;
-  spot?: Spot;
 }
 
 export class Comment implements IComment {
@@ -14,8 +13,7 @@ export class Comment implements IComment {
     public id?: number,
     public description?: string,
     public date?: Date,
-    public user?: User,
-    public spot?: Spot
+    public user?: User
   ) {
   }
 }

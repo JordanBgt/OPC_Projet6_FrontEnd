@@ -10,11 +10,11 @@ export interface ISpot {
   city?: string;
   description?: string;
   isOfficial?: boolean;
-  topo?: Topo;
+  topoId?: number;
   comments?: Comment[];
   photos?: Photo[];
   secteurs?: Secteur[];
-  user?: User;
+  userId?: number;
 }
 
 export class Spot implements ISpot {
@@ -24,11 +24,11 @@ export class Spot implements ISpot {
     public city?: string,
     public description?: string,
     public isOfficial?: boolean,
-    public topo?: Topo,
+    public topoId?: number,
     public comments?: Comment[],
     public photos?: Photo[],
     public secteurs?: Secteur[],
-    public user?: User
+    public userId?: number
   ) {
   }
 }
