@@ -1,4 +1,3 @@
-import {Secteur} from './secteur.model';
 import {Longueur} from './longueur.model';
 
 export interface IVoie {
