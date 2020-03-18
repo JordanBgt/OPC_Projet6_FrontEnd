@@ -1,8 +1,6 @@
-import {Topo} from './topo.model';
 import {Photo} from './photo.model';
 import {Secteur} from './secteur.model';
 import {Comment} from './comment.model';
-import {User} from './user.model';
 
 export interface ISpot {
   id?: number;
@@ -15,6 +13,8 @@ export interface ISpot {
   photos?: Photo[];
   secteurs?: Secteur[];
   userId?: number;
+  name?: string;
+  cotation?: string;
 }
 
 export class Spot implements ISpot {
@@ -28,7 +28,9 @@ export class Spot implements ISpot {
     public comments?: Comment[],
     public photos?: Photo[],
     public secteurs?: Secteur[],
-    public userId?: number
+    public userId?: number,
+    public name?: string,
+    public cotation?: string
   ) {
   }
 }

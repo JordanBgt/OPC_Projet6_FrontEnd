@@ -1,6 +1,5 @@
 import {Spot} from './spot.model';
 import {Photo} from './photo.model';
-import {User} from './user.model';
 
 export interface ITopo {
   id?: number;
