@@ -1,1 +1,13 @@
-<p>spot works!</p>
+<div>
+  <h2>Spots</h2>
+  <div *ngIf="spots?.length > 0" class="card-container">
+    <mat-card *ngFor="let spot of spots" class="card">
+      <mat-card-header class="card-header">
+        <mat-card-title>{{spot.name}}</mat-card-title>
+        <mat-card-subtitle>{{spot.country}}, {{spot.city}}</mat-card-subtitle>
+        <mat-card-subtitle>Cotation : {{spot.cotation}}</mat-card-subtitle>
+      </mat-card-header>
+      <img mat-card-image src="../assets/logo.png" alt="photo topo">
+    </mat-card>
+  </div>
+</div>

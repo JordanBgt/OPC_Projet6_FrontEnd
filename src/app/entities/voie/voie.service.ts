@@ -11,7 +11,7 @@ type EntityArrayResponseType = HttpResponse<IVoie[]>;
 })
 export class VoieService {
 
-  public ressourceUrl = 'http://localhost:8080/voies';
+  public ressourceUrl = 'http://localhost:8080/api/voies';
 
   constructor(protected http: HttpClient) { }
 

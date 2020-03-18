@@ -1,11 +1,12 @@
 <div>
   <h2>Topos</h2>
-  <div *ngIf="topos?.length > 0">
-    <mat-card *ngFor="let topo of topos">
-      <mat-card-header>
+  <div *ngIf="topos?.length > 0" class="card-container">
+    <mat-card *ngFor="let topo of topos" class="card">
+      <mat-card-header class="card-header">
         <mat-card-title>{{topo.name}}</mat-card-title>
         <mat-card-subtitle>{{topo.country}}, {{topo.region}}</mat-card-subtitle>
       </mat-card-header>
+      <img mat-card-image src="../assets/logo.png" alt="photo topo">
     </mat-card>
   </div>
 </div>

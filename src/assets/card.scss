@@ -1,0 +1,16 @@
+.card {
+  width: 400px;
+  height: 500px;
+}
+
+.card-header {
+  background-size: cover;
+}
+
+.card-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+

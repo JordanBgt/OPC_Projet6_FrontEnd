@@ -11,7 +11,7 @@ type EntityArrayResponseType = HttpResponse<ILongueur[]>;
 })
 export class LongueurService {
 
-  public ressourceUrl = 'http://localhost:8080/longueurs';
+  public ressourceUrl = 'http://localhost:8080/api/longueurs';
 
   constructor(protected http: HttpClient) { }
 

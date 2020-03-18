@@ -1,1 +1,12 @@
-<p>longueur works!</p>
+<div>
+  <h2>Longueurs</h2>
+  <div *ngIf="longueurs?.length > 0" class="card-container">
+    <mat-card *ngFor="let longueur of longueurs" class="card">
+      <mat-card-header class="card-header">
+        <mat-card-title>{{longueur.name}}</mat-card-title>
+        <mat-card-subtitle>Cotation : {{longueur.cotation}}</mat-card-subtitle>
+      </mat-card-header>
+      <img mat-card-image src="../assets/logo.png" alt="photo topo">
+    </mat-card>
+  </div>
+</div>

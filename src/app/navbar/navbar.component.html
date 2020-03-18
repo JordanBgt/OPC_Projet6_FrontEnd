@@ -8,10 +8,10 @@
   <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed">
     <ul class="navbar-nav ml-auto">
       <li class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-        <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="admin-menu">
+        <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="topos-menu">
             <span>Topos</span>
         </a>
-        <ul class="dropdown-menu" aria-labelledby="admin-menu">
+        <ul class="dropdown-menu" aria-labelledby="topos-menu">
           <li>
             <a class="dropdown-item" routerLink="topos" routerLinkActive="active" (click)="collapseNavbar()">
               <span>Tous les topos</span>
@@ -20,6 +20,74 @@
           <li>
             <a class="dropdown-item" routerLink="topos/search" routerLinkActive="active" (click)="collapseNavbar()">
               <span>Recherche de topos</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="spots-menu">
+          <span>Spots</span>
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="spots-menu">
+          <li>
+            <a class="dropdown-item" routerLink="spots" routerLinkActive="active" (click)="collapseNavbar()">
+              <span>Tous les spots</span>
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item" routerLink="spots/search" routerLinkActive="active" (click)="collapseNavbar()">
+              <span>Recherche de spots</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="secteurs-menu">
+          <span>Secteurs</span>
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="secteurs-menu">
+          <li>
+            <a class="dropdown-item" routerLink="secteurs" routerLinkActive="active" (click)="collapseNavbar()">
+              <span>Tous les secteurs</span>
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item" routerLink="secteurs/search" routerLinkActive="active" (click)="collapseNavbar()">
+              <span>Recherche de secteurs</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="voies-menu">
+          <span>Voies</span>
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="voies-menu">
+          <li>
+            <a class="dropdown-item" routerLink="voies" routerLinkActive="active" (click)="collapseNavbar()">
+              <span>Toutes les voies</span>
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item" routerLink="voies/search" routerLinkActive="active" (click)="collapseNavbar()">
+              <span>Recherche de voies</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="longueurs-menu">
+          <span>Longueurs</span>
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="longueurs-menu">
+          <li>
+            <a class="dropdown-item" routerLink="longueurs" routerLinkActive="active" (click)="collapseNavbar()">
+              <span>Toutes les longueurs</span>
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item" routerLink="longueurs/search" routerLinkActive="active" (click)="collapseNavbar()">
+              <span>Recherche de longueurs</span>
             </a>
           </li>
         </ul>

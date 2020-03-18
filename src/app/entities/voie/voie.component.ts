@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { IVoie } from '../../shared/model/voie.model';
+import { VoieService } from './voie.service';
+
+type EntityResponseType = HttpResponse<IVoie>;
+type EntityArrayResponseType = HttpResponse<IVoie[]>;
 
 @Component({
   selector: 'app-voie',
@@ -7,9 +13,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VoieComponent implements OnInit {
 
-  constructor() { }
+  voies: IVoie[];
+
+  constructor(private voieService: VoieService) {
+    this.voies = [];
+  }
+
+  loadAll() {
+    this.voieService.getAllVoies().subscribe((res: EntityArrayResponseType) => this.voies = res.body);
+  }
 
   ngOnInit() {
+    this.loadAll();
   }
 
 }

@@ -1,1 +1,11 @@
-<p>secteur works!</p>
+<div>
+  <h2>Secteurs</h2>
+  <div *ngIf="secteurs?.length > 0" class="card-container">
+    <mat-card *ngFor="let secteur of secteurs" class="card">
+      <mat-card-header class="card-header">
+        <mat-card-title>{{secteur.name}}</mat-card-title>
+      </mat-card-header>
+      <img mat-card-image src="../assets/logo.png" alt="photo topo">
+    </mat-card>
+  </div>
+</div>
