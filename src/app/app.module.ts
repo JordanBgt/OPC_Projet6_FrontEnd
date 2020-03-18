@@ -13,6 +13,12 @@ import { UserComponent } from './entities/user/user.component';
 import { VoieComponent } from './entities/voie/voie.component';
 import { LoginComponent } from './entities/login/login.component';
 import { RegisterComponent } from './entities/register/register.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NavbarComponent } from './navbar/navbar.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+import { MatCardModule } from '@angular/material/card';
+import { NgbCollapseModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -26,11 +32,18 @@ import { RegisterComponent } from './entities/register/register.component';
     UserComponent,
     VoieComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    MatCardModule,
+    NgbCollapseModule,
+    NgbNavModule
   ],
   providers: [],
   bootstrap: [AppComponent]
