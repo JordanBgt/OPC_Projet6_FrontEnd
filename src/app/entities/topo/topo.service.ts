@@ -11,7 +11,7 @@ type EntityArrayResponseType = HttpResponse<ITopo[]>;
 })
 export class TopoService {
 
-  public ressourceUrl = 'localhost:8080/topos';
+  public ressourceUrl = 'http://localhost:8080/api/topos';
 
   constructor(private http: HttpClient) {}
 

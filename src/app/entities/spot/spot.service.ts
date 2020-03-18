@@ -12,7 +12,7 @@ type EntityArrayResponseType = HttpResponse<ISpot[]>;
 export class SpotService {
 
 
-  public ressourceUrl = 'localhost:8080/spots';
+  public ressourceUrl = 'http://localhost:8080/spots';
 
   constructor(protected http: HttpClient) { }
 

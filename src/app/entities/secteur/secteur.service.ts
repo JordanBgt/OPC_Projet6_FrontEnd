@@ -11,7 +11,7 @@ type EntityArrayResponseType = HttpResponse<ISecteur[]>;
 })
 export class SecteurService {
 
-  public ressourceUrl = 'localhost:8080/secteurs';
+  public ressourceUrl = 'http://localhost:8080/secteurs';
 
   constructor(protected http: HttpClient) { }
 
