@@ -1,93 +1,108 @@
 <nav ngbNav class="navbar navbar-dark navbar-expand-md bg-dark">
-  <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
+  <a class="navbar-brand logo" routerLink="/">
     <span class="logo-img"></span>
     <span class="navbar-title">Les amis de l'escalade</span>
   </a>
-  <a class="navbar-toggler d-lg-none" href="javascript:void(0);" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
-  </a>
-  <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed">
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-        <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="topos-menu">
+  <div class="navbar-collapse collapse" id="navbarResponsive">
+    <ul class="navbar-nav ml-auto mr-5">
+      <li class="nav-item" ngbDropdown routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <a class="nav-link" id="topos-menu" href="javascript:void(0);" ngbDropdownToggle>
             <span>Topos</span>
         </a>
-        <ul class="dropdown-menu" aria-labelledby="topos-menu">
+        <ul ngbDropdownMenu aria-labelledby="topos-menu">
           <li>
-            <a class="dropdown-item" routerLink="topos" routerLinkActive="active" (click)="collapseNavbar()">
+            <a routerLink="topos" routerLinkActive="active" ngbDropdownItem>
               <span>Tous les topos</span>
             </a>
           </li>
           <li>
-            <a class="dropdown-item" routerLink="topos/search" routerLinkActive="active" (click)="collapseNavbar()">
+            <a routerLink="topos/search" routerLinkActive="active" ngbDropdownItem>
               <span>Recherche de topos</span>
             </a>
           </li>
         </ul>
       </li>
-      <li class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-        <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="spots-menu">
+      <li class="nav-item" ngbDropdown routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <a class="nav-link" id="spots-menu" href="javascript:void(0);" ngbDropdownToggle>
           <span>Spots</span>
         </a>
-        <ul class="dropdown-menu" aria-labelledby="spots-menu">
+        <ul ngbDropdownMenu aria-labelledby="spots-menu">
           <li>
-            <a class="dropdown-item" routerLink="spots" routerLinkActive="active" (click)="collapseNavbar()">
+            <a routerLink="spots" routerLinkActive="active" ngbDropdownItem>
               <span>Tous les spots</span>
             </a>
           </li>
           <li>
-            <a class="dropdown-item" routerLink="spots/search" routerLinkActive="active" (click)="collapseNavbar()">
+            <a routerLink="spots/search" routerLinkActive="active" ngbDropdownItem>
               <span>Recherche de spots</span>
             </a>
           </li>
         </ul>
       </li>
-      <li class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-        <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="secteurs-menu">
+      <li class="nav-item" ngbDropdown routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <a class="nav-link" id="secteurs-menu" href="javascript:void(0);" ngbDropdownToggle>
           <span>Secteurs</span>
         </a>
-        <ul class="dropdown-menu" aria-labelledby="secteurs-menu">
+        <ul ngbDropdownMenu aria-labelledby="secteurs-menu">
           <li>
-            <a class="dropdown-item" routerLink="secteurs" routerLinkActive="active" (click)="collapseNavbar()">
+            <a routerLink="secteurs" routerLinkActive="active" ngbDropdownItem>
               <span>Tous les secteurs</span>
             </a>
           </li>
           <li>
-            <a class="dropdown-item" routerLink="secteurs/search" routerLinkActive="active" (click)="collapseNavbar()">
+            <a routerLink="secteurs/search" routerLinkActive="active" ngbDropdownItem>
               <span>Recherche de secteurs</span>
             </a>
           </li>
         </ul>
       </li>
-      <li class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-        <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="voies-menu">
+      <li class="nav-item" ngbDropdown routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <a class="nav-link" id="voies-menu" href="javascript:void(0);" ngbDropdownToggle>
           <span>Voies</span>
         </a>
-        <ul class="dropdown-menu" aria-labelledby="voies-menu">
+        <ul ngbDropdownMenu aria-labelledby="voies-menu">
           <li>
-            <a class="dropdown-item" routerLink="voies" routerLinkActive="active" (click)="collapseNavbar()">
+            <a routerLink="voies" routerLinkActive="active" ngbDropdownItem>
               <span>Toutes les voies</span>
             </a>
           </li>
           <li>
-            <a class="dropdown-item" routerLink="voies/search" routerLinkActive="active" (click)="collapseNavbar()">
+            <a routerLink="voies/search" routerLinkActive="active" ngbDropdownItem>
               <span>Recherche de voies</span>
             </a>
           </li>
         </ul>
       </li>
-      <li class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-        <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="longueurs-menu">
+      <li class="nav-item" ngbDropdown routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <a class="nav-link" id="longueurs-menu" href="javascript:void(0);" ngbDropdownToggle>
           <span>Longueurs</span>
         </a>
-        <ul class="dropdown-menu" aria-labelledby="longueurs-menu">
+        <ul ngbDropdownMenu aria-labelledby="longueurs-menu">
           <li>
-            <a class="dropdown-item" routerLink="longueurs" routerLinkActive="active" (click)="collapseNavbar()">
+            <a routerLink="longueurs" routerLinkActive="active" ngbDropdownItem>
               <span>Toutes les longueurs</span>
             </a>
           </li>
           <li>
-            <a class="dropdown-item" routerLink="longueurs/search" routerLinkActive="active" (click)="collapseNavbar()">
+            <a routerLink="longueurs/search" routerLinkActive="active" ngbDropdownItem>
               <span>Recherche de longueurs</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item" ngbDropdown routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <a class="nav-link" id="compte-menu" href="javascript:void(0);" ngbDropdownToggle>
+          <span>Compte</span>
+        </a>
+        <ul ngbDropdownMenu aria-labelledby="compte-menu">
+          <li>
+            <a routerLink="account" routerLinkActive="active" ngbDropdownItem>
+              <span>Profil</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="logout" routerLinkActive="active" ngbDropdownItem>
+              <span>Se déconnecter</span>
             </a>
           </li>
         </ul>
