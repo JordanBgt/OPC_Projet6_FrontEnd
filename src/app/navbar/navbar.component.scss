@@ -1,5 +1,6 @@
 .navbar {
   padding: 0.2rem 1rem;
+  height: 80px;
 
   ul.navbar-nav {
     .nav-item {
@@ -10,4 +11,8 @@
   a.nav-link {
     font-weight: 400;
   }
+}
+
+#logo {
+  height: 80px;
 }
