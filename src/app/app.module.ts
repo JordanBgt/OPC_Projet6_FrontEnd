@@ -18,7 +18,16 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
-import { NgbCollapseModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { TopoDetailComponent } from './entities/topo/topo-detail.component';
+import { SecteurDetailComponent } from './entities/secteur/secteur-detail.component';
+import { SpotDetailComponent } from './entities/spot/spot-detail.component';
+import { VoieDetailComponent } from './entities/voie/voie-detail.component';
+import { LongueurDetailComponent } from './entities/longueur/longueur-detail.component';
+import { HomeComponent } from './home/home.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -33,7 +42,13 @@ import { NgbCollapseModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
     VoieComponent,
     LoginComponent,
     RegisterComponent,
-    NavbarComponent
+    NavbarComponent,
+    TopoDetailComponent,
+    SecteurDetailComponent,
+    SpotDetailComponent,
+    VoieDetailComponent,
+    LongueurDetailComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -42,8 +57,10 @@ import { NgbCollapseModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
     BrowserAnimationsModule,
     HttpClientModule,
     MatCardModule,
-    NgbCollapseModule,
-    NgbNavModule
+    NgbModule,
+    MatMenuModule,
+    MatButtonModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]
