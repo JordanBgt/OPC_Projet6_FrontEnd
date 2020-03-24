@@ -26,5 +26,4 @@ export class LongueurComponent implements OnInit {
   ngOnInit() {
     this.loadAll();
   }
-
 }
