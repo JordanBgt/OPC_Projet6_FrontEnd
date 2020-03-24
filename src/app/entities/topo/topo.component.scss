@@ -1,1 +1,21 @@
-@import "src/assets/card";
+@import "src/app/shared/assets/card";
+
+.form {
+  margin: auto;
+  width: 100px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.form-menu {
+  width: 400px;
+}
+
+.topo-content {
+  width: 800px;
+  border-radius: 25px;
+  margin: auto;
+  text-align: center;
+  padding: 20px;
+  margin-top: 50px;
+}

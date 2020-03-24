@@ -1,0 +1,36 @@
+#topoDetailContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+mat-card {
+  width: 80%;
+  margin-top: 50px;
+}
+
+img {
+  background-size: cover;
+}
+
+.card-header {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-around;
+}
+
+.card-header-content {
+  display: flex;
+  flex-direction: column;
+  width: 450px;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+li {
+  list-style: none;
+}

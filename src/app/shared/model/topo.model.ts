@@ -6,7 +6,6 @@ export interface ITopo {
   name?: string;
   description?: string;
   cotation?: string;
-  duration?: string;
   isAvailable?: boolean;
   country?: string;
   region?: string;
@@ -23,7 +22,6 @@ export class Topo implements ITopo {
     public name?: string,
     public description?: string,
     public cotation?: string,
-    public duration?: string,
     public isAvailable?: boolean,
     public country?: string,
     public region?: string,

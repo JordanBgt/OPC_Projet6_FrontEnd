@@ -1,0 +1,24 @@
+<div id="topoDetailContent">
+  <mat-card *ngIf="topo" class="header" align="center">
+    <img src="../../shared/assets/logo.png"/>
+    <mat-card-header class="card-header">
+      <mat-card-title>{{topo.name}}</mat-card-title>
+      <mat-card-content class="card-header-content">
+        <ul>
+          <li>{{topo.country}} - {{topo.region}}</li>
+          <li>{{topo.cotation}}</li>
+          <li>{{topo.publicationDate}}</li>
+        </ul>
+      </mat-card-content>
+    </mat-card-header>
+  </mat-card>
+  <mat-card class="description" align="center">
+    <mat-card-title>Description</mat-card-title>
+    <mat-card-content>{{topo.description}}</mat-card-content>
+  </mat-card>
+  <mat-card *ngIf="topo.spots?.length > 0" class="spotsList" align="center">
+    <mat-card-title>Liste des spots</mat-card-title>
+    <mat-card-content *ngFor="let spot of topo.spots">{{spot.name}}</mat-card-content>
+  </mat-card>
+</div>
+

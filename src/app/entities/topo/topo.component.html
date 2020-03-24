@@ -1,5 +1,43 @@
 <div>
-  <h2>Topos</h2>
+  <div class="topo-content jumbotron">
+    <h2>Liste des topos</h2>
+    <hr>
+    <span>Vous trouverez, ci-dessous, la liste des topos enregistrés par la communauté ou l'association.</span>
+    <span>Vous avez la possibilité de consulter leur fiche détaillée ainsi que de réserver des topos qui vous intéressent.</span>
+  </div>
+  <div class="row form">
+    <div class="col">
+      <div ngbDropdown class="d-inline-block" placement="bottom-right">
+        <button class="btn btn-outline-primary" id="topoForm" ngbDropdownToggle>Créer topo</button>
+        <div ngbDropdownMenu aria-labelledby="topoForm" class="form-menu">
+          <form class="px-4 py-3" [formGroup]="topoForm" (ngSubmit)="onCreate()">
+            <div class="form-group">
+              <label for="name">Nom</label>
+              <input type="text" class="form-control" id="name" placeholder="nom du topo" formControlName="name">
+            </div>
+            <div class="form-group">
+              <label for="country">Pays</label>
+              <input type="text" class="form-control" id="country" placeholder="France" formControlName="country">
+            </div>
+            <div class="form-group">
+              <label for="region">Région</label>
+              <input type="text" class="form-control" id="region" placeholder="Bourgogne Franche-Comté" formControlName="region">
+            </div>
+            <div class="form-group">
+              <label for="cotation">Cotation</label>
+              <input type="text" class="form-control" id="cotation" placeholder="3a - 7c" formControlName="cotation">
+            </div>
+            <div class="form-group">
+              <label for="description">Description</label>
+              <textarea class="form-control" id="description" placeholder="description topo" formControlName="description"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary submit">Envoyer</button>
+          </form>
+          <div class="dropdown-divider"></div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div *ngIf="topos?.length > 0" class="card-container">
     <mat-card *ngFor="let topo of topos" class="card">
       <mat-card-header class="card-header">
@@ -7,6 +45,9 @@
         <mat-card-subtitle>{{topo.country}}, {{topo.region}}</mat-card-subtitle>
       </mat-card-header>
       <img mat-card-image src="../assets/logo.png" alt="photo topo">
+      <mat-card-actions align="center">
+        <button mat-stroked-button routerLink="{{topo.id}}">Detail</button>
+      </mat-card-actions>
     </mat-card>
   </div>
 </div>
