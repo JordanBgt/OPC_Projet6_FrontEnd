@@ -1,23 +1,31 @@
-<div id="topoDetailContent">
-  <mat-card *ngIf="topo" class="header" align="center">
+<div id="topoDetailContent" *ngIf="topo">
+  <mat-card class="header" align="center">
     <img src="../../../assets/logo.png"/>
-    <mat-card-header class="card-header">
-      <mat-card-title>{{topo.name}}</mat-card-title>
+    <div class="content">
+      <mat-card-header class="card-header">
+        <mat-card-title>{{topo.name}}</mat-card-title>
+      </mat-card-header>
       <mat-card-content class="card-header-content">
         <ul>
-          <li>{{topo.country}} - {{topo.region}}</li>
-          <li>{{topo.cotationMin}} - {{topo.cotationMax}}</li>
-          <li>{{topo.publicationDate}}</li>
+          <li><img src="../../../assets/location.svg"/>{{topo.country}} - {{topo.region}}</li>
+          <li><img src="../../../assets/cotation.svg"/>{{topo.cotationMin}} - {{topo.cotationMax}}</li>
+          <li><img src="../../../assets/calendar.svg">{{topo.publicationDate}}</li>
         </ul>
       </mat-card-content>
-    </mat-card-header>
+  </div>
   </mat-card>
   <mat-card class="description" align="center">
-    <mat-card-title>Description</mat-card-title>
+    <mat-card-header>
+      <div mat-card-avatar class="description-image"></div>
+      <mat-card-title>Description</mat-card-title>
+    </mat-card-header>
     <mat-card-content>{{topo.description}}</mat-card-content>
   </mat-card>
   <mat-card *ngIf="topo.spots?.length > 0" class="spotsList" align="center">
-    <mat-card-title>Liste des spots</mat-card-title>
+    <mat-card-header>
+      <div mat-card-avatar class="list-image"></div>
+      <mat-card-title>Liste des spots</mat-card-title>
+    </mat-card-header>
     <mat-card-content *ngFor="let spot of topo.spots">{{spot.name}}</mat-card-content>
   </mat-card>
 </div>

@@ -9,10 +9,6 @@ mat-card {
   margin-top: 50px;
 }
 
-img {
-  background-size: cover;
-}
-
 .card-header {
   display: flex;
   flex-direction: column;
@@ -33,4 +29,14 @@ img {
 
 li {
   list-style: none;
+}
+
+.description-image {
+  background-image: url("../../../assets/description.svg");
+  background-size: cover;
+}
+
+.list-image {
+  background-image: url("../../../assets/list.svg");
+  background-size: cover;
 }

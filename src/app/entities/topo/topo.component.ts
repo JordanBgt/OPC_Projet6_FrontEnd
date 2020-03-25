@@ -64,12 +64,9 @@ export class TopoComponent implements OnInit {
     topo.cotationMax = formValue.cotationMax;
     topo.description = formValue.description;
     let topoCreated: ITopo;
-    console.log('TOPO SAVE : ' + JSON.stringify(topo));
-    this.topoService.createTopo(topo).subscribe((res: EntityResponseType) => topoCreated = res.body);
-    if (topoCreated !== undefined) {
-      console.log('TOPO BACK : ' + topoCreated);
-      this.router.navigate([`/topos/${topoCreated.id}`]);
-    }
+    this.topoService.createTopo(topo).subscribe((res: EntityResponseType) => topoCreated = res.body,
+      (error: Error) => console.error(error.message),
+      () => this.router.navigate([`/topos/${topoCreated.id}`]) );
   }
 
   onDetail(topoId) {
