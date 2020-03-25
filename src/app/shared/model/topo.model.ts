@@ -5,7 +5,8 @@ export interface ITopo {
   id?: number;
   name?: string;
   description?: string;
-  cotation?: string;
+  cotationMin?: string;
+  cotationMax?: string;
   isAvailable?: boolean;
   country?: string;
   region?: string;
@@ -21,7 +22,8 @@ export class Topo implements ITopo {
     public id?: number,
     public name?: string,
     public description?: string,
-    public cotation?: string,
+    public cotationMin?: string,
+    public cotationMax?: string,
     public isAvailable?: boolean,
     public country?: string,
     public region?: string,

@@ -14,7 +14,8 @@ export interface ISpot {
   secteurs?: Secteur[];
   userId?: number;
   name?: string;
-  cotation?: string;
+  cotationMin?: string;
+  cotationMax?: string;
 }
 
 export class Spot implements ISpot {
@@ -30,7 +31,8 @@ export class Spot implements ISpot {
     public secteurs?: Secteur[],
     public userId?: number,
     public name?: string,
-    public cotation?: string
+    public cotationMin?: string,
+    public cotationMax?: string
   ) {
   }
 }

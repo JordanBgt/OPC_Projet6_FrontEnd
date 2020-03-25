@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { ISpot, Spot } from '../../shared/model/spot.model';
 import { Observable } from 'rxjs';
+import { SpotSave } from '../../shared/model/spotSave.model';
 
 type EntityResponseType = HttpResponse<ISpot>;
 type EntityArrayResponseType = HttpResponse<ISpot[]>;
@@ -24,12 +25,12 @@ export class SpotService {
     return this.http.get<ISpot>(`${this.ressourceUrl}/${spotId}`, {observe: 'response'});
   }
 
-  createSpot(spot: Spot): Observable<EntityResponseType> {
+  createSpot(spot: SpotSave): Observable<EntityResponseType> {
     return this.http.post<ISpot>(this.ressourceUrl, spot, {observe: 'response'});
   }
 
-  updateSpot(spot: Spot): Observable<EntityResponseType> {
-    return this.http.put<ISpot>(`${this.ressourceUrl}/${spot.id}`, spot, {observe: 'response'});
+  updateSpot(spot: SpotSave, spotId: number): Observable<EntityResponseType> {
+    return this.http.put<ISpot>(`${this.ressourceUrl}/${spotId}`, spot, {observe: 'response'});
   }
 
   deleteSpot(spotId: number): Observable<any> {

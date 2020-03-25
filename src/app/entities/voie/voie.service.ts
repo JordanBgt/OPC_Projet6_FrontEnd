@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { IVoie, Voie } from '../../shared/model/voie.model';
 import { Observable } from 'rxjs';
+import { VoieSave } from '../../shared/model/voieSave.model';
 
 type EntityResponseType = HttpResponse<IVoie>;
 type EntityArrayResponseType = HttpResponse<IVoie[]>;
@@ -23,12 +24,12 @@ export class VoieService {
     return this.http.get<IVoie>(`${this.ressourceUrl}/${voieId}`, {observe: 'response'});
   }
 
-  createVoie(voie: Voie): Observable<EntityResponseType> {
+  createVoie(voie: VoieSave): Observable<EntityResponseType> {
     return this.http.post<IVoie>(this.ressourceUrl, voie, {observe: 'response'});
   }
 
-  updateVoie(voie: Voie): Observable<EntityResponseType> {
-    return this.http.put<IVoie>(`${this.ressourceUrl}/${voie.id}`, voie, {observe: 'response'});
+  updateVoie(voie: VoieSave, voieId: number): Observable<EntityResponseType> {
+    return this.http.put<IVoie>(`${this.ressourceUrl}/${voieId}`, voie, {observe: 'response'});
   }
 
   deleteVoie(voieId: number): Observable<HttpResponse<any>> {

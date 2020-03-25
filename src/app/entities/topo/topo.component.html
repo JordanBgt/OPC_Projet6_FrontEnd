@@ -24,8 +24,18 @@
               <input type="text" class="form-control" id="region" placeholder="Bourgogne Franche-Comté" formControlName="region">
             </div>
             <div class="form-group">
-              <label for="cotation">Cotation</label>
-              <input type="text" class="form-control" id="cotation" placeholder="3a - 7c" formControlName="cotation">
+              <label for="cotationMin">Cotation min</label>
+              <select id="cotationMin" class="form-control" formControlName="cotationMin" *ngIf="cotations?.length > 0">
+                <option value="" disabled>Cotation min</option>
+                <option *ngFor="let cotation of cotations" [ngValue]="cotation">{{cotation.label}}></option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="cotationMax">Cotation max</label>
+              <select id="cotationMax" class="form-control" formControlName="cotationMax" *ngIf="cotations?.length > 0">
+                <option value="" disabled>Cotation max</option>
+                <option *ngFor="let cotation of cotations" [ngValue]="cotation">{{cotation.label}}</option>
+              </select>
             </div>
             <div class="form-group">
               <label for="description">Description</label>

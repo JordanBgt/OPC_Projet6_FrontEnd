@@ -4,7 +4,7 @@
     <mat-card *ngFor="let longueur of longueurs" class="card">
       <mat-card-header class="card-header">
         <mat-card-title>{{longueur.name}}</mat-card-title>
-        <mat-card-subtitle>Cotation : {{longueur.cotation}}</mat-card-subtitle>
+        <mat-card-subtitle>Cotation : {{longueur.cotationMin}} - {{longueur.cotationMax}}</mat-card-subtitle>
       </mat-card-header>
       <img mat-card-image src="../assets/logo.png" alt="photo topo">
     </mat-card>
