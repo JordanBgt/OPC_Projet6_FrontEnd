@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { ITopo, Topo } from '../../shared/model/topo.model';
+import { ITopo } from '../../shared/model/topo.model';
 import { Observable } from 'rxjs';
 import { TopoSave } from '../../shared/model/topoSave.model';
+import { createRequestOption } from '../../shared/request-utils';
 
 type EntityResponseType = HttpResponse<ITopo>;
 type EntityArrayResponseType = HttpResponse<ITopo[]>;
@@ -16,8 +17,9 @@ export class TopoService {
 
   constructor(private http: HttpClient) {}
 
-  getAllTopos(): Observable<EntityArrayResponseType> {
-    return this.http.get<ITopo[]>(this.ressourceUrl, {observe: 'response'});
+  getAllTopos(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<ITopo[]>(this.ressourceUrl, {params: options, observe: 'response'});
   }
 
   getOneTopo(topoId: number): Observable<EntityResponseType> {

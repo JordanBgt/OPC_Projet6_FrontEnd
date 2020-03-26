@@ -48,7 +48,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="topos?.length > 0" class="card-container">
+  <div *ngIf="topos?.length > 0" class="card-container" infinite-scroll (scrolled)="loadPage(page + 1)">
     <mat-card *ngFor="let topo of topos" class="card">
       <mat-card-header class="card-header">
         <mat-card-title>{{topo.name}}</mat-card-title>
