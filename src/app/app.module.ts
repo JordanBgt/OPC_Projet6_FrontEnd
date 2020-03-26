@@ -28,6 +28,7 @@ import { VoieDetailComponent } from './entities/voie/voie-detail.component';
 import { LongueurDetailComponent } from './entities/longueur/longueur-detail.component';
 import { HomeComponent } from './home/home.component';
 import { MatIconModule } from '@angular/material/icon';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { MatIconModule } from '@angular/material/icon';
     NgbModule,
     MatMenuModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    InfiniteScrollModule
   ],
   providers: [],
   bootstrap: [AppComponent]
