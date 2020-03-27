@@ -1,10 +1,8 @@
 @import "src/app/shared/layout/card";
 
 .form {
-  margin: auto;
   width: 100px;
-  margin-top: 50px;
-  margin-bottom: 50px;
+  margin: 50px auto;
 }
 
 .form-menu {
@@ -14,8 +12,25 @@
 .topo-content {
   width: 800px;
   border-radius: 25px;
-  margin: auto;
+  margin: 50px auto;
   text-align: center;
   padding: 20px;
-  margin-top: 50px;
 }
+
+.searchForm {
+  width: 70%;
+  margin: 50px auto;
+}
+
+mat-form-field {
+  margin : 10px;
+}
+
+.searchButtons {
+  margin: 0 10px;
+}
+
+.searchButtons button {
+  margin: 0 10px;
+}
+

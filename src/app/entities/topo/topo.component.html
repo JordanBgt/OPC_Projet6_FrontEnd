@@ -5,6 +5,35 @@
     <span>Vous trouverez, ci-dessous, la liste des topos enregistrés par la communauté ou l'association.</span>
     <span>Vous avez la possibilité de consulter leur fiche détaillée ainsi que de réserver des topos qui vous intéressent.</span>
   </div>
+  <div class="searchForm">
+    <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+      <mat-form-field appearance="outline">
+        <mat-label>Pays</mat-label>
+        <input matInput formControlName="country">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Nom</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Cotation min</mat-label>
+        <mat-select formControlName="cotationMin">
+          <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Cotation max</mat-label>
+        <mat-select formControlName="cotationMax">
+          <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-slide-toggle formControlName="available">Disponible ?</mat-slide-toggle>
+      <div class="searchButtons" align="end">
+        <button mat-stroked-button color="primary" type="submit">Rechercher</button>
+        <button mat-stroked-button type="reset">Effacer les critères</button>
+      </div>
+    </form>
+  </div>
   <div class="row form">
     <div class="col">
       <div ngbDropdown class="d-inline-block" placement="bottom-right">
@@ -48,7 +77,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="topos?.length > 0" class="card-container" infinite-scroll (scrolled)="loadPage(page + 1)">
+  <div *ngIf="topos?.length > 0" class="card-container" infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= totalPages">
     <mat-card *ngFor="let topo of topos" class="card">
       <mat-card-header class="card-header">
         <mat-card-title>{{topo.name}}</mat-card-title>

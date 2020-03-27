@@ -29,6 +29,10 @@ import { LongueurDetailComponent } from './entities/longueur/longueur-detail.com
 import { HomeComponent } from './home/home.component';
 import { MatIconModule } from '@angular/material/icon';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -62,7 +66,11 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     MatMenuModule,
     MatButtonModule,
     MatIconModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatSlideToggleModule
   ],
   providers: [],
   bootstrap: [AppComponent]

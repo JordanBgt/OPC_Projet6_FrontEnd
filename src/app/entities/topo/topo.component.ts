@@ -25,6 +25,13 @@ export class TopoComponent implements OnInit {
   size: number;
   lastPage: boolean;
   page: any;
+  searchForm: FormGroup;
+  country: string;
+  name: string;
+  cotationMin: number;
+  cotationMax: number;
+  isAvailable: boolean;
+  totalPages: number;
 
   constructor(private topoService: TopoService,
               private formBuilder: FormBuilder,
@@ -36,8 +43,9 @@ export class TopoComponent implements OnInit {
   }
 
   loadAll() {
-    this.topoService.getAllTopos({page: this.page, size: this.size})
-      .subscribe((res: EntityArrayResponseType ) => this.paginateTopos(res.body, res.headers));
+    this.topoService.getAllTopos({page: this.page, size: this.size, country: this.country, name: this.name,
+      cotationMin: this.cotationMin, cotationMax: this.cotationMax, isAvailable: this.isAvailable})
+      .subscribe((res: EntityArrayResponseType ) => this.paginateTopos(res.body));
   }
 
   loadCotations() {
@@ -48,10 +56,11 @@ export class TopoComponent implements OnInit {
   ngOnInit() {
     this.loadAll();
     this.loadCotations();
-    this.initForm();
+    this.initTopoForm();
+    this.initSearchForm();
   }
 
-  initForm() {
+  initTopoForm() {
     this.topoForm = this.formBuilder.group({
       name: '',
       country: '',
@@ -59,6 +68,16 @@ export class TopoComponent implements OnInit {
       cotationMin: '',
       cotationMax: '',
       description: ''
+    });
+  }
+
+  initSearchForm() {
+    this.searchForm = this.formBuilder.group({
+      country: '',
+      name: '',
+      cotationMin: '',
+      cotationMax: '',
+      available: ''
     });
   }
 
@@ -86,11 +105,27 @@ export class TopoComponent implements OnInit {
     this.loadAll();
   }
 
-  protected paginateTopos(data: ITopo[], httpHeaders: HttpHeaders) {
-    this.lastPage = httpHeaders.get('lastPage') === 'true';
-    for (let i = 0; i < data.length; i++) {
-      this.topos.push(data[i]);
+  protected paginateTopos(data: any) {
+    this.totalPages = data.totalPages;
+    for (let i = 0; i < data.content.length; i++) {
+      this.topos.push(data.content[i]);
     }
+  }
+
+  onSearch() {
+    const formValue = this.searchForm.value;
+    this.country = formValue.country !== '' ? formValue.country : null;
+    this.name = formValue.name !== '' ? formValue.name : null;
+    this.cotationMin = formValue.cotationMin !== null ? formValue.cotationMin.id : null;
+    this.cotationMax = formValue.cotationMax !== null ? formValue.cotationMax.id : null;
+    this.isAvailable = formValue.available === true;
+    this.clearToposAndPage();
+    this.loadAll();
+  }
+
+  clearToposAndPage() {
+    this.topos = [];
+    this.page = 0;
   }
 
 }
