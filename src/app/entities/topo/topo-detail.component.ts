@@ -3,6 +3,7 @@ import { ITopo } from '../../shared/model/topo.model';
 import { ActivatedRoute, Params } from '@angular/router';
 import { TopoService } from './topo.service';
 import { HttpResponse } from '@angular/common/http';
+import { Cotation } from '../../shared/model/cotation.model';
 
 @Component({
   selector: 'app-topo-detail',
@@ -13,6 +14,7 @@ export class TopoDetailComponent implements OnInit {
 
   topo: ITopo;
   topoId: number;
+  cotations: Cotation[];
 
   constructor(private topoService: TopoService,
               private route: ActivatedRoute) { }

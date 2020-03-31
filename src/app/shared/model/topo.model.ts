@@ -1,12 +1,13 @@
 import {Spot} from './spot.model';
 import {Photo} from './photo.model';
+import { ICotation } from './cotation.model';
 
 export interface ITopo {
   id?: number;
   name?: string;
   description?: string;
-  cotationMin?: string;
-  cotationMax?: string;
+  cotationMin?: ICotation;
+  cotationMax?: ICotation;
   isAvailable?: boolean;
   country?: string;
   region?: string;
@@ -22,8 +23,8 @@ export class Topo implements ITopo {
     public id?: number,
     public name?: string,
     public description?: string,
-    public cotationMin?: string,
-    public cotationMax?: string,
+    public cotationMin?: ICotation,
+    public cotationMax?: ICotation,
     public isAvailable?: boolean,
     public country?: string,
     public region?: string,
