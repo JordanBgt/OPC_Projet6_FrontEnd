@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TopoUpdateComponent } from '../app/entities/topo/topo-update.component';
+import { TopoUpdateComponent } from '../app/entities/topo-update/topo-update.component';
 
 describe('TopoUpdateComponent', () => {
   let component: TopoUpdateComponent;

@@ -21,7 +21,7 @@ import { MatCardModule } from '@angular/material/card';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-import { TopoDetailComponent } from './entities/topo/topo-detail.component';
+import { TopoDetailComponent } from './entities/topo-detail/topo-detail.component';
 import { SecteurDetailComponent } from './entities/secteur/secteur-detail.component';
 import { SpotDetailComponent } from './entities/spot/spot-detail.component';
 import { VoieDetailComponent } from './entities/voie/voie-detail.component';
@@ -33,7 +33,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { TopoUpdateComponent } from './entities/topo/topo-update.component';
+import { TopoUpdateComponent } from './entities/topo-update/topo-update.component';
 
 @NgModule({
   declarations: [

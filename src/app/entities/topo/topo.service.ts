@@ -23,19 +23,7 @@ export class TopoService {
     return this.http.get<ITopoLight[]>(this.ressourceUrl, {params: options, observe: 'response'});
   }
 
-  getOneTopo(topoId: number): Observable<EntityResponseType> {
-    return this.http.get<ITopo>(`${this.ressourceUrl}/${topoId}`, {observe: 'response'});
-  }
-
   createTopo(topo: TopoSave): Observable<EntityResponseType> {
     return this.http.post<ITopo>(this.ressourceUrl, topo, {observe: 'response'});
-  }
-
-  updateTopo(topo: TopoSave, topoId: number): Observable<EntityResponseType> {
-    return this.http.put<ITopo>(`${this.ressourceUrl}/${topoId}`, topo, {observe: 'response'});
-  }
-
-  deleteTopo(topoId: number): Observable<HttpResponse<any>> {
-    return this.http.delete(`${this.ressourceUrl}/${topoId}`, {observe: 'response'});
   }
 }
