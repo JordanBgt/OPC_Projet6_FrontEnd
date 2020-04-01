@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { ISpot, Spot } from '../../shared/model/spot.model';
 import { Observable } from 'rxjs';
-import { SpotSave } from '../../shared/model/spotSave.model';
+import { SpotSave } from '../../shared/model/spot-save.model';
 
 type EntityResponseType = HttpResponse<ISpot>;
 type EntityArrayResponseType = HttpResponse<ISpot[]>;

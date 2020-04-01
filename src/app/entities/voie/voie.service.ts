@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { IVoie, Voie } from '../../shared/model/voie.model';
 import { Observable } from 'rxjs';
-import { VoieSave } from '../../shared/model/voieSave.model';
+import { VoieSave } from '../../shared/model/voie-save.model';
 
 type EntityResponseType = HttpResponse<IVoie>;
 type EntityArrayResponseType = HttpResponse<IVoie[]>;
