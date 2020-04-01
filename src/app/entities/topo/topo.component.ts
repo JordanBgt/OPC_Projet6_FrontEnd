@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { TopoService } from './topo.service';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { ITopo, Topo } from '../../shared/model/topo.model';
+import { HttpResponse } from '@angular/common/http';
+import { ITopo } from '../../shared/model/topo.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ICotation } from '../../shared/model/cotation.model';
 import { CotationService } from '../cotation/cotation.service';
-import { TopoSave } from '../../shared/model/topoSave.model';
+import { TopoSave } from '../../shared/model/topo-save.model';
 import { ITEMS_PER_PAGE } from '../../../../app.constants';
+import { ITopoLight } from '../../shared/model/topo-light.model';
 
 type EntityResponseType = HttpResponse<ITopo>;
-type EntityArrayResponseType = HttpResponse<ITopo[]>;
+type EntityArrayResponseType = HttpResponse<ITopoLight[]>;
 
 @Component({
   selector: 'app-topo',
@@ -19,11 +20,10 @@ type EntityArrayResponseType = HttpResponse<ITopo[]>;
 })
 export class TopoComponent implements OnInit {
 
-  topos: ITopo[];
+  topos: ITopoLight[];
   topoForm: FormGroup;
   cotations: ICotation[];
   size: number;
-  lastPage: boolean;
   page: any;
   searchForm: FormGroup;
   country: string;
