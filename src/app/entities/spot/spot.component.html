@@ -1,6 +1,6 @@
 <div>
   <h2>Spots</h2>
-  <div *ngIf="spots?.length > 0" class="card-container">
+  <div *ngIf="spots?.length > 0" class="card-container" infinite-scroll (scrolled)="loadPage(page +1)" [infiniteScrollDisabled]="page >= totalPages">
     <mat-card *ngFor="let spot of spots" class="card">
       <mat-card-header class="card-header">
         <mat-card-title>{{spot.name}}</mat-card-title>

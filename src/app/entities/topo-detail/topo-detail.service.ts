@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ITopo } from '../../shared/model/topo.model';
+import { ITopo, Topo } from '../../shared/model/topo.model';
 import { TopoSave } from '../../shared/model/topo-save.model';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 
@@ -19,8 +19,8 @@ export class TopoDetailService {
     return this.http.get<ITopo>(`${this.ressourceUrl}/${topoId}`, {observe: 'response'});
   }
 
-  updateTopo(topo: TopoSave, topoId: number): Observable<EntityResponseType> {
-    return this.http.put<ITopo>(`${this.ressourceUrl}/${topoId}`, topo, {observe: 'response'});
+  updateTopo(topo: Topo): Observable<EntityResponseType> {
+    return this.http.put<ITopo>(`${this.ressourceUrl}/${topo.id}`, topo, {observe: 'response'});
   }
 
   deleteTopo(topoId: number): Observable<HttpResponse<any>> {

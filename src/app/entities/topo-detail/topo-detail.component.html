@@ -1,6 +1,6 @@
-<div id="topoDetailContent" *ngIf="topo">
+<div id="topoDetailContent" *ngIf="!update && topo">
   <mat-card class="header" align="center">
-    <img src="../../../assets/logo.png"/>
+    <img id="topoImage" src="../../../assets/{{topo.photo.name}}"/>
     <div class="content">
       <mat-card-header class="card-header">
         <mat-card-title>{{topo.name}}</mat-card-title>
@@ -28,5 +28,7 @@
     </mat-card-header>
     <mat-card-content *ngFor="let spot of topo.spots">{{spot.name}}</mat-card-content>
   </mat-card>
+  <button mat-stroked-button (click)="onUpdate()">Modifier</button>
 </div>
+<app-topo-update [topo]="topo" [cotations]="cotations" [spots]="spots" *ngIf="update" (topoUpdatedEvent)="updateTopo($event)"></app-topo-update>
 

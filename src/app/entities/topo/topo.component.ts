@@ -24,7 +24,7 @@ export class TopoComponent implements OnInit {
   topoForm: FormGroup;
   cotations: ICotation[];
   size: number;
-  page: any;
+  page: number;
   searchForm: FormGroup;
   country: string;
   name: string;
@@ -105,7 +105,7 @@ export class TopoComponent implements OnInit {
     this.loadAll();
   }
 
-  protected paginateTopos(data: any) {
+   paginateTopos(data: any) {
     this.totalPages = data.totalPages;
     for (let i = 0; i < data.content.length; i++) {
       this.topos.push(data.content[i]);

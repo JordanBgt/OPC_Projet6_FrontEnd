@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { ITopo } from '../../shared/model/topo.model';
-import { ActivatedRoute, Params } from '@angular/router';
-import { TopoService } from '../topo/topo.service';
+import { ITopo, Topo } from '../../shared/model/topo.model';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
 import { Cotation, ICotation } from '../../shared/model/cotation.model';
-import { TopoUpdateComponent } from '../topo-update/topo-update.component';
 import { TopoDetailService } from './topo-detail.service';
 import { CotationService } from '../cotation/cotation.service';
+import { SpotService } from '../spot/spot.service';
+import { ISpotLight, SpotLight } from '../../shared/model/spot-light.model';
+
+type EntityResponseType = HttpResponse<ITopo>;
 
 @Component({
   selector: 'app-topo-detail',
@@ -18,22 +20,43 @@ export class TopoDetailComponent implements OnInit {
   topo: ITopo;
   topoId: number;
   cotations: Cotation[];
+  spots: SpotLight[];
+  update = false;
 
   constructor(private topoDetailService: TopoDetailService,
               private route: ActivatedRoute,
-              private cotationService: CotationService) { }
+              private cotationService: CotationService,
+              private spotService: SpotService,
+              private router: Router) { }
 
   ngOnInit() {
     this.topoId = +this.route.snapshot.paramMap.get('id');
     console.log('PARAMS : ' + this.topoId);
     this.loadTopo();
+
+    this.loadCotations();
+    this.loadSpots();
+  }
+
+  onUpdate() {
+    this.update = true;
   }
 
   loadTopo() {
-    this.topoDetailService.getOneTopo(this.topoId).subscribe((res: HttpResponse<ITopo>) => this.topo = res.body);
+    this.topoDetailService.getOneTopo(this.topoId).subscribe((res: EntityResponseType) => this.topo = res.body);
   }
 
   loadCotations() {
     this.cotationService.getAllCotations().subscribe((res: HttpResponse<ICotation[]>) => this.cotations = res.body);
+  }
+
+  loadSpots() {
+    this.spotService.getAllSpots({unpaged: true}).subscribe((res: HttpResponse<any>) => this.spots = res.body.content);
+  }
+
+  updateTopo(topo: Topo) {
+    this.topoDetailService.updateTopo(topo).subscribe((res: EntityResponseType) => this.topo = res.body,
+      (error => console.error(error)),
+      () => this.update = false);
   }
 }
