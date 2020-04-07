@@ -30,5 +30,7 @@
   </mat-card>
   <button mat-stroked-button (click)="onUpdate()">Modifier</button>
 </div>
-<app-topo-update [topo]="topo" [cotations]="cotations" [spots]="spots" *ngIf="update" (topoUpdatedEvent)="updateTopo($event)"></app-topo-update>
+<app-topo-update [topo]="topo" [cotations]="cotations" [spots]="spots" *ngIf="update"
+                 (topoUpdatedEvent)="updateTopo($event)">
+</app-topo-update>
 

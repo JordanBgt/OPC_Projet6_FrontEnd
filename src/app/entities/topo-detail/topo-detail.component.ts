@@ -26,8 +26,7 @@ export class TopoDetailComponent implements OnInit {
   constructor(private topoDetailService: TopoDetailService,
               private route: ActivatedRoute,
               private cotationService: CotationService,
-              private spotService: SpotService,
-              private router: Router) { }
+              private spotService: SpotService) { }
 
   ngOnInit() {
     this.topoId = +this.route.snapshot.paramMap.get('id');
