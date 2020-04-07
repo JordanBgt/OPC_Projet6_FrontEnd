@@ -6,7 +6,7 @@ import { Cotation, ICotation } from '../../shared/model/cotation.model';
 import { TopoDetailService } from './topo-detail.service';
 import { CotationService } from '../cotation/cotation.service';
 import { SpotService } from '../spot/spot.service';
-import { ISpotLight, SpotLight } from '../../shared/model/spot-light.model';
+import { SpotLight } from '../../shared/model/spot-light.model';
 
 type EntityResponseType = HttpResponse<ITopo>;
 
@@ -31,9 +31,7 @@ export class TopoDetailComponent implements OnInit {
 
   ngOnInit() {
     this.topoId = +this.route.snapshot.paramMap.get('id');
-    console.log('PARAMS : ' + this.topoId);
     this.loadTopo();
-
     this.loadCotations();
     this.loadSpots();
   }
@@ -43,7 +41,9 @@ export class TopoDetailComponent implements OnInit {
   }
 
   loadTopo() {
-    this.topoDetailService.getOneTopo(this.topoId).subscribe((res: EntityResponseType) => this.topo = res.body);
+    this.topoDetailService.getOneTopo(this.topoId).subscribe((res: EntityResponseType) => this.topo = res.body,
+      (error) => console.error(error),
+      () => console.log(this.topo));
   }
 
   loadCotations() {

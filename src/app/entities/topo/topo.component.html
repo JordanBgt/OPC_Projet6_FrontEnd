@@ -82,7 +82,7 @@
         <mat-card-title>{{topo.name}}</mat-card-title>
         <mat-card-subtitle>{{topo.country}}, {{topo.region}}</mat-card-subtitle>
       </mat-card-header>
-      <img mat-card-image src="../assets/{{topo.photo.name}}" alt="photo topo">
+      <img *ngIf="topo.photo" mat-card-image src="../assets/{{topo.photo.name}}" alt="photo topo">
       <mat-card-actions align="center">
         <button mat-stroked-button routerLink="{{topo.id}}">Detail</button>
       </mat-card-actions>

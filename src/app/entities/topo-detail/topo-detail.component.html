@@ -1,6 +1,6 @@
 <div id="topoDetailContent" *ngIf="!update && topo">
   <mat-card class="header" align="center">
-    <img id="topoImage" src="../../../assets/{{topo.photo.name}}"/>
+    <img *ngIf="topo.photo" id="topoImage" src="../../../assets/{{topo.photo.name}}"/>
     <div class="content">
       <mat-card-header class="card-header">
         <mat-card-title>{{topo.name}}</mat-card-title>
