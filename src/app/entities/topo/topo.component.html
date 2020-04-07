@@ -3,7 +3,7 @@
     <h2>Liste des topos</h2>
     <hr>
     <span>Vous trouverez, ci-dessous, la liste des topos enregistrés par la communauté ou l'association.</span>
-    <span>Vous avez la possibilité de consulter leur fiche détaillée ainsi que de réserver des topos qui vous intéressent.</span>
+    <span>Vous avez la possibilité de consulter leur fiche détaillée, d'ajouter des topos, ainsi que de réserver ceux qui vous intéressent.</span>
   </div>
   <div class="searchForm">
     <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
@@ -28,7 +28,7 @@
         </mat-select>
       </mat-form-field>
       <mat-slide-toggle formControlName="available">Disponible ?</mat-slide-toggle>
-      <div class="searchButtons" align="end">
+      <div class="searchButtons" align="center">
         <button mat-stroked-button color="primary" type="submit">Rechercher</button>
         <button mat-stroked-button type="reset">Effacer les critères</button>
       </div>

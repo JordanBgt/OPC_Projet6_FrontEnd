@@ -96,10 +96,6 @@ export class TopoComponent implements OnInit {
       () => this.router.navigate([`/topos/${topoCreated.id}`]) );
   }
 
-  onDetail(topoId) {
-    this.router.navigate([`/topos/${topoId}`]);
-  }
-
   loadPage(page) {
     this.page = page;
     this.loadAll();
