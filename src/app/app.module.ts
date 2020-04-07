@@ -23,7 +23,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { TopoDetailComponent } from './entities/topo-detail/topo-detail.component';
 import { SecteurDetailComponent } from './entities/secteur/secteur-detail.component';
-import { SpotDetailComponent } from './entities/spot/spot-detail.component';
+import { SpotDetailComponent } from './entities/spot-detail/spot-detail.component';
 import { VoieDetailComponent } from './entities/voie/voie-detail.component';
 import { LongueurDetailComponent } from './entities/longueur/longueur-detail.component';
 import { HomeComponent } from './home/home.component';
@@ -35,6 +35,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TopoUpdateComponent } from './entities/topo-update/topo-update.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { SpotUpdateComponent } from './entities/spot-update/spot-update.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     VoieDetailComponent,
     LongueurDetailComponent,
     HomeComponent,
-    TopoUpdateComponent
+    TopoUpdateComponent,
+    SpotUpdateComponent
   ],
   imports: [
     BrowserModule,

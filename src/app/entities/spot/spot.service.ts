@@ -24,19 +24,7 @@ export class SpotService {
     return this.http.get<ISpotLight[]>(this.ressourceUrl, {params: options, observe: 'response'});
   }
 
-  getOneSpot(spotId: number): Observable<EntityResponseType> {
-    return this.http.get<ISpot>(`${this.ressourceUrl}/${spotId}`, {observe: 'response'});
-  }
-
   createSpot(spot: SpotSave): Observable<EntityResponseType> {
     return this.http.post<ISpot>(this.ressourceUrl, spot, {observe: 'response'});
-  }
-
-  updateSpot(spot: SpotSave, spotId: number): Observable<EntityResponseType> {
-    return this.http.put<ISpot>(`${this.ressourceUrl}/${spotId}`, spot, {observe: 'response'});
-  }
-
-  deleteSpot(spotId: number): Observable<any> {
-    return this.http.delete(`${this.ressourceUrl}/${spotId}`, {observe: 'response'});
   }
 }
