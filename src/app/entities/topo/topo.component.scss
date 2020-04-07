@@ -1,34 +1,5 @@
 @import "src/app/shared/layout/card";
 @import "src/app/shared/layout/createForm";
-
-.topo-content {
-  width: 800px;
-  border-radius: 25px;
-  margin: 50px auto;
-  text-align: center;
-  padding: 20px;
-}
-
-.searchForm {
-  width: 70%;
-  margin: 50px auto;
-}
-
-mat-form-field {
-  margin : 10px;
-}
-
-.searchButtons {
-  margin: 0 10px;
-}
-
-.searchButtons button {
-  margin: 0 10px;
-}
-
-.mat-card-image {
-  height: 500px;
-  width: 366px;
-  margin: auto;
-}
+@import "src/app/shared/layout/searchForm";
+@import "src/app/shared/layout/entityResume";
 
