@@ -1,6 +1,7 @@
 import {Photo} from './photo.model';
 import {Secteur} from './secteur.model';
 import {Comment} from './comment.model';
+import { ICotation } from './cotation.model';
 
 export interface ISpot {
   id?: number;
@@ -14,8 +15,8 @@ export interface ISpot {
   secteurs?: Secteur[];
   userId?: number;
   name?: string;
-  cotationMin?: string;
-  cotationMax?: string;
+  cotationMin?: ICotation;
+  cotationMax?: ICotation;
 }
 
 export class Spot implements ISpot {
@@ -31,8 +32,8 @@ export class Spot implements ISpot {
     public secteurs?: Secteur[],
     public userId?: number,
     public name?: string,
-    public cotationMin?: string,
-    public cotationMax?: string
+    public cotationMin?: ICotation,
+    public cotationMax?: ICotation
   ) {
   }
 }

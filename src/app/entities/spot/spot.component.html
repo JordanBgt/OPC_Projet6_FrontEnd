@@ -1,11 +1,91 @@
 <div>
-  <h2>Spots</h2>
+  <div class="entityResume jumbotron">
+    <h2>Liste des spots</h2>
+    <hr>
+    <span>Vous trouverez, ci-dessous, la liste des spots enregistrés par la communauté ou l'association.</span>
+    <span>Vous avez la possibilité de consulter leur fiche détaillée ainsi que d'ajouter des spots.</span>
+  </div>
+  <div class="searchForm">
+    <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+      <mat-form-field appearance="outline">
+        <mat-label>Pays</mat-label>
+        <input matInput formControlName="country">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Ville</mat-label>
+        <input matInput formControlName="city">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Nom</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Cotation min</mat-label>
+        <mat-select formControlName="cotationMin">
+          <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Cotation max</mat-label>
+        <mat-select formControlName="cotationMax">
+          <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-slide-toggle formControlName="isOfficial">Officiel ?</mat-slide-toggle>
+      <div class="searchButtons" align="center">
+        <button mat-stroked-button color="primary" type="submit">Rechercher</button>
+        <button mat-stroked-button type="reset">Effacer les critères</button>
+      </div>
+    </form>
+  </div>
+  <div class="row createFormPanel">
+    <mat-accordion class="createAccordion">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Créer spot</mat-panel-title>
+        </mat-expansion-panel-header>
+        <form [formGroup]="createSpotForm" (ngSubmit)="onCreate()" class="createForm">
+          <mat-form-field appearance="outline" class="createName">
+            <mat-label>Nom</mat-label>
+            <input matInput formControlName="name">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="createCountry">
+            <mat-label>Pays</mat-label>
+            <input matInput formControlName="country">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="createCity">
+            <mat-label>Ville</mat-label>
+            <input matInput formControlName="city">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="createCotation">
+            <mat-label>Cotation min</mat-label>
+            <mat-select formControlName="cotationMin">
+              <mat-option disabled>Cotation min</mat-option>
+              <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="createCotation">
+            <mat-label>Cotation max</mat-label>
+            <mat-select formControlName="cotationMax">
+              <mat-option disabled>Cotation max</mat-option>
+              <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="createDescription">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description"></textarea>
+          </mat-form-field>
+          <button type="submit" class="btn btn-primary submit">Envoyer</button>
+        </form>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
   <div *ngIf="spots?.length > 0" class="card-container" infinite-scroll (scrolled)="loadPage(page +1)" [infiniteScrollDisabled]="page >= totalPages">
     <mat-card *ngFor="let spot of spots" class="card">
       <mat-card-header class="card-header">
         <mat-card-title>{{spot.name}}</mat-card-title>
         <mat-card-subtitle>{{spot.country}}, {{spot.city}}</mat-card-subtitle>
-        <mat-card-subtitle>Cotation : {{spot.cotationMin}} - {{spot.cotationMax}}</mat-card-subtitle>
+        <mat-card-subtitle>Cotation : {{spot.cotationMin.label}} - {{spot.cotationMax.label}}</mat-card-subtitle>
       </mat-card-header>
       <img mat-card-image src="../assets/logo.png" alt="photo topo">
     </mat-card>

@@ -4,6 +4,11 @@ import { SpotService } from './spot.service';
 import { HttpResponse } from '@angular/common/http';
 import { ISpotLight } from '../../shared/model/spot-light.model';
 import { ITEMS_PER_PAGE } from '../../../../app.constants';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { CotationService } from '../cotation/cotation.service';
+import { ICotation } from '../../shared/model/cotation.model';
+import { SpotSave } from '../../shared/model/spot-save.model';
 
 type EntityResponseType = HttpResponse<ISpot>;
 type EntityArrayResponseType = HttpResponse<ISpotLight[]>;
@@ -16,23 +21,44 @@ type EntityArrayResponseType = HttpResponse<ISpotLight[]>;
 export class SpotComponent implements OnInit {
 
   spots: ISpotLight[];
+  cotations: ICotation[];
   size: number;
   page: number;
   totalPages: number;
+  searchForm: FormGroup;
+  createSpotForm: FormGroup;
+  country: string;
+  city: string;
+  name: string;
+  isOfficial: boolean;
+  cotationMin: number;
+  cotationMax: number;
 
-  constructor(private spotService: SpotService) {
+  constructor(private spotService: SpotService,
+              private formBuilder: FormBuilder,
+              private router: Router,
+              private cotationService: CotationService) {
     this.spots = [];
     this.size = ITEMS_PER_PAGE;
     this.page = 0;
   }
 
   loadAll() {
-    this.spotService.getAllSpots({page: this.page, size: this.size})
+    this.spotService.getAllSpots({page: this.page, size: this.size, country: this.country, city: this.city,
+      name: this.name, isOfficial: this.isOfficial, cotationMin: this.cotationMin, cotationMax: this.cotationMax})
       .subscribe((res: EntityArrayResponseType) => this.paginateTopos(res.body));
+  }
+
+  loadCotations() {
+    this.cotationService.getAllCotations().subscribe((res: HttpResponse<ICotation[]>) => this.cotations = res.body,
+      (error: Error) => error.message);
   }
 
   ngOnInit() {
     this.loadAll();
+    this.loadCotations();
+    this.initSearchForm();
+    this.initeCreateSpotForm();
   }
 
   paginateTopos(data: any) {
@@ -45,5 +71,59 @@ export class SpotComponent implements OnInit {
   loadPage(page) {
     this.page = page;
     this.loadAll();
+  }
+
+  initSearchForm() {
+    this.searchForm = this.formBuilder.group({
+      country: '',
+      city: '',
+      name: '',
+      isOfficial: '',
+      cotationMin: '',
+      cotationMax: ''
+    });
+  }
+
+  initeCreateSpotForm() {
+    this.createSpotForm = this.formBuilder.group({
+      name: '',
+      country: '',
+      city: '',
+      cotationMin: '',
+      cotationMax: '',
+      description: ''
+    });
+  }
+
+  onSearch() {
+    const formValue = this.searchForm.value;
+    this.country = formValue.country !== '' ? formValue.country : null;
+    this.city = formValue.city !== '' ? formValue.city : null;
+    this.name = formValue.name !== '' ? formValue.name : null;
+    this.cotationMin = formValue.cotationMin !== null ? formValue.cotationMin.id : null;
+    this.cotationMax = formValue.cotationMax !== null ? formValue.cotationMax.id : null;
+    this.isOfficial = formValue.isOfficial === true;
+    this.clearSpotsAndPage();
+    this.loadAll();
+  }
+
+  onCreate() {
+    const formValue = this.createSpotForm.value;
+    const spot = new SpotSave();
+    spot.name = formValue.name;
+    spot.country = formValue.country;
+    spot.city = formValue.city;
+    spot.cotationMin = formValue.cotationMin;
+    spot.cotationMax = formValue.cotationMax;
+    spot.description = formValue.description;
+    let spotCreated: ISpot;
+    this.spotService.createSpot(spot).subscribe((res: EntityResponseType) => spotCreated = res.body,
+      (error => console.error(error)),
+      () => this.router.navigate([`/spots/${spotCreated.id}`]));
+  }
+
+  clearSpotsAndPage() {
+    this.spots = [];
+    this.page = 0;
   }
 }

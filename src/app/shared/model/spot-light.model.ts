@@ -1,3 +1,5 @@
+import { ICotation } from './cotation.model';
+
 export interface ISpotLight {
   id?: number;
   country?: string;
@@ -5,8 +7,8 @@ export interface ISpotLight {
   isOfficial?: boolean;
   userId?: number;
   name?: string;
-  cotationMin?: string;
-  cotationMax?: string;
+  cotationMin?: ICotation;
+  cotationMax?: ICotation;
 }
 
 export class SpotLight implements ISpotLight {
@@ -17,8 +19,8 @@ export class SpotLight implements ISpotLight {
     public isOfficial?: boolean,
     public userId?: number,
     public name?: string,
-    public cotationMin?: string,
-    public cotationMax?: string
+    public cotationMin?: ICotation,
+    public cotationMax?: ICotation
   ) {
   }
 }
