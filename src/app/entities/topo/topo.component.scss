@@ -1,13 +1,5 @@
 @import "src/app/shared/layout/card";
-
-.form {
-  width: 100px;
-  margin: 50px auto;
-}
-
-.form-menu {
-  width: 400px;
-}
+@import "src/app/shared/layout/createForm";
 
 .topo-content {
   width: 800px;

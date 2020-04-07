@@ -34,48 +34,47 @@
       </div>
     </form>
   </div>
-  <div class="row form">
-    <div class="col">
-      <div ngbDropdown class="d-inline-block" placement="bottom-right">
-        <button class="btn btn-outline-primary" id="topoForm" ngbDropdownToggle>Créer topo</button>
-        <div ngbDropdownMenu aria-labelledby="topoForm" class="form-menu">
-          <form class="px-4 py-3" [formGroup]="topoForm" (ngSubmit)="onCreate()">
-            <div class="form-group">
-              <label for="name">Nom</label>
-              <input type="text" class="form-control" id="name" placeholder="nom du topo" formControlName="name">
-            </div>
-            <div class="form-group">
-              <label for="country">Pays</label>
-              <input type="text" class="form-control" id="country" placeholder="France" formControlName="country">
-            </div>
-            <div class="form-group">
-              <label for="region">Région</label>
-              <input type="text" class="form-control" id="region" placeholder="Bourgogne Franche-Comté" formControlName="region">
-            </div>
-            <div class="form-group">
-              <label for="cotationMin">Cotation min</label>
-              <select id="cotationMin" class="form-control" formControlName="cotationMin" *ngIf="cotations?.length > 0">
-                <option value="" disabled>Cotation min</option>
-                <option *ngFor="let cotation of cotations" [ngValue]="cotation">{{cotation.label}}></option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="cotationMax">Cotation max</label>
-              <select id="cotationMax" class="form-control" formControlName="cotationMax" *ngIf="cotations?.length > 0">
-                <option value="" disabled>Cotation max</option>
-                <option *ngFor="let cotation of cotations" [ngValue]="cotation">{{cotation.label}}</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="description">Description</label>
-              <textarea class="form-control" id="description" placeholder="description topo" formControlName="description"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary submit">Envoyer</button>
-          </form>
-          <div class="dropdown-divider"></div>
-        </div>
-      </div>
-    </div>
+  <div class="row createFormPanel">
+    <mat-accordion class="createAccordion">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Créer topo</mat-panel-title>
+        </mat-expansion-panel-header>
+        <form [formGroup]="topoForm" (ngSubmit)="onCreate()" class="createForm">
+          <mat-form-field appearance="outline" class="createName">
+            <mat-label>Nom</mat-label>
+            <input matInput formControlName="name">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="createCountry">
+            <mat-label>Pays</mat-label>
+            <input matInput formControlName="country">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="createRegion">
+            <mat-label>Région</mat-label>
+            <input matInput formControlName="region">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="createCotation">
+            <mat-label>Cotation min</mat-label>
+            <mat-select formControlName="cotationMin">
+              <mat-option disabled>Cotation min</mat-option>
+              <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="createCotation">
+            <mat-label>Cotation max</mat-label>
+            <mat-select formControlName="cotationMax">
+              <mat-option disabled>Cotation max</mat-option>
+              <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="createDescription">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description"></textarea>
+          </mat-form-field>
+          <button type="submit" class="btn btn-primary submit">Envoyer</button>
+        </form>
+      </mat-expansion-panel>
+    </mat-accordion>
   </div>
   <div *ngIf="topos?.length > 0" class="card-container" infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= totalPages">
     <mat-card *ngFor="let topo of topos" class="card">
