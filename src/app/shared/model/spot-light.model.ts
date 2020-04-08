@@ -4,7 +4,7 @@ export interface ISpotLight {
   id?: number;
   country?: string;
   city?: string;
-  isOfficial?: boolean;
+  official?: boolean;
   userId?: number;
   name?: string;
   cotationMin?: ICotation;
@@ -16,7 +16,7 @@ export class SpotLight implements ISpotLight {
     public id?: number,
     public country?: string,
     public city?: string,
-    public isOfficial?: boolean,
+    public official?: boolean,
     public userId?: number,
     public name?: string,
     public cotationMin?: ICotation,

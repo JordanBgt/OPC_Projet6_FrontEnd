@@ -2,8 +2,12 @@
   <div class="entityResume jumbotron">
     <h2>Liste des spots</h2>
     <hr>
-    <span>Vous trouverez, ci-dessous, la liste des spots enregistrés par la communauté ou l'association.</span>
-    <span>Vous avez la possibilité de consulter leur fiche détaillée ainsi que d'ajouter des spots.</span>
+    <span>Vous trouverez, ci-dessous, la liste des spots enregistrés par la communauté ou l'association. </span>
+    <span>Vous avez la possibilité de consulter leur fiche détaillée ainsi que d'ajouter des spots. </span>
+    <br />
+    <span>Les spots validés par l'association arborent ce logo : </span>
+    <br />
+    <img src="../assets/official.png" class="officialLogo" alt="logo officiel les amis de l'escalade">
   </div>
   <div class="searchForm">
     <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
@@ -83,11 +87,12 @@
   <div *ngIf="spots?.length > 0" class="card-container" infinite-scroll (scrolled)="loadPage(page +1)" [infiniteScrollDisabled]="page >= totalPages">
     <mat-card *ngFor="let spot of spots" class="card">
       <mat-card-header class="card-header">
+        <div *ngIf="spot.official" mat-card-avatar class="officialImg"></div>
         <mat-card-title>{{spot.name}}</mat-card-title>
         <mat-card-subtitle>{{spot.country}}, {{spot.city}}</mat-card-subtitle>
         <mat-card-subtitle>Cotation : {{spot.cotationMin.label}} - {{spot.cotationMax.label}}</mat-card-subtitle>
       </mat-card-header>
-      <img mat-card-image src="../assets/logo.png" alt="photo topo">
+      <img mat-card-image src="../assets/logo.png" alt="photo spot">
       <mat-card-actions align="center">
         <button mat-stroked-button routerLink="{{spot.id}}">Detail</button>
       </mat-card-actions>

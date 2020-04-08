@@ -8,7 +8,7 @@ export interface ISpot {
   country?: string;
   city?: string;
   description?: string;
-  isOfficial?: boolean;
+  official?: boolean;
   topoId?: number;
   comments?: Comment[];
   photos?: Photo[];
@@ -25,7 +25,7 @@ export class Spot implements ISpot {
     public country?: string,
     public city?: string,
     public description?: string,
-    public isOfficial?: boolean,
+    public official?: boolean,
     public topoId?: number,
     public comments?: Comment[],
     public photos?: Photo[],
