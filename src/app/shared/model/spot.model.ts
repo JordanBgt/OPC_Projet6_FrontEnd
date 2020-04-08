@@ -1,7 +1,7 @@
 import {Photo} from './photo.model';
-import {Secteur} from './secteur.model';
 import {Comment} from './comment.model';
 import { ICotation } from './cotation.model';
+import { SecteurLight } from './secteur-light.model';
 
 export interface ISpot {
   id?: number;
@@ -12,7 +12,7 @@ export interface ISpot {
   topoId?: number;
   comments?: Comment[];
   photos?: Photo[];
-  secteurs?: Secteur[];
+  secteurs?: SecteurLight[];
   userId?: number;
   name?: string;
   cotationMin?: ICotation;
@@ -29,7 +29,7 @@ export class Spot implements ISpot {
     public topoId?: number,
     public comments?: Comment[],
     public photos?: Photo[],
-    public secteurs?: Secteur[],
+    public secteurs?: SecteurLight[],
     public userId?: number,
     public name?: string,
     public cotationMin?: ICotation,

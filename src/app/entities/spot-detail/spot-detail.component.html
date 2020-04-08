@@ -29,6 +29,6 @@
   </mat-card>
   <button mat-stroked-button (click)="onUpdate()">Modifier</button>
 </div>
-<!--<app-spot-update *ngIf="update" [spot]="spot" [cotations]="cotations" [secteurs]="secteurs"
-                 (spotUpdateEvent)="updateSpot($event)">
-</app-spot-update>-->
+<app-spot-update *ngIf="update" [spot]="spot" [cotations]="cotations" [secteurs]="secteurs"
+                 (spotUpdatedEvent)="updateSpot($event)">
+</app-spot-update>

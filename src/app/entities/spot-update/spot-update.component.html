@@ -1,5 +1,5 @@
 <div class="form">
-  <form [formGroup]="topoUpdateForm" (ngSubmit)="onUpdate()">
+  <form [formGroup]="spotUpdateForm" (ngSubmit)="onUpdate()">
     <div class="row">
       <mat-form-field appearance="outline" id="nameField">
         <mat-label>Nom</mat-label>
@@ -12,17 +12,17 @@
         <input matInput formControlName="country">
       </mat-form-field>
       <mat-form-field appearance="outline">
-        <mat-label>Région</mat-label>
-        <input matInput formControlName="region">
+        <mat-label>Ville</mat-label>
+        <input matInput formControlName="city">
       </mat-form-field>
     </div>
     <div class="row">
       <mat-form-field appearance="outline">
-      <mat-label>Cotation min</mat-label>
-      <mat-select formControlName="cotationMin">
-        <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
-      </mat-select>
-    </mat-form-field>
+        <mat-label>Cotation min</mat-label>
+        <mat-select formControlName="cotationMin">
+          <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Cotation max</mat-label>
         <mat-select formControlName="cotationMax">
@@ -38,9 +38,9 @@
     </div>
     <div class="row">
       <mat-form-field appearance="outline">
-        <mat-label>Liste des spots</mat-label>
-        <mat-select formControlName="spots" multiple [compareWith]="compareObjects" [(ngModel)]="topo.spots">
-          <mat-option *ngFor="let spot of spots" [value]="spot">{{spot.name}}</mat-option>
+        <mat-label>Liste des secteurs</mat-label>
+        <mat-select formControlName="secteurs" multiple [compareWith]="compareObjects" [(ngModel)]="spot.secteurs">
+          <mat-option *ngFor="let secteur of secteurs" [value]="secteur">{{secteur.name}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>

@@ -3,6 +3,7 @@ import { Cotation } from '../../shared/model/cotation.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Topo } from '../../shared/model/topo.model';
 import { SpotLight } from '../../shared/model/spot-light.model';
+import { findIndexCotation } from '../../shared/entity-utils';
 
 @Component({
   selector: 'app-topo-update',
@@ -41,8 +42,8 @@ export class TopoUpdateComponent implements OnInit {
   }
 
   findIndexCotationOption() {
-    this.indexCotationMin = this.cotations.findIndex(cotation => cotation.id === this.topo.cotationMin.id);
-    this.indexCotationMax = this.cotations.findIndex(cotation => cotation.id === this.topo.cotationMax.id);
+    this.indexCotationMin = findIndexCotation(this.cotations, this.topo.cotationMin);
+    this.indexCotationMax = findIndexCotation(this.cotations, this.topo.cotationMax);
   }
 
   onUpdate() {
