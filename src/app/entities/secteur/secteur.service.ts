@@ -21,19 +21,7 @@ export class SecteurService {
     return this.http.get<ISecteur[]>(this.ressourceUrl, {params: options, observe: 'response'});
   }
 
-  getOneSecteur(secteurId: number): Observable<EntityResponseType> {
-    return this.http.get<ISecteur>(`${this.ressourceUrl}/${secteurId}`, {observe: 'response'});
-  }
-
   createSecteur(secteur: Secteur): Observable<EntityResponseType> {
     return this.http.post<ISecteur>(this.ressourceUrl, secteur, {observe: 'response'});
-  }
-
-  updateSecteur(secteur: Secteur): Observable<EntityResponseType> {
-    return this.http.put<ISecteur>(`${this.ressourceUrl}/${secteur.id}`, secteur, {observe: 'response'});
-  }
-
-  deleteSecteur(secteurId: number): Observable<HttpResponse<any>> {
-    return this.http.delete(`${this.ressourceUrl}/${secteurId}`, {observe: 'response'});
   }
 }
