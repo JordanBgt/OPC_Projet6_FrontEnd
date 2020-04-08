@@ -23,7 +23,7 @@
   <mat-card *ngIf="spot.secteurs?.length > 0" align="center">
     <mat-card-header>
       <div mat-card-avatar class="list-image"></div>
-      <mat-card-title>Liste des spots</mat-card-title>
+      <mat-card-title [matBadge]="spot.secteurs.length | numberToString" matBadgeOverlap="false" matBadgeColor="warn">Liste des spots</mat-card-title>
     </mat-card-header>
     <mat-card-content *ngFor="let secteur of spot.secteurs">{{secteur.name}}</mat-card-content>
   </mat-card>

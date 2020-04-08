@@ -24,7 +24,9 @@
   <mat-card *ngIf="topo.spots?.length > 0" align="center">
     <mat-card-header>
       <div mat-card-avatar class="list-image"></div>
-      <mat-card-title>Liste des spots</mat-card-title>
+      <mat-card-title [matBadge]="topo.spots.length | numberToString" matBadgeOverlap="false" matBadgeColor="warn">
+        Liste des spots
+      </mat-card-title>
     </mat-card-header>
     <mat-card-content *ngFor="let spot of topo.spots">{{spot.name}}</mat-card-content>
   </mat-card>

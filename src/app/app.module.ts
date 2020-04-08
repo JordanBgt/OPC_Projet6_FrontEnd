@@ -36,6 +36,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TopoUpdateComponent } from './entities/topo-update/topo-update.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { SpotUpdateComponent } from './entities/spot-update/spot-update.component';
+import { MatBadgeModule } from '@angular/material/badge';
+import { NumberToStringPipe } from './shared/number-to-string-pipe';
 
 @NgModule({
   declarations: [
@@ -58,7 +60,8 @@ import { SpotUpdateComponent } from './entities/spot-update/spot-update.componen
     LongueurDetailComponent,
     HomeComponent,
     TopoUpdateComponent,
-    SpotUpdateComponent
+    SpotUpdateComponent,
+    NumberToStringPipe
   ],
   imports: [
     BrowserModule,
@@ -76,7 +79,8 @@ import { SpotUpdateComponent } from './entities/spot-update/spot-update.componen
     MatInputModule,
     MatSelectModule,
     MatSlideToggleModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatBadgeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
