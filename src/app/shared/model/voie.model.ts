@@ -6,8 +6,8 @@ export interface IVoie {
   name?: string;
   cotationMin?: ICotation;
   cotationMax?: ICotation;
-  secteurId?: number;
   longeurs?: Longueur[];
+  description?: string;
 }
 
 export class Voie implements IVoie {
@@ -16,8 +16,8 @@ export class Voie implements IVoie {
     public name?: string,
     public cotationMin?: ICotation,
     public cotationMax?: ICotation,
-    public secteurId?: number,
-    public longueurs?: Longueur[]
+    public longueurs?: Longueur[],
+    public description?: string
   ) {
   }
 }
