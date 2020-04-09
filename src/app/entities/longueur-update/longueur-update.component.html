@@ -1,0 +1,31 @@
+<div class="form">
+  <form [formGroup]="longueurUpdateForm" (ngSubmit)="onUpdate()">
+    <div class="row">
+      <mat-form-field appearance="outline" id="nameField">
+        <mat-label>Nom</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Cotation min</mat-label>
+        <mat-select formControlName="cotationMin">
+          <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Cotation max</mat-label>
+        <mat-select formControlName="cotationMax">
+          <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field appearance="outline" id="descriptionField">
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description"></textarea>
+      </mat-form-field>
+    </div>
+    <button mat-stroked-button color="primary" type="submit" class="btn btn-primary submit">Valider</button>
+  </form>
+</div>

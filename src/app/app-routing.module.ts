@@ -9,7 +9,7 @@ import { TopoDetailComponent } from './entities/topo-detail/topo-detail.componen
 import { SpotDetailComponent } from './entities/spot-detail/spot-detail.component';
 import { SecteurDetailComponent } from './entities/secteur-detail/secteur-detail.component';
 import { VoieDetailComponent } from './entities/voie/voie-detail.component';
-import { LongueurDetailComponent } from './entities/longueur/longueur-detail.component';
+import { LongueurDetailComponent } from './entities/longueur-detail/longueur-detail.component';
 import { HomeComponent } from './home/home.component';
 
 

@@ -25,7 +25,7 @@ import { TopoDetailComponent } from './entities/topo-detail/topo-detail.componen
 import { SecteurDetailComponent } from './entities/secteur-detail/secteur-detail.component';
 import { SpotDetailComponent } from './entities/spot-detail/spot-detail.component';
 import { VoieDetailComponent } from './entities/voie/voie-detail.component';
-import { LongueurDetailComponent } from './entities/longueur/longueur-detail.component';
+import { LongueurDetailComponent } from './entities/longueur-detail/longueur-detail.component';
 import { HomeComponent } from './home/home.component';
 import { MatIconModule } from '@angular/material/icon';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -39,6 +39,7 @@ import { SpotUpdateComponent } from './entities/spot-update/spot-update.componen
 import { MatBadgeModule } from '@angular/material/badge';
 import { NumberToStringPipe } from './shared/number-to-string-pipe';
 import { SecteurUpdateComponent } from './entities/secteur-update/secteur-update.component';
+import { LongueurUpdateComponent } from './entities/longueur-update/longueur-update.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { SecteurUpdateComponent } from './entities/secteur-update/secteur-update
     TopoUpdateComponent,
     SpotUpdateComponent,
     NumberToStringPipe,
-    SecteurUpdateComponent
+    SecteurUpdateComponent,
+    LongueurUpdateComponent
   ],
   imports: [
     BrowserModule,

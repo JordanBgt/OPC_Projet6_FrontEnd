@@ -22,19 +22,7 @@ export class LongueurService {
     return this.http.get<ILongueur[]>(this.ressourceUrl, {params: options, observe: 'response'});
   }
 
-  getOneLongueur(longueurId: number): Observable<EntityResponseType> {
-    return this.http.get<ILongueur>(`${this.ressourceUrl}/${longueurId}`, {observe: 'response'});
-  }
-
   createLongueur(longueur: LongueurSave): Observable<EntityResponseType> {
     return this.http.post<ILongueur>(this.ressourceUrl, longueur, {observe: 'response'});
-  }
-
-  updateLongueur(longueur: LongueurSave, longueurId: number): Observable<EntityResponseType> {
-    return this.http.put<ILongueur>(`${this.ressourceUrl}/${longueurId}`, longueur, {observe: 'response'});
-  }
-
-  deleteLongueur(longueurId: number): Observable<HttpResponse<any>> {
-    return this.http.delete(`${this.ressourceUrl}/${longueurId}`, {observe: 'response'});
   }
 }
