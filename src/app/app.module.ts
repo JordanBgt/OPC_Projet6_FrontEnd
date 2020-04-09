@@ -22,7 +22,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { TopoDetailComponent } from './entities/topo-detail/topo-detail.component';
-import { SecteurDetailComponent } from './entities/secteur/secteur-detail.component';
+import { SecteurDetailComponent } from './entities/secteur-detail/secteur-detail.component';
 import { SpotDetailComponent } from './entities/spot-detail/spot-detail.component';
 import { VoieDetailComponent } from './entities/voie/voie-detail.component';
 import { LongueurDetailComponent } from './entities/longueur/longueur-detail.component';
@@ -38,6 +38,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { SpotUpdateComponent } from './entities/spot-update/spot-update.component';
 import { MatBadgeModule } from '@angular/material/badge';
 import { NumberToStringPipe } from './shared/number-to-string-pipe';
+import { SecteurUpdateComponent } from './entities/secteur-update/secteur-update.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { NumberToStringPipe } from './shared/number-to-string-pipe';
     HomeComponent,
     TopoUpdateComponent,
     SpotUpdateComponent,
-    NumberToStringPipe
+    NumberToStringPipe,
+    SecteurUpdateComponent
   ],
   imports: [
     BrowserModule,

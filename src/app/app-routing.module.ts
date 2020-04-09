@@ -7,7 +7,7 @@ import { VoieComponent } from './entities/voie/voie.component';
 import { LongueurComponent } from './entities/longueur/longueur.component';
 import { TopoDetailComponent } from './entities/topo-detail/topo-detail.component';
 import { SpotDetailComponent } from './entities/spot-detail/spot-detail.component';
-import { SecteurDetailComponent } from './entities/secteur/secteur-detail.component';
+import { SecteurDetailComponent } from './entities/secteur-detail/secteur-detail.component';
 import { VoieDetailComponent } from './entities/voie/voie-detail.component';
 import { LongueurDetailComponent } from './entities/longueur/longueur-detail.component';
 import { HomeComponent } from './home/home.component';

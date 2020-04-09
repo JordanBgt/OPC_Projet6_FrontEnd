@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SecteurDetailComponent } from '../app/entities/secteur-detail/secteur-detail.component';
+import { SecteurUpdateComponent } from '../app/entities/secteur-update/secteur-update.component';
 
-describe('SecteurDetailComponent', () => {
-  let component: SecteurDetailComponent;
-  let fixture: ComponentFixture<SecteurDetailComponent>;
+describe('SecteurUpdateComponent', () => {
+  let component: SecteurUpdateComponent;
+  let fixture: ComponentFixture<SecteurUpdateComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SecteurDetailComponent ]
+      declarations: [ SecteurUpdateComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SecteurDetailComponent);
+    fixture = TestBed.createComponent(SecteurUpdateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

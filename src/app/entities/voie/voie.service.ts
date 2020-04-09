@@ -3,9 +3,11 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { IVoie, Voie } from '../../shared/model/voie.model';
 import { Observable } from 'rxjs';
 import { VoieSave } from '../../shared/model/voie-save.model';
+import { createRequestOption } from '../../shared/request-utils';
+import { IVoieLight } from '../../shared/model/voie-light.model';
 
 type EntityResponseType = HttpResponse<IVoie>;
-type EntityArrayResponseType = HttpResponse<IVoie[]>;
+type EntityArrayResponseType = HttpResponse<IVoieLight[]>;
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +18,9 @@ export class VoieService {
 
   constructor(protected http: HttpClient) { }
 
-  getAllVoies(): Observable<EntityArrayResponseType> {
-    return this.http.get<IVoie[]>(this.ressourceUrl, {observe: 'response'});
+  getAllVoies(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<IVoie[]>(this.ressourceUrl, {params: options, observe: 'response'});
   }
 
   getOneVoie(voieId: number): Observable<EntityResponseType> {
