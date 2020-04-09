@@ -6,7 +6,7 @@ export interface ILongueur {
   name?: string;
   cotationMin?: ICotation;
   cotationMax?: ICotation;
-  voie?: Voie;
+  description?: string;
 }
 
 export class Longueur implements ILongueur {
@@ -15,7 +15,7 @@ export class Longueur implements ILongueur {
     public name?: string,
     public cotationMin?: ICotation,
     public cotationMax?: ICotation,
-    public voie?: Voie
+    public description?: string
   ) {
   }
 }

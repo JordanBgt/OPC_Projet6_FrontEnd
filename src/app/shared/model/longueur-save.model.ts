@@ -4,7 +4,7 @@ export interface ILongueurSave {
   cotationMin?: Cotation;
   cotationMax?: Cotation;
   name?: string;
-  voieId?: number;
+  description?: string;
 }
 
 export class LongueurSave implements ILongueurSave{
@@ -12,7 +12,7 @@ export class LongueurSave implements ILongueurSave{
     public cotationMin?: Cotation,
     public cotationMax?: Cotation,
     public name?: string,
-    public voieId?: number
+    public description?: string
   ) {
   }
 }
