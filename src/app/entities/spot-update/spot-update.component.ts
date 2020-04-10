@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Spot } from '../../shared/model/spot.model';
 import { Cotation } from '../../shared/model/cotation.model';
-import { Secteur } from '../../shared/model/secteur.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { findIndexCotation } from '../../shared/entity-utils';
+import { SecteurLight } from '../../shared/model/secteur-light.model';
 
 @Component({
   selector: 'app-spot-update',
@@ -14,7 +14,7 @@ export class SpotUpdateComponent implements OnInit {
 
   @Input() spot: Spot;
   @Input() cotations: Cotation[];
-  @Input() secteurs: Secteur[];
+  @Input() secteurs: SecteurLight[];
   @Output() spotUpdatedEvent = new EventEmitter<Spot>();
   spotUpdated: Spot;
   indexCotationMin: number;
@@ -53,7 +53,7 @@ export class SpotUpdateComponent implements OnInit {
     this.spotUpdatedEvent.emit(this.spotUpdated);
   }
 
-  compareObjects(o1: any, o2: any): boolean {
+  compareObjects(o1: SecteurLight, o2: SecteurLight): boolean {
     return o1.id === o2.id;
   }
 }

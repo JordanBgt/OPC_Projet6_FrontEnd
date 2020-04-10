@@ -54,7 +54,7 @@ export class TopoUpdateComponent implements OnInit {
     this.topoUpdatedEvent.emit(this.topoUpdated);
   }
 
-  compareObjects(o1: any, o2: any): boolean {
+  compareObjects(o1: SpotLight, o2: SpotLight): boolean {
     return o1.id === o2.id;
   }
 }

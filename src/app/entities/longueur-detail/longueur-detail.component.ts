@@ -17,7 +17,7 @@ export class LongueurDetailComponent implements OnInit {
 
   longueur: ILongueur;
   longueurId: number;
-  cotations: Cotation[];
+  cotations: ICotation[];
   update = false;
 
   constructor(private longueurDetailService: LongueurDetailService,

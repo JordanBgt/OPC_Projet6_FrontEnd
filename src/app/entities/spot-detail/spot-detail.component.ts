@@ -19,7 +19,7 @@ export class SpotDetailComponent implements OnInit {
 
   spot: ISpot;
   spotId: number;
-  cotations: Cotation[];
+  cotations: ICotation[];
   secteurs: SecteurLight[];
   update = false;
 

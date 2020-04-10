@@ -19,7 +19,7 @@ export class TopoDetailComponent implements OnInit {
 
   topo: ITopo;
   topoId: number;
-  cotations: Cotation[];
+  cotations: ICotation[];
   spots: SpotLight[];
   update = false;
 
