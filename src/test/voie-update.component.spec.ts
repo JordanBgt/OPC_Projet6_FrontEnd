@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VoieDetailComponent } from '../app/entities/voie-detail/voie-detail.component';
+import { VoieUpdateComponent } from '../app/entities/voie-update/voie-update.component';
 
-describe('VoieDetailComponent', () => {
-  let component: VoieDetailComponent;
-  let fixture: ComponentFixture<VoieDetailComponent>;
+describe('VoieUpdateComponent', () => {
+  let component: VoieUpdateComponent;
+  let fixture: ComponentFixture<VoieUpdateComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VoieDetailComponent ]
+      declarations: [ VoieUpdateComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VoieDetailComponent);
+    fixture = TestBed.createComponent(VoieUpdateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

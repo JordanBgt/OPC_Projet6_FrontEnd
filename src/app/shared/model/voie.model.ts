@@ -6,7 +6,7 @@ export interface IVoie {
   name?: string;
   cotationMin?: ICotation;
   cotationMax?: ICotation;
-  longeurs?: Longueur[];
+  longueurs?: Longueur[];
   description?: string;
 }
 

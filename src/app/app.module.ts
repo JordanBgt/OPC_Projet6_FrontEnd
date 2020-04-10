@@ -24,7 +24,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { TopoDetailComponent } from './entities/topo-detail/topo-detail.component';
 import { SecteurDetailComponent } from './entities/secteur-detail/secteur-detail.component';
 import { SpotDetailComponent } from './entities/spot-detail/spot-detail.component';
-import { VoieDetailComponent } from './entities/voie/voie-detail.component';
+import { VoieDetailComponent } from './entities/voie-detail/voie-detail.component';
 import { LongueurDetailComponent } from './entities/longueur-detail/longueur-detail.component';
 import { HomeComponent } from './home/home.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -40,6 +40,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { NumberToStringPipe } from './shared/number-to-string-pipe';
 import { SecteurUpdateComponent } from './entities/secteur-update/secteur-update.component';
 import { LongueurUpdateComponent } from './entities/longueur-update/longueur-update.component';
+import { VoieUpdateComponent } from './entities/voie-update/voie-update.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { LongueurUpdateComponent } from './entities/longueur-update/longueur-upd
     SpotUpdateComponent,
     NumberToStringPipe,
     SecteurUpdateComponent,
-    LongueurUpdateComponent
+    LongueurUpdateComponent,
+    VoieUpdateComponent
   ],
   imports: [
     BrowserModule,

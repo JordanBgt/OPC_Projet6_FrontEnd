@@ -23,19 +23,7 @@ export class VoieService {
     return this.http.get<IVoie[]>(this.ressourceUrl, {params: options, observe: 'response'});
   }
 
-  getOneVoie(voieId: number): Observable<EntityResponseType> {
-    return this.http.get<IVoie>(`${this.ressourceUrl}/${voieId}`, {observe: 'response'});
-  }
-
   createVoie(voie: VoieSave): Observable<EntityResponseType> {
     return this.http.post<IVoie>(this.ressourceUrl, voie, {observe: 'response'});
-  }
-
-  updateVoie(voie: VoieSave, voieId: number): Observable<EntityResponseType> {
-    return this.http.put<IVoie>(`${this.ressourceUrl}/${voieId}`, voie, {observe: 'response'});
-  }
-
-  deleteVoie(voieId: number): Observable<HttpResponse<any>> {
-    return this.http.delete(`${this.ressourceUrl}/${voieId}`, {observe: 'response'});
   }
 }
