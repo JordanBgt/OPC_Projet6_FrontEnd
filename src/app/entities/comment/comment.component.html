@@ -1,1 +1,9 @@
-<p>commentaire works!</p>
+<div id="spotComments">
+  <mat-card *ngFor="let comment of comments">
+    <mat-card-header>
+      <mat-card-title>{{comment.user.username}}</mat-card-title>
+      <mat-card-subtitle>{{comment.date}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>{{comment.content}}</mat-card-content>
+  </mat-card>
+</div>
