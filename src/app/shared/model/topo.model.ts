@@ -1,5 +1,5 @@
-import {Spot} from './spot.model';
-import {Photo} from './photo.model';
+import { ISpot } from './spot.model';
+import { IPhoto } from './photo.model';
 import { ICotation } from './cotation.model';
 
 export interface ITopo {
@@ -11,11 +11,11 @@ export interface ITopo {
   isAvailable?: boolean;
   country?: string;
   region?: string;
-  spots?: Spot[];
+  spots?: ISpot[];
   creatorId?: number;
   tenantId?: number;
   publicationDate?: Date;
-  photo?: Photo;
+  photo?: IPhoto;
 }
 
 export class Topo implements ITopo {
@@ -28,11 +28,11 @@ export class Topo implements ITopo {
     public isAvailable?: boolean,
     public country?: string,
     public region?: string,
-    public spots?: Spot[],
+    public spots?: ISpot[],
     public creatorId?: number,
     public tenantId?: number,
     public publicationDate?: Date,
-    public photo?: Photo
+    public photo?: IPhoto
   ) {
   }
 }
