@@ -4,6 +4,8 @@ import { CommentService } from './comment.service';
 import { HttpResponse } from '@angular/common/http';
 import { ITEMS_PER_PAGE } from '../../../../app.constants';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { CommentDialogComponent } from '../../comment-dialog/comment-dialog.component';
 
 type EntityArrayResponseType = HttpResponse<IComment[]>;
 type EntityResponseType = HttpResponse<IComment>;
@@ -22,7 +24,8 @@ export class CommentComponent implements OnInit {
   totalPages: number;
 
   constructor(private commentService: CommentService,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar,
+              private dialog: MatDialog) {
     this.comments = [];
     this.size = ITEMS_PER_PAGE;
     this.page = 0;
@@ -61,5 +64,17 @@ export class CommentComponent implements OnInit {
         this.loadAll();
       }
       });
+  }
+
+  onUpdate(comment) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {content: comment.content};
+
+    const dialogRef = this.dialog.open(CommentDialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(data => comment.content = data.content,
+      (error => console.error(error)),
+      () => this.commentService.updateComment(comment).subscribe());
   }
 }

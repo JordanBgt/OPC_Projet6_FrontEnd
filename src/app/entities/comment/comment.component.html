@@ -12,7 +12,7 @@
             <mat-card-subtitle>{{comment.date | date: 'full' }}</mat-card-subtitle>
           </div>
           <div class="header-buttons">
-            <button mat-mini-fab color="primary" class="edit-button" (click)="onUpdate($event)">
+            <button mat-mini-fab color="primary" class="edit-button" (click)="onUpdate(comment)">
               <div class="edit-img"></div>
             </button>
             <button mat-mini-fab color="warn" class="delete-button" (click)="onDelete(comment.id)">

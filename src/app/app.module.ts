@@ -44,6 +44,8 @@ import { VoieUpdateComponent } from './entities/voie-update/voie-update.componen
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { CommentDialogComponent } from './comment-dialog/comment-dialog.component';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -72,7 +74,8 @@ registerLocaleData(localeFr, 'fr');
     NumberToStringPipe,
     SecteurUpdateComponent,
     LongueurUpdateComponent,
-    VoieUpdateComponent
+    VoieUpdateComponent,
+    CommentDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -92,9 +95,11 @@ registerLocaleData(localeFr, 'fr');
     MatSlideToggleModule,
     MatExpansionModule,
     MatBadgeModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule
   ],
   providers: [{provide: LOCALE_ID, useValue: 'fr'}],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [CommentDialogComponent]
 })
 export class AppModule { }
