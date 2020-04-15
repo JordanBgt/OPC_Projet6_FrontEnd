@@ -43,6 +43,7 @@ import { LongueurUpdateComponent } from './entities/longueur-update/longueur-upd
 import { VoieUpdateComponent } from './entities/voie-update/voie-update.component';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -90,7 +91,8 @@ registerLocaleData(localeFr, 'fr');
     MatSelectModule,
     MatSlideToggleModule,
     MatExpansionModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatSnackBarModule
   ],
   providers: [{provide: LOCALE_ID, useValue: 'fr'}],
   bootstrap: [AppComponent]
