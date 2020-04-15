@@ -1,0 +1,14 @@
+@import "src/app/shared/layout/entityDetail";
+
+.comment-image {
+  background-image: url("src/assets/comment.svg");
+  background-size: cover;
+}
+.card-container mat-card-header {
+  margin-bottom: 20px;
+}
+
+.card-comment {
+  width: 80%;
+  margin: 20px auto;
+}

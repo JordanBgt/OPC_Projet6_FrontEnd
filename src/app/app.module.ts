@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -41,6 +41,10 @@ import { NumberToStringPipe } from './shared/number-to-string-pipe';
 import { SecteurUpdateComponent } from './entities/secteur-update/secteur-update.component';
 import { LongueurUpdateComponent } from './entities/longueur-update/longueur-update.component';
 import { VoieUpdateComponent } from './entities/voie-update/voie-update.component';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+
+registerLocaleData(localeFr, 'fr');
 
 @NgModule({
   declarations: [
@@ -88,7 +92,7 @@ import { VoieUpdateComponent } from './entities/voie-update/voie-update.componen
     MatExpansionModule,
     MatBadgeModule
   ],
-  providers: [],
+  providers: [{provide: LOCALE_ID, useValue: 'fr'}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

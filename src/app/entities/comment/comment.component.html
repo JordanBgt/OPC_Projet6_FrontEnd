@@ -1,9 +1,17 @@
-<div id="spotComments">
-  <mat-card *ngFor="let comment of comments">
+<div class="entityDetailContent">
+  <mat-card class="card-container">
     <mat-card-header>
-      <mat-card-title>{{comment.user.username}}</mat-card-title>
-      <mat-card-subtitle>{{comment.date}}</mat-card-subtitle>
+      <div mat-card-avatar class="comment-image"></div>
+      <mat-card-title>Commentaires</mat-card-title>
     </mat-card-header>
-    <mat-card-content>{{comment.content}}</mat-card-content>
+    <mat-card-content>
+      <mat-card *ngFor="let comment of comments" class="card-comment">
+        <mat-card-header>
+          <mat-card-title>{{comment.user.username}}</mat-card-title>
+          <mat-card-subtitle>{{comment.date | date: 'full' }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>{{comment.content}}</mat-card-content>
+      </mat-card>
+    </mat-card-content>
   </mat-card>
 </div>
