@@ -1,19 +1,20 @@
-import {Spot} from './spot.model';
-import {User} from './user.model';
+import { UserLight } from './user-light.model';
 
 export interface IComment {
   id?: number;
-  description?: string;
+  content?: string;
   date?: Date;
-  user?: User;
+  user?: UserLight;
+  spotId?: number;
 }
 
 export class Comment implements IComment {
   constructor(
     public id?: number,
-    public description?: string,
+    public content?: string,
     public date?: Date,
-    public user?: User
+    public user?: UserLight,
+    public spotId?: number
   ) {
   }
 }

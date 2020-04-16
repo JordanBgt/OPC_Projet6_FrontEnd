@@ -1,1 +1,28 @@
-<p>commentaire works!</p>
+<div class="entityDetailContent" infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= totalPages">
+  <mat-card class="card-container">
+    <mat-card-header>
+      <div mat-card-avatar class="comment-image"></div>
+      <mat-card-title>Commentaires</mat-card-title>
+    </mat-card-header>
+    <button mat-stroked-button (click)="onCreate()" class="create-button">Ecrire un commentaire</button>
+    <mat-card-content>
+      <mat-card *ngFor="let comment of comments" class="card-comment">
+        <mat-card-header>
+          <div class="header-content">
+            <mat-card-title>{{comment.user.username}}</mat-card-title>
+            <mat-card-subtitle>{{comment.date | date: 'full' }}</mat-card-subtitle>
+          </div>
+          <div class="header-buttons">
+            <button mat-mini-fab color="primary" class="edit-button" (click)="onUpdate(comment)">
+              <div class="edit-img"></div>
+            </button>
+            <button mat-mini-fab color="warn" class="delete-button" (click)="onDelete(comment.id)">
+              <div class="delete-img"></div>
+            </button>
+          </div>
+        </mat-card-header>
+        <mat-card-content>{{comment.content}}</mat-card-content>
+      </mat-card>
+    </mat-card-content>
+  </mat-card>
+</div>

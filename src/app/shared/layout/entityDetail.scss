@@ -9,6 +9,10 @@ mat-card {
   margin-top: 50px;
 }
 
+mat-card-header {
+  background-color: #f7f7f7;
+}
+
 .card-header {
   display: flex;
   flex-direction: column;

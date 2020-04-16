@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -41,6 +41,13 @@ import { NumberToStringPipe } from './shared/number-to-string-pipe';
 import { SecteurUpdateComponent } from './entities/secteur-update/secteur-update.component';
 import { LongueurUpdateComponent } from './entities/longueur-update/longueur-update.component';
 import { VoieUpdateComponent } from './entities/voie-update/voie-update.component';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { CommentDialogComponent } from './comment-dialog/comment-dialog.component';
+
+registerLocaleData(localeFr, 'fr');
 
 @NgModule({
   declarations: [
@@ -67,7 +74,8 @@ import { VoieUpdateComponent } from './entities/voie-update/voie-update.componen
     NumberToStringPipe,
     SecteurUpdateComponent,
     LongueurUpdateComponent,
-    VoieUpdateComponent
+    VoieUpdateComponent,
+    CommentDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -86,9 +94,12 @@ import { VoieUpdateComponent } from './entities/voie-update/voie-update.componen
     MatSelectModule,
     MatSlideToggleModule,
     MatExpansionModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatSnackBarModule,
+    MatDialogModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [{provide: LOCALE_ID, useValue: 'fr'}],
+  bootstrap: [AppComponent],
+  entryComponents: [CommentDialogComponent]
 })
 export class AppModule { }

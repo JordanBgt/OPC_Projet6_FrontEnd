@@ -1,0 +1,54 @@
+@import "src/app/shared/layout/entityDetail";
+
+.comment-image {
+  background-image: url("src/assets/comment.svg");
+  background-size: cover;
+}
+.card-container mat-card-header {
+  margin-bottom: 20px;
+}
+
+.card-comment {
+  width: 80%;
+  margin: 20px auto;
+}
+
+.delete-img {
+  background-image: url("src/assets/delete.svg");
+  width: 25px;
+  height: 25px;
+}
+
+.edit-img {
+  background-image: url("src/assets/edit.svg");
+  width: 25px;
+  height: 25px;
+}
+
+mat-card-content mat-card-header {
+  display: flex;
+  flex-direction: row;
+}
+
+.header-content {
+  height: 100%;
+  width: 50%;
+}
+
+
+.header-buttons {
+  height: auto;
+  width: 50%;
+  display: flex;
+  justify-content: flex-end;
+  margin : auto 20px;
+}
+
+.delete-button {
+  margin-left: 20px;
+}
+
+.create-button {
+  display: block;
+  margin: auto;
+}
