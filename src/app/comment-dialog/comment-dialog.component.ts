@@ -14,7 +14,7 @@ export class CommentDialogComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private dialogRef: MatDialogRef<CommentDialogComponent>, @Inject(MAT_DIALOG_DATA) data) {
-    this.content = data.content;
+    this.content = data != null ? data.content : '';
   }
 
   ngOnInit() {

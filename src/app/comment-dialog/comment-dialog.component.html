@@ -1,13 +1,12 @@
-<h2 mat-dialog-title>Commentaire</h2>
-
-<mat-dialog-content [formGroup]="form">
-
-  <mat-form-field>
-    <textarea matInput formControlName="content"></textarea>
-  </mat-form-field>
-</mat-dialog-content>
-
-<mat-dialog-actions>
-  <button class="mat-raised-button"(click)="onClose()">Fermer</button>
-  <button class="mat-raised-button mat-primary"(click)="onSave()">Valider</button>
-</mat-dialog-actions>
+<div class="dialog">
+  <mat-dialog-content [formGroup]="form">
+    <mat-form-field class="comment-input">
+      <mat-label>Message du commentaire</mat-label>
+      <textarea matInput formControlName="content"></textarea>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button class="mat-raised-button"(click)="onClose()">Fermer</button>
+    <button class="mat-raised-button mat-primary"(click)="onSave()">Valider</button>
+  </mat-dialog-actions>
+</div>

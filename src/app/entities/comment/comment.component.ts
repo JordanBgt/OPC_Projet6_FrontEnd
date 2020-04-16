@@ -6,6 +6,7 @@ import { ITEMS_PER_PAGE } from '../../../../app.constants';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CommentDialogComponent } from '../../comment-dialog/comment-dialog.component';
+import { CommentSave } from '../../shared/model/comment-save.model';
 
 type EntityArrayResponseType = HttpResponse<IComment[]>;
 type EntityResponseType = HttpResponse<IComment>;
@@ -22,7 +23,6 @@ export class CommentComponent implements OnInit {
   size: number;
   page: number;
   totalPages: number;
-
   constructor(private commentService: CommentService,
               private snackBar: MatSnackBar,
               private dialog: MatDialog) {
@@ -75,6 +75,25 @@ export class CommentComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(data => comment.content = data.content,
       (error => console.error(error)),
-      () => this.commentService.updateComment(comment).subscribe());
+      () => this.commentService.updateComment(comment));
+  }
+
+  onCreate() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+
+    const comment = new CommentSave();
+    comment.userId = 1;
+    comment.spotId = this.spotId;
+    comment.date = new Date();
+    let commentUpdated: IComment;
+    const dialogRef = this.dialog.open(CommentDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(data => comment.content = data.content,
+      (error => console.error(error)),
+      () => {
+      this.commentService.createComment(comment).subscribe((res: EntityResponseType) => commentUpdated = res.body,
+        (error => console.error(error)),
+        () => this.comments.unshift(commentUpdated));
+      });
   }
 }
