@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { CotationService } from '../cotation/cotation.service';
 import { ICotation } from '../../shared/model/cotation.model';
 import { SpotSave } from '../../shared/model/spot-save.model';
+import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 
 type EntityResponseType = HttpResponse<ISpot>;
 type EntityArrayResponseType = HttpResponse<ISpotLight[]>;
@@ -37,16 +38,20 @@ export class SpotComponent implements OnInit {
   constructor(private spotService: SpotService,
               private formBuilder: FormBuilder,
               private router: Router,
-              private cotationService: CotationService) {
+              private cotationService: CotationService,
+              private carouselConfig: NgbCarouselConfig) {
     this.spots = [];
     this.size = ITEMS_PER_PAGE;
     this.page = 0;
+    this.carouselConfig.interval = 0;
   }
 
   loadAll() {
     this.spotService.getAllSpots({page: this.page, size: this.size, country: this.country, city: this.city,
       name: this.name, isOfficial: this.isOfficial, cotationMin: this.cotationMin, cotationMax: this.cotationMax})
-      .subscribe((res: EntityArrayResponseType) => this.paginateTopos(res.body));
+      .subscribe((res: EntityArrayResponseType) => this.paginateTopos(res.body),
+        (error => console.error(error)),
+        () => console.log(JSON.stringify(this.spots)));
   }
 
   loadCotations() {

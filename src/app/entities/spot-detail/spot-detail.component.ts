@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CotationService } from '../cotation/cotation.service';
 import { SecteurService } from '../secteur/secteur.service';
 import { HttpResponse } from '@angular/common/http';
+import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 
 type EntityResponseType = HttpResponse<ISpot>;
 
@@ -26,7 +27,10 @@ export class SpotDetailComponent implements OnInit {
   constructor(private spotDetailService: SpotDetailService,
               private route: ActivatedRoute,
               private cotationService: CotationService,
-              private secteurService: SecteurService) { }
+              private secteurService: SecteurService,
+              private carouselConfig: NgbCarouselConfig) {
+    this.carouselConfig.interval = 3000;
+  }
 
   ngOnInit() {
     this.spotId = +this.route.snapshot.paramMap.get('id');

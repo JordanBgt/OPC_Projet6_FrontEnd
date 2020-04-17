@@ -92,7 +92,11 @@
         <mat-card-subtitle>{{spot.country}}, {{spot.city}}</mat-card-subtitle>
         <mat-card-subtitle>Cotation : {{spot.cotationMin.label}} - {{spot.cotationMax.label}}</mat-card-subtitle>
       </mat-card-header>
-      <img mat-card-image src="../assets/logo.png" alt="photo spot">
+      <ngb-carousel *ngIf="spot.photos" class="carousel">
+        <ng-template ngbSlide *ngFor="let photo of spot.photos">
+          <img src="../assets/{{photo.name}}" class="carousel-img">
+        </ng-template>
+      </ngb-carousel>
       <mat-card-actions align="center">
         <button mat-stroked-button routerLink="{{spot.id}}">Detail</button>
       </mat-card-actions>

@@ -1,4 +1,5 @@
 import { ICotation } from './cotation.model';
+import { IPhoto } from './photo.model';
 
 export interface ISpotLight {
   id?: number;
@@ -9,6 +10,7 @@ export interface ISpotLight {
   name?: string;
   cotationMin?: ICotation;
   cotationMax?: ICotation;
+  photos?: IPhoto[];
 }
 
 export class SpotLight implements ISpotLight {
@@ -20,7 +22,8 @@ export class SpotLight implements ISpotLight {
     public userId?: number,
     public name?: string,
     public cotationMin?: ICotation,
-    public cotationMax?: ICotation
+    public cotationMax?: ICotation,
+    public photos?: IPhoto[]
   ) {
   }
 }
