@@ -1,13 +1,13 @@
-#Projet Openclassrooms n°6 : Créez un site communautaire autours de l'escalade
+# Projet Openclassrooms n°6 : Créez un site communautaire autours de l'escalade
 
-##Présentation du projet
+## Présentation du projet
 
 Les amis de l'escalade est une association qui réunit les passionnés d'escalade dans toute la France. 
 Ils souhaitent donc créer un site communautaire autours de cette discipline. Ce site aura pour but la mise en
 relation et le partage d'informations. Il permettra de donner de la visibilité à l'association afin d'encourager des 
 grimpeurs indépendants à y adhérer. 
 
-###Fonctionnalités : 
+### Fonctionnalités : 
 
 * Un utilisateur doit pouvoir consulter les informations des sites d'escalades (secteurs, voies, longueurs, etc.).
 * Un utilisateur doit pouvoir faire une recherche à l’aide de plusieurs critères pour trouver un site de grimpe et 
@@ -29,7 +29,7 @@ automatiquement le topo devient indisponible. L’utilisateur connecté pourra e
 topo en « disponible ». La plateforme se contente de mettre en contact les deux parties pour le prêt d’un topo 
 (par échange de coordonnées).
 
-###Contraintes fonctionnelles
+### Contraintes fonctionnelles
 
 * Le vocabulaire de l'escalade doit être utilisé : site, spot, voie, longueur, grimpeur, etc.
 * Le site doit être responsive.
@@ -39,7 +39,7 @@ topo en « disponible ». La plateforme se contente de mettre en contact les deu
 * Build Maven
 * Application développée en utilisant JEE
 
-##Partie FRONT-END
+## Partie FRONT-END
 Application Angular
 
 * Angular CLI 8.3.19
@@ -50,9 +50,9 @@ Application Angular
 * Infinite Scroll 8.0.1
 
 
-##Déploiement
+## Déploiement
  *A VENIR*
 
-##Lancement de l'application
+## Lancement de l'application
     ng serve
 Application disponible à l'adresse suivante : [http://localhost:4200](http://localhost:4200)
