@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SpotDetailComponent } from '../app/entities/spot-detail/spot-detail.component';
+import { SpotDetailComponent } from '../app/spot-detail/spot-detail.component';
 
 describe('SpotDetailComponent', () => {
   let component: SpotDetailComponent;

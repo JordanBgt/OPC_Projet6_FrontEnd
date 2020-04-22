@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { LongueurDetailService } from '../app/entities/longueur-detail/longueur-detail.service';
+import { LongueurDetailService } from '../app/longueur-detail/longueur-detail.service';
 
 describe('LongueurDetailService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

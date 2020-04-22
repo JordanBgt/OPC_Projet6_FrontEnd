@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CotationService } from '../app/entities/cotation/cotation.service';
+import { CotationService } from '../app/cotation/cotation.service';
 
 describe('CotationService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

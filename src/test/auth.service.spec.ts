@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TopoService } from '../app/topo/topo.service';
+import { AuthService } from '../app/security/auth.service';
 
-describe('TopoService', () => {
+describe('AuthService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: TopoService = TestBed.get(TopoService);
+    const service: AuthService = TestBed.get(AuthService);
     expect(service).toBeTruthy();
   });
 });

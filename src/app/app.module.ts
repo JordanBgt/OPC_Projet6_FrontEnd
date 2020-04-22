@@ -3,17 +3,17 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CommentComponent } from './entities/comment/comment.component';
-import { LongueurComponent } from './entities/longueur/longueur.component';
-import { PhotoComponent } from './entities/photo/photo.component';
-import { SecteurComponent } from './entities/secteur/secteur.component';
-import { SpotComponent } from './entities/spot/spot.component';
-import { TopoComponent } from './entities/topo/topo.component';
-import { UserComponent } from './entities/user/user.component';
-import { VoieComponent } from './entities/voie/voie.component';
-import { LoginComponent } from './entities/login/login.component';
-import { RegisterComponent } from './entities/register/register.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { CommentComponent } from './comment/comment.component';
+import { LongueurComponent } from './longueur/longueur.component';
+import { PhotoComponent } from './photo/photo.component';
+import { SecteurComponent } from './secteur/secteur.component';
+import { SpotComponent } from './spot/spot.component';
+import { TopoComponent } from './topo/topo.component';
+import { UserComponent } from './user/user.component';
+import { VoieComponent } from './voie/voie.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavbarComponent } from './navbar/navbar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
@@ -21,11 +21,11 @@ import { MatCardModule } from '@angular/material/card';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-import { TopoDetailComponent } from './entities/topo-detail/topo-detail.component';
-import { SecteurDetailComponent } from './entities/secteur-detail/secteur-detail.component';
-import { SpotDetailComponent } from './entities/spot-detail/spot-detail.component';
-import { VoieDetailComponent } from './entities/voie-detail/voie-detail.component';
-import { LongueurDetailComponent } from './entities/longueur-detail/longueur-detail.component';
+import { TopoDetailComponent } from './topo-detail/topo-detail.component';
+import { SecteurDetailComponent } from './secteur-detail/secteur-detail.component';
+import { SpotDetailComponent } from './spot-detail/spot-detail.component';
+import { VoieDetailComponent } from './voie-detail/voie-detail.component';
+import { LongueurDetailComponent } from './longueur-detail/longueur-detail.component';
 import { HomeComponent } from './home/home.component';
 import { MatIconModule } from '@angular/material/icon';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -33,19 +33,21 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { TopoUpdateComponent } from './entities/topo-update/topo-update.component';
+import { TopoUpdateComponent } from './topo-update/topo-update.component';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { SpotUpdateComponent } from './entities/spot-update/spot-update.component';
+import { SpotUpdateComponent } from './spot-update/spot-update.component';
 import { MatBadgeModule } from '@angular/material/badge';
 import { NumberToStringPipe } from './shared/number-to-string-pipe';
-import { SecteurUpdateComponent } from './entities/secteur-update/secteur-update.component';
-import { LongueurUpdateComponent } from './entities/longueur-update/longueur-update.component';
-import { VoieUpdateComponent } from './entities/voie-update/voie-update.component';
+import { SecteurUpdateComponent } from './secteur-update/secteur-update.component';
+import { LongueurUpdateComponent } from './longueur-update/longueur-update.component';
+import { VoieUpdateComponent } from './voie-update/voie-update.component';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CommentDialogComponent } from './comment-dialog/comment-dialog.component';
+import { ProfileComponent } from './profile/profile.component';
+import { authInterceptorProviders } from './security/auth.interceptor';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -75,7 +77,8 @@ registerLocaleData(localeFr, 'fr');
     SecteurUpdateComponent,
     LongueurUpdateComponent,
     VoieUpdateComponent,
-    CommentDialogComponent
+    CommentDialogComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -96,9 +99,12 @@ registerLocaleData(localeFr, 'fr');
     MatExpansionModule,
     MatBadgeModule,
     MatSnackBarModule,
-    MatDialogModule
+    MatDialogModule,
+    FormsModule
   ],
-  providers: [{provide: LOCALE_ID, useValue: 'fr'}],
+  providers: [
+    {provide: LOCALE_ID, useValue: 'fr'},
+    authInterceptorProviders],
   bootstrap: [AppComponent],
   entryComponents: [CommentDialogComponent]
 })

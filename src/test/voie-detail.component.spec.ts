@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VoieDetailComponent } from '../app/entities/voie-detail/voie-detail.component';
+import { VoieDetailComponent } from '../app/voie-detail/voie-detail.component';
 
 describe('VoieDetailComponent', () => {
   let component: VoieDetailComponent;
