@@ -19,7 +19,8 @@
   </div>
   <div class="row createFormPanel">
     <mat-accordion class="createAccordion">
-      <mat-expansion-panel>
+      <mat-expansion-panel [disabled]="!isLoggedIn" matTooltip="Vous devez être connecté pour créer un secteur"
+                           [matTooltipDisabled]="isLoggedIn">
         <mat-expansion-panel-header>
           <mat-panel-title>Créer secteur</mat-panel-title>
         </mat-expansion-panel-header>

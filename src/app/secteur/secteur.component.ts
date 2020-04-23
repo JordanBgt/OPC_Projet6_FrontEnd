@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ITEMS_PER_PAGE } from '../../../app.constants';
 import { SecteurSave } from '../shared/model/secteur-save.model';
+import { TokenStorageService } from '../security/token-storage.service';
 
 type EntityResponseType = HttpResponse<ISecteur>;
 type EntityArrayResponseType = HttpResponse<ISecteur[]>;
@@ -25,10 +26,12 @@ export class SecteurComponent implements OnInit {
   searchForm: FormGroup;
   createSecteurForm: FormGroup;
   name: string;
+  isLoggedIn: boolean;
 
   constructor(private secteurService: SecteurService,
               private formBuilder: FormBuilder,
-              private router: Router) {
+              private router: Router,
+              private tokenStorageService: TokenStorageService) {
     this.secteurs = [];
     this.page = 0;
     this.size = ITEMS_PER_PAGE;
@@ -40,6 +43,7 @@ export class SecteurComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isLoggedIn = !!this.tokenStorageService.getToken();
     this.loadAll();
     this.initSearchForm();
     this.initCreateSecteurForm();

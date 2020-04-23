@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { CotationService } from '../cotation/cotation.service';
 import { Router } from '@angular/router';
 import { ITEMS_PER_PAGE } from '../../../app.constants';
+import { TokenStorageService } from '../security/token-storage.service';
 
 type EntityResponseType = HttpResponse<IVoie>;
 type EntityArrayResponseType = HttpResponse<IVoieLight[]>;
@@ -29,11 +30,13 @@ export class VoieComponent implements OnInit {
   cotationMax: number;
   searchForm: FormGroup;
   createVoieForm: FormGroup;
+  isLoggedIn: boolean;
 
   constructor(private voieService: VoieService,
               private formBuilder: FormBuilder,
               private cotationService: CotationService,
-              private router: Router) {
+              private router: Router,
+              private tokenStorageService: TokenStorageService) {
     this.voies = [];
     this.size = ITEMS_PER_PAGE;
     this.page = 0;
@@ -50,6 +53,7 @@ export class VoieComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isLoggedIn = !!this.tokenStorageService.getToken();
     this.loadAll();
     this.loadCotations();
     this.initSearchForm();

@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { CotationService } from '../cotation/cotation.service';
 import { ITEMS_PER_PAGE } from '../../../app.constants';
 import { LongueurSave } from '../shared/model/longueur-save.model';
+import { TokenStorageService } from '../security/token-storage.service';
 
 type EntityResponseType = HttpResponse<ILongueur>;
 type EntityArrayResponseType = HttpResponse<ILongueurLight[]>;
@@ -30,11 +31,13 @@ export class LongueurComponent implements OnInit {
   name: string;
   cotationMin: number;
   cotationMax: number;
+  isLoggedIn: boolean;
 
   constructor(private longueurService: LongueurService,
               private formBuilder: FormBuilder,
               private router: Router,
-              private cotationService: CotationService) {
+              private cotationService: CotationService,
+              private tokenStorageService: TokenStorageService) {
     this.longueurs = [];
     this.page = 0;
     this.size = ITEMS_PER_PAGE;
@@ -51,6 +54,7 @@ export class LongueurComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isLoggedIn = !!this.tokenStorageService.getToken();
     this.loadAll();
     this.loadCotations();
     this.initSearchForm();

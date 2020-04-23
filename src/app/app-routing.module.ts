@@ -31,7 +31,8 @@ const routes: Routes = [
   { path: 'voies/:id', component: VoieDetailComponent },
   { path: 'longueurs', component: LongueurComponent },
   { path: 'longueurs/:id', component: LongueurDetailComponent },
-  { path: '', redirectTo: 'home', pathMatch: 'full' }
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '**', redirectTo: 'home' }
 ];
 
 @NgModule({

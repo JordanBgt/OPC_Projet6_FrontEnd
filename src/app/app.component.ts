@@ -6,7 +6,7 @@ import { TokenStorageService } from './security/token-storage.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'escalade';
   private roles: string[];
   isLoggedIn = false;

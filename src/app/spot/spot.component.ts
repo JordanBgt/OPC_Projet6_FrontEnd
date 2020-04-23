@@ -10,6 +10,7 @@ import { CotationService } from '../cotation/cotation.service';
 import { ICotation } from '../shared/model/cotation.model';
 import { SpotSave } from '../shared/model/spot-save.model';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
+import { TokenStorageService } from '../security/token-storage.service';
 
 type EntityResponseType = HttpResponse<ISpot>;
 type EntityArrayResponseType = HttpResponse<ISpotLight[]>;
@@ -34,12 +35,14 @@ export class SpotComponent implements OnInit {
   isOfficial: boolean;
   cotationMin: number;
   cotationMax: number;
+  isLoggedIn: boolean;
 
   constructor(private spotService: SpotService,
               private formBuilder: FormBuilder,
               private router: Router,
               private cotationService: CotationService,
-              private carouselConfig: NgbCarouselConfig) {
+              private carouselConfig: NgbCarouselConfig,
+              private tokenStorageService: TokenStorageService) {
     this.spots = [];
     this.size = ITEMS_PER_PAGE;
     this.page = 0;
@@ -60,6 +63,7 @@ export class SpotComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isLoggedIn = !!this.tokenStorageService.getToken();
     this.loadAll();
     this.loadCotations();
     this.initSearchForm();

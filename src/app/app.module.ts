@@ -13,7 +13,6 @@ import { UserComponent } from './user/user.component';
 import { VoieComponent } from './voie/voie.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavbarComponent } from './navbar/navbar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
@@ -48,6 +47,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { CommentDialogComponent } from './comment-dialog/comment-dialog.component';
 import { ProfileComponent } from './profile/profile.component';
 import { authInterceptorProviders } from './security/auth.interceptor';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -100,7 +101,7 @@ registerLocaleData(localeFr, 'fr');
     MatBadgeModule,
     MatSnackBarModule,
     MatDialogModule,
-    FormsModule
+    MatTooltipModule
   ],
   providers: [
     {provide: LOCALE_ID, useValue: 'fr'},

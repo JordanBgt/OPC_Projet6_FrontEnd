@@ -9,6 +9,7 @@ import { CotationService } from '../cotation/cotation.service';
 import { TopoSave } from '../shared/model/topo-save.model';
 import { ITEMS_PER_PAGE } from '../../../app.constants';
 import { ITopoLight } from '../shared/model/topo-light.model';
+import { TokenStorageService } from '../security/token-storage.service';
 
 type EntityResponseType = HttpResponse<ITopo>;
 type EntityArrayResponseType = HttpResponse<ITopoLight[]>;
@@ -32,11 +33,13 @@ export class TopoComponent implements OnInit {
   cotationMax: number;
   isAvailable: boolean;
   totalPages: number;
+  isLoggedIn: boolean;
 
   constructor(private topoService: TopoService,
               private formBuilder: FormBuilder,
               private router: Router,
-              private cotationService: CotationService) {
+              private cotationService: CotationService,
+              private tokenStorageService: TokenStorageService) {
     this.topos = [];
     this.size = ITEMS_PER_PAGE;
     this.page = 0;
@@ -54,6 +57,7 @@ export class TopoComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isLoggedIn = !!this.tokenStorageService.getToken();
     this.loadAll();
     this.loadCotations();
     this.initTopoForm();
