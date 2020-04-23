@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../security/auth.service';
 import { User } from '../shared/model/user.model';
 
@@ -10,20 +10,34 @@ import { User } from '../shared/model/user.model';
 })
 export class RegisterComponent implements OnInit {
 
-  form: any = {};
+  form: FormGroup;
   isSuccessful = false;
   isSignupFailed = false;
   errorMessage = '';
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService,
+              private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+    this.initForm();
+  }
+
+  initForm() {
+    this.form = this.formBuilder.group({
+      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
+    });
   }
 
   onSubmit() {
-    this.authService.register(this.form).subscribe(
+    const formValue = this.form.value;
+    const user = new User();
+    user.username = formValue.username;
+    user.email = formValue.email;
+    user.password = formValue.password;
+    this.authService.register(user).subscribe(
       data => {
-        console.log(data);
         this.isSuccessful = true;
         this.isSignupFailed = false;
       },
