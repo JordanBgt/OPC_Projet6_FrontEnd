@@ -49,6 +49,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { authInterceptorProviders } from './security/auth.interceptor';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AuthGuardService } from './security/auth-guard.service';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -105,7 +106,8 @@ registerLocaleData(localeFr, 'fr');
   ],
   providers: [
     {provide: LOCALE_ID, useValue: 'fr'},
-    authInterceptorProviders],
+     authInterceptorProviders,
+     AuthGuardService],
   bootstrap: [AppComponent],
   entryComponents: [CommentDialogComponent]
 })

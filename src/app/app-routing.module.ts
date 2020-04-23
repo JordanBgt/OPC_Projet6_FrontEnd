@@ -14,23 +14,24 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
+import { AuthGuardService as AuthGuard } from './security/auth-guard.service';
 
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'profile', component: ProfileComponent },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'topos', component: TopoComponent },
-  { path: 'topos/:id', component: TopoDetailComponent },
+  { path: 'topos/:id', component: TopoDetailComponent, canActivate: [AuthGuard] },
   { path: 'spots', component: SpotComponent },
-  { path: 'spots/:id', component: SpotDetailComponent },
+  { path: 'spots/:id', component: SpotDetailComponent, canActivate: [AuthGuard] },
   { path: 'secteurs', component: SecteurComponent },
-  { path: 'secteurs/:id', component: SecteurDetailComponent },
+  { path: 'secteurs/:id', component: SecteurDetailComponent, canActivate: [AuthGuard] },
   { path: 'voies', component: VoieComponent },
-  { path: 'voies/:id', component: VoieDetailComponent },
+  { path: 'voies/:id', component: VoieDetailComponent, canActivate: [AuthGuard] },
   { path: 'longueurs', component: LongueurComponent },
-  { path: 'longueurs/:id', component: LongueurDetailComponent },
+  { path: 'longueurs/:id', component: LongueurDetailComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', redirectTo: 'home' }
 ];
