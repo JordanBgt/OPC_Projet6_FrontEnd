@@ -15,7 +15,6 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
   isLoggedIn = false;
   isLoginFailed = false;
-  errorMessage = '';
 
   constructor(private authService: AuthService,
               private tokenStorage: TokenStorageService,
@@ -50,11 +49,7 @@ export class LoginComponent implements OnInit {
         setTimeout(() => {
           window.location.replace('http://localhost:4200/home');
         },
-          2000);
-      },
-      error => {
-        this.errorMessage = error.error.message;
-        this.isLoginFailed = true;
+          500);
       }
     );
   }

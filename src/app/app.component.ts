@@ -22,8 +22,6 @@ export class AppComponent implements OnInit {
       this.roles = user.roles;
       this.username = user.username;
     }
-
-    console.log('LOGGEDIN ? : ' + this.isLoggedIn);
   }
 
   logout() {
