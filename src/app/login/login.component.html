@@ -1,0 +1,19 @@
+<div class="form">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="!isLoggedIn">
+    <mat-form-field appearance="outline">
+      <mat-label>Pseudo</mat-label>
+      <input type="text" matInput formControlName="username">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Mot de passe</mat-label>
+      <input type="password" matInput formControlName="password">
+    </mat-form-field>
+    <button mat-stroked-button color="primary" type="submit" [disabled]="form.invalid">Valider</button>
+  </form>
+    <div class="alert alert-warning" *ngIf="isLoginFailed">
+      La connexion échouée !
+    </div>
+  <div class="alert alert-success" *ngIf="isLoggedIn">
+    Connexion réussie !
+  </div>
+</div>

@@ -5,6 +5,7 @@ export interface IVoieSave {
   cotationMax?: Cotation;
   name?: string;
   description?: string;
+  userId?: number;
 }
 
 export class VoieSave implements IVoieSave {
@@ -12,7 +13,8 @@ export class VoieSave implements IVoieSave {
     public cotationMin?: Cotation,
     public cotationMax?: Cotation,
     public name?: string,
-    public description?: string
+    public description?: string,
+    public userId?: number
   ) {
   }
 }

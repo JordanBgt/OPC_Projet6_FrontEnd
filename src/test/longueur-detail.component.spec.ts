@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LongueurDetailComponent } from '../app/entities/longueur-detail/longueur-detail.component';
+import { LongueurDetailComponent } from '../app/longueur-detail/longueur-detail.component';
 
 describe('LongueurDetailComponent', () => {
   let component: LongueurDetailComponent;

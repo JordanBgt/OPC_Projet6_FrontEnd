@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SecteurDetailComponent } from '../app/entities/secteur-detail/secteur-detail.component';
+import { SecteurDetailComponent } from '../app/secteur-detail/secteur-detail.component';
 
 describe('SecteurDetailComponent', () => {
   let component: SecteurDetailComponent;

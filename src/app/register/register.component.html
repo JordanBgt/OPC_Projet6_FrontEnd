@@ -1,0 +1,27 @@
+<div class="form">
+  <form [formGroup]="form" *ngIf="!isSuccessful" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline">
+      <mat-label>Pseudo</mat-label>
+      <input matInput formControlName="username">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Mot de passe</mat-label>
+      <input type="password" matInput formControlName="password">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input type="email" matInput formControlName="email">
+    </mat-form-field>
+    <div class="form-group">
+      <button mat-stroked-button color="primary" type="submit" [disabled]="form.invalid">Valider</button>
+    </div>
+
+    <div class="alert alert-warning" *ngIf="isSignupFailed">
+      L'enregistrement a échoué !
+    </div>
+  </form>
+
+  <div class="alert alert-success" *ngIf="isSuccessful">
+    Enregistrement réussi !
+  </div>
+</div>

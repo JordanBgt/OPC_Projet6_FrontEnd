@@ -1,0 +1,26 @@
+<div class="entityDetailContent" *ngIf="!update && secteur">
+  <mat-card class="header" align="center">
+    <div class="content">
+      <mat-card-header class="card-header">
+        <mat-card-title>{{secteur.name}}</mat-card-title>
+      </mat-card-header>
+    </div>
+  </mat-card>
+  <mat-card class="description" align="center">
+    <mat-card-header>
+      <div mat-card-avatar class="description-image"></div>
+      <mat-card-title>Description</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>{{secteur.description}}</mat-card-content>
+  </mat-card>
+  <mat-card *ngIf="secteur.voies?.length > 0" align="center">
+    <mat-card-header>
+      <div mat-card-avatar class="list-image"></div>
+      <mat-card-title [matBadge]="secteur.voies.length | numberToString" matBadgeOverlap="false" matBadgeColor="warn">Liste des voies</mat-card-title>
+    </mat-card-header>
+    <mat-card-content *ngFor="let voie of secteur.voies">{{voie.name}}</mat-card-content>
+  </mat-card>
+  <button mat-stroked-button (click)="onUpdate()" *ngIf="isAdmin || secteur.userId === user.id">Modifier</button>
+  <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
+</div>
+<app-secteur-update *ngIf="update" [secteur]="secteur" [voies]="voies" (secteurUpdatedEvent)="updateSecteur($event)"></app-secteur-update>

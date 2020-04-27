@@ -5,6 +5,7 @@ export interface ISecteur {
   name?: string;
   voies?: IVoie[];
   description?: string;
+  userId?: number;
 }
 
 export class Secteur implements ISecteur {
@@ -12,7 +13,8 @@ export class Secteur implements ISecteur {
     public id?: number,
     public name?: string,
     public voies?: IVoie[],
-    public description?: string
+    public description?: string,
+    public userId?: number
   ) {
   }
 }

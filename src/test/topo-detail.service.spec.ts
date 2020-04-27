@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TopoDetailService } from '../app/entities/topo-detail/topo-detail.service';
+import { TopoDetailService } from '../app/topo-detail/topo-detail.service';
 
 describe('TopoDetailService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

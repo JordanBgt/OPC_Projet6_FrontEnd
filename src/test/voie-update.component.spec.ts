@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VoieUpdateComponent } from '../app/entities/voie-update/voie-update.component';
+import { VoieUpdateComponent } from '../app/voie-update/voie-update.component';
 
 describe('VoieUpdateComponent', () => {
   let component: VoieUpdateComponent;

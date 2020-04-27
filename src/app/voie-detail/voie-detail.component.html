@@ -1,0 +1,33 @@
+<div class="entityDetailContent" *ngIf="!update && voie">
+  <mat-card class="header" align="center">
+    <div class="content">
+      <mat-card-header class="card-header">
+        <mat-card-title>{{voie.name}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="card-header-content">
+        <ul>
+          <li><img src="../../assets/cotation.svg"/>{{voie.cotationMin.label}} - {{voie.cotationMax.label}}</li>
+        </ul>
+      </mat-card-content>
+    </div>
+  </mat-card>
+  <mat-card class="description" align="center">
+    <mat-card-header>
+      <div mat-card-avatar class="description-image"></div>
+      <mat-card-title>Description</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>{{voie.description}}</mat-card-content>
+  </mat-card>
+  <mat-card *ngIf="voie.longueurs?.length > 0" align="center">
+    <mat-card-header>
+      <div mat-card-avatar class="list-image"></div>
+      <mat-card-title [matBadge]="voie.longueurs.length | numberToString" matBadgeOverlap="false" matBadgeColor="warn">Liste des longueurs</mat-card-title>
+    </mat-card-header>
+    <mat-card-content *ngFor="let longueur of voie.longueurs">{{longueur.name}}</mat-card-content>
+  </mat-card>
+  <button mat-stroked-button (click)="onUpdate()" *ngIf="isAdmin || voie.userId === user.id">Modifier</button>
+  <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
+</div>
+<app-voie-update *ngIf="update" [voie]="voie" [cotations]="cotations" [longueurs]="longueurs"
+                 (voieUpdatedEvent)="updateVoie($event)">
+</app-voie-update>

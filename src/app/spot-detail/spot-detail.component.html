@@ -1,0 +1,40 @@
+<div class="entityDetailContent" *ngIf="!update && spot">
+  <mat-card class="header" align="center">
+    <ngb-carousel class="carousel">
+      <ng-template ngbSlide *ngFor="let photo of spot.photos">
+        <img src="../assets/{{photo.name}}" class="carousel-img">
+      </ng-template>
+    </ngb-carousel>
+    <div class="content">
+      <mat-card-header class="card-header">
+        <mat-card-title>{{spot.name}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="card-header-content">
+        <ul>
+          <li><img src="../../assets/location.svg"/>{{spot.country}} - {{spot.city}}</li>
+          <li><img src="../../assets/cotation.svg"/>{{spot.cotationMin.label}} - {{spot.cotationMax.label}}</li>
+        </ul>
+      </mat-card-content>
+    </div>
+  </mat-card>
+  <mat-card class="description" align="center">
+    <mat-card-header>
+      <div mat-card-avatar class="description-image"></div>
+      <mat-card-title>Description</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>{{spot.description}}</mat-card-content>
+  </mat-card>
+  <mat-card *ngIf="spot.secteurs?.length > 0" align="center">
+    <mat-card-header>
+      <div mat-card-avatar class="list-image"></div>
+      <mat-card-title [matBadge]="spot.secteurs.length | numberToString" matBadgeOverlap="false" matBadgeColor="warn">Liste des secteurs</mat-card-title>
+    </mat-card-header>
+    <mat-card-content *ngFor="let secteur of spot.secteurs">{{secteur.name}}</mat-card-content>
+  </mat-card>
+  <button mat-stroked-button (click)="onUpdate()" *ngIf="spot.userId === user.id || isAdmin">Modifier</button>
+  <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
+</div>
+<app-comment *ngIf="!update && spot" [spotId]="spotId"></app-comment>
+<app-spot-update *ngIf="update" [spot]="spot" [cotations]="cotations" [secteurs]="secteurs"
+                 [isAdmin]="isAdmin" (spotUpdatedEvent)="updateSpot($event)">
+</app-spot-update>
