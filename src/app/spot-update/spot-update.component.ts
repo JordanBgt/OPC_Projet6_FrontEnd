@@ -15,6 +15,7 @@ export class SpotUpdateComponent implements OnInit {
   @Input() spot: Spot;
   @Input() cotations: Cotation[];
   @Input() secteurs: SecteurLight[];
+  @Input() isAdmin: boolean;
   @Output() spotUpdatedEvent = new EventEmitter<Spot>();
   spotUpdated: Spot;
   indexCotationMin: number;
@@ -36,7 +37,8 @@ export class SpotUpdateComponent implements OnInit {
       cotationMax: this.cotations[this.indexCotationMax],
       country: this.spot.country,
       city: this.spot.city,
-      secteurs: ['']
+      secteurs: [''],
+      isOfficial: this.spot.official
     });
   }
 
@@ -47,8 +49,9 @@ export class SpotUpdateComponent implements OnInit {
 
   onUpdate() {
     const formValue = this.spotUpdateForm.value;
+    console.log(JSON.stringify(formValue));
     this.spotUpdated = new Spot(this.spot.id, formValue.country, formValue.city, formValue.description,
-      this.spot.official, this.spot.topoId, this.spot.photos, formValue.secteurs, this.spot.userId,
+      formValue.isOfficial, this.spot.topoId, this.spot.photos, formValue.secteurs, this.spot.userId,
       formValue.name, formValue.cotationMin, formValue.cotationMax);
     this.spotUpdatedEvent.emit(this.spotUpdated);
   }

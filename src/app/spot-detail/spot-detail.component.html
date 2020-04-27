@@ -36,5 +36,5 @@
 </div>
 <app-comment *ngIf="!update && spot" [spotId]="spotId"></app-comment>
 <app-spot-update *ngIf="update" [spot]="spot" [cotations]="cotations" [secteurs]="secteurs"
-                 (spotUpdatedEvent)="updateSpot($event)">
+                 [isAdmin]="isAdmin" (spotUpdatedEvent)="updateSpot($event)">
 </app-spot-update>

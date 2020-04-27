@@ -43,6 +43,7 @@
           <mat-option *ngFor="let secteur of secteurs" [value]="secteur">{{secteur.name}}</mat-option>
         </mat-select>
       </mat-form-field>
+      <mat-slide-toggle formControlName="isOfficial" *ngIf="isAdmin">Officiel ?</mat-slide-toggle>
     </div>
     <button mat-stroked-button color="primary" type="submit" class="btn btn-primary submit">Valider</button>
   </form>
