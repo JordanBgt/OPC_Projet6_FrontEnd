@@ -3,11 +3,14 @@ import { HttpResponse } from '@angular/common/http';
 import { IVoie, Voie } from '../shared/model/voie.model';
 import { ICotation } from '../shared/model/cotation.model';
 import { LongueurLight } from '../shared/model/longueur-light.model';
-import { VoieService } from '../voie/voie.service';
 import { CotationService } from '../cotation/cotation.service';
 import { LongueurService } from '../longueur/longueur.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { VoieDetailService } from './voie-detail.service';
+import { TokenStorageService } from '../security/token-storage.service';
+import { isAdmin } from '../shared/auth-utils';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { HTTP_STATUS_NOCONTENT } from '../../../app.constants';
 
 type EntityResponseType = HttpResponse<IVoie>;
 
@@ -23,13 +26,20 @@ export class VoieDetailComponent implements OnInit {
   cotations: ICotation[];
   longueurs: LongueurLight[];
   update = false;
+  user: any;
+  isAdmin: boolean;
 
   constructor(private voieDetailService: VoieDetailService,
               private cotationService: CotationService,
               private longueurService: LongueurService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private tokenStorageService: TokenStorageService,
+              private router: Router,
+              private snackBar: MatSnackBar) { }
 
   ngOnInit() {
+    this.user = this.tokenStorageService.getUser();
+    this.isAdmin = isAdmin(this.user.roles);
     this.voieId = +this.route.snapshot.paramMap.get('id');
     this.loadVoie();
     this.loadCotations();
@@ -38,6 +48,18 @@ export class VoieDetailComponent implements OnInit {
 
   onUpdate() {
     this.update = true;
+  }
+
+  onDelete() {
+    let status: number;
+    this.voieDetailService.deleteVoie(this.voieId).subscribe((res: any) => status = res.status,
+      (error => console.error(error)),
+      () => {
+      if (status === HTTP_STATUS_NOCONTENT) {
+        this.snackBar.open('Voie supprimée', 'Ok', {duration: 5000});
+        this.router.navigate(['voies']);
+      }
+      });
   }
 
   loadVoie() {
@@ -54,7 +76,7 @@ export class VoieDetailComponent implements OnInit {
   }
 
   updateVoie(voie: Voie) {
-    this.voieDetailService.updateVoie(voie).subscribe((res: EntityResponseType) => this.voie = res.body,
+    this.voieDetailService.updateVoie(voie, this.user.id).subscribe((res: EntityResponseType) => this.voie = res.body,
       (error => console.error(error)),
       () => this.update = false);
   }

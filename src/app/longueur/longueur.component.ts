@@ -32,6 +32,7 @@ export class LongueurComponent implements OnInit {
   cotationMin: number;
   cotationMax: number;
   isLoggedIn: boolean;
+  user: any;
 
   constructor(private longueurService: LongueurService,
               private formBuilder: FormBuilder,
@@ -55,6 +56,7 @@ export class LongueurComponent implements OnInit {
 
   ngOnInit() {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
+    this.user = this.tokenStorageService.getUser();
     this.loadAll();
     this.loadCotations();
     this.initSearchForm();
@@ -102,6 +104,7 @@ export class LongueurComponent implements OnInit {
   onCreate() {
     const formValue = this.createLongueurForm.value;
     const longueur = new LongueurSave();
+    longueur.userId = this.user.id;
     longueur.name = formValue.name;
     longueur.description = formValue.description;
     longueur.cotationMin = formValue.cotationMin;

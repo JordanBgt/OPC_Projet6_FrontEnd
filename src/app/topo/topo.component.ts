@@ -34,6 +34,7 @@ export class TopoComponent implements OnInit {
   isAvailable: boolean;
   totalPages: number;
   isLoggedIn: boolean;
+  user: any;
 
   constructor(private topoService: TopoService,
               private formBuilder: FormBuilder,
@@ -58,6 +59,7 @@ export class TopoComponent implements OnInit {
 
   ngOnInit() {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
+    this.user = this.tokenStorageService.getUser();
     this.loadAll();
     this.loadCotations();
     this.initTopoForm();
@@ -88,6 +90,7 @@ export class TopoComponent implements OnInit {
   onCreate() {
     const formValue = this.topoForm.value;
     const topo = new TopoSave();
+    topo.userId = this.user.id;
     topo.name = formValue.name;
     topo.country = formValue.country;
     topo.region = formValue.region;

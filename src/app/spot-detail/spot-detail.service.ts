@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ISpot, Spot } from '../shared/model/spot.model';
 import { HttpClient, HttpResponse } from '@angular/common/http';
+import { createRequestOption } from '../shared/request-utils';
+import { TokenStorageService } from '../security/token-storage.service';
 
 type EntityResponseType = HttpResponse<ISpot>;
 
@@ -18,8 +20,9 @@ export class SpotDetailService {
     return this.http.get<ISpot>(`${this.ressourceUrl}/${spotId}`, {observe: 'response'});
   }
 
-  updateSpot(spot: Spot): Observable<EntityResponseType> {
-    return this.http.put<ISpot>(`${this.ressourceUrl}/${spot.id}`, spot, {observe: 'response'});
+  updateSpot(spot: Spot, userId: number): Observable<EntityResponseType> {
+    const options = createRequestOption({userId});
+    return this.http.put<ISpot>(`${this.ressourceUrl}/${spot.id}`, spot, {params: options, observe: 'response'});
   }
 
   deleteSpot(spotId: number): Observable<any> {

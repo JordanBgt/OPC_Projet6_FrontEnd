@@ -8,6 +8,7 @@ export interface IVoie {
   cotationMax?: ICotation;
   longueurs?: ILongueur[];
   description?: string;
+  userId?: number;
 }
 
 export class Voie implements IVoie {
@@ -17,7 +18,8 @@ export class Voie implements IVoie {
     public cotationMin?: ICotation,
     public cotationMax?: ICotation,
     public longueurs?: ILongueur[],
-    public description?: string
+    public description?: string,
+    public userId?: number
   ) {
   }
 }

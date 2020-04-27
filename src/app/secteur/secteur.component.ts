@@ -27,6 +27,7 @@ export class SecteurComponent implements OnInit {
   createSecteurForm: FormGroup;
   name: string;
   isLoggedIn: boolean;
+  user: any;
 
   constructor(private secteurService: SecteurService,
               private formBuilder: FormBuilder,
@@ -44,6 +45,7 @@ export class SecteurComponent implements OnInit {
 
   ngOnInit() {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
+    this.user = this.tokenStorageService.getUser()
     this.loadAll();
     this.initSearchForm();
     this.initCreateSecteurForm();
@@ -83,6 +85,7 @@ export class SecteurComponent implements OnInit {
   onCreate() {
     const formValue = this.createSecteurForm.value;
     const secteur = new SecteurSave();
+    secteur.userId = this.user.id;
     secteur.name = formValue.name;
     secteur.description = formValue.description;
     let secteurCreated: ISecteur;

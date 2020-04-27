@@ -30,7 +30,8 @@
     </mat-card-header>
     <mat-card-content *ngFor="let spot of topo.spots">{{spot.name}}</mat-card-content>
   </mat-card>
-  <button mat-stroked-button (click)="onUpdate()">Modifier</button>
+  <button mat-stroked-button (click)="onUpdate()" *ngIf="topo.creatorId === user.id || isAdmin">Modifier</button>
+  <button mat-stroked-button (click)="onDelete()" *ngIf="isAdmin" color="warn">Supprimer</button>
 </div>
 <app-topo-update [topo]="topo" [cotations]="cotations" [spots]="spots" *ngIf="update"
                  (topoUpdatedEvent)="updateTopo($event)">

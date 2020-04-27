@@ -31,6 +31,7 @@ export class VoieComponent implements OnInit {
   searchForm: FormGroup;
   createVoieForm: FormGroup;
   isLoggedIn: boolean;
+  user: any;
 
   constructor(private voieService: VoieService,
               private formBuilder: FormBuilder,
@@ -54,6 +55,7 @@ export class VoieComponent implements OnInit {
 
   ngOnInit() {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
+    this.user = this.tokenStorageService.getUser();
     this.loadAll();
     this.loadCotations();
     this.initSearchForm();
@@ -101,6 +103,7 @@ export class VoieComponent implements OnInit {
   onCreate() {
     const formValue = this.createVoieForm.value;
     const voie = new Voie();
+    voie.userId = this.user.id;
     voie.name = formValue.name;
     voie.description = formValue.description;
     voie.cotationMin = formValue.cotationMin;

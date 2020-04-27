@@ -31,7 +31,8 @@
     </mat-card-header>
     <mat-card-content *ngFor="let secteur of spot.secteurs">{{secteur.name}}</mat-card-content>
   </mat-card>
-  <button mat-stroked-button (click)="onUpdate()">Modifier</button>
+  <button mat-stroked-button (click)="onUpdate()" *ngIf="spot.userId === user.id || isAdmin">Modifier</button>
+  <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
 </div>
 <app-comment *ngIf="!update && spot" [spotId]="spotId"></app-comment>
 <app-spot-update *ngIf="update" [spot]="spot" [cotations]="cotations" [secteurs]="secteurs"

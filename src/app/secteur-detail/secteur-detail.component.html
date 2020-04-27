@@ -20,6 +20,7 @@
     </mat-card-header>
     <mat-card-content *ngFor="let voie of secteur.voies">{{voie.name}}</mat-card-content>
   </mat-card>
-  <button mat-stroked-button (click)="onUpdate()">Modifier</button>
+  <button mat-stroked-button (click)="onUpdate()" *ngIf="isAdmin || secteur.userId === user.id">Modifier</button>
+  <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
 </div>
 <app-secteur-update *ngIf="update" [secteur]="secteur" [voies]="voies" (secteurUpdatedEvent)="updateSecteur($event)"></app-secteur-update>

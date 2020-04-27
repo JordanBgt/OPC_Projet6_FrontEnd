@@ -36,6 +36,7 @@ export class SpotComponent implements OnInit {
   cotationMin: number;
   cotationMax: number;
   isLoggedIn: boolean;
+  user: any;
 
   constructor(private spotService: SpotService,
               private formBuilder: FormBuilder,
@@ -64,6 +65,7 @@ export class SpotComponent implements OnInit {
 
   ngOnInit() {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
+    this.user = this.tokenStorageService.getUser();
     this.loadAll();
     this.loadCotations();
     this.initSearchForm();
@@ -119,6 +121,7 @@ export class SpotComponent implements OnInit {
   onCreate() {
     const formValue = this.createSpotForm.value;
     const spot = new SpotSave();
+    spot.userId = this.user.id;
     spot.name = formValue.name;
     spot.country = formValue.country;
     spot.city = formValue.city;

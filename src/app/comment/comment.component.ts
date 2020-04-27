@@ -2,12 +2,12 @@ import { Component, Input, OnInit } from '@angular/core';
 import { IComment } from '../shared/model/comment.model';
 import { CommentService } from './comment.service';
 import { HttpResponse } from '@angular/common/http';
-import { ITEMS_PER_PAGE } from '../../../app.constants';
+import { HTTP_STATUS_NOCONTENT, ITEMS_PER_PAGE } from '../../../app.constants';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CommentDialogComponent } from '../comment-dialog/comment-dialog.component';
 import { CommentSave } from '../shared/model/comment-save.model';
-
+import { TokenStorageService } from '../security/token-storage.service';
 type EntityArrayResponseType = HttpResponse<IComment[]>;
 type EntityResponseType = HttpResponse<IComment>;
 
@@ -23,15 +23,19 @@ export class CommentComponent implements OnInit {
   size: number;
   page: number;
   totalPages: number;
+  user: any;
+
   constructor(private commentService: CommentService,
               private snackBar: MatSnackBar,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private tokenStorageService: TokenStorageService) {
     this.comments = [];
     this.size = ITEMS_PER_PAGE;
     this.page = 0;
   }
 
   ngOnInit() {
+    this.user = this.tokenStorageService.getUser();
     this.loadAll();
   }
 
@@ -57,7 +61,7 @@ export class CommentComponent implements OnInit {
     this.commentService.deleteComment(commentId).subscribe((res: any) => status = res.status,
       (error => console.error(error)),
       () => {
-      if (status === 204) {
+      if (status === HTTP_STATUS_NOCONTENT) {
         this.snackBar.open('Commentaire supprimé !', 'Ok', {duration: 5000});
         this.page = 0;
         this.comments = [];
@@ -75,7 +79,7 @@ export class CommentComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(data => comment.content = data.content,
       (error => console.error(error)),
-      () => this.commentService.updateComment(comment));
+      () => this.commentService.updateComment(comment, this.user.id));
   }
 
   onCreate() {
@@ -83,7 +87,7 @@ export class CommentComponent implements OnInit {
     dialogConfig.autoFocus = true;
 
     const comment = new CommentSave();
-    comment.userId = 1;
+    comment.userId = this.user.id;
     comment.spotId = this.spotId;
     comment.date = new Date();
     let commentUpdated: IComment;

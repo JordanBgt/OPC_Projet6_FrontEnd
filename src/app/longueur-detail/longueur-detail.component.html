@@ -18,7 +18,8 @@
     </mat-card-header>
     <mat-card-content>{{longueur.description}}</mat-card-content>
   </mat-card>
-  <button mat-stroked-button (click)="onUpdate()">Modifier</button>
+  <button mat-stroked-button (click)="onUpdate()" *ngIf="isAdmin || longueur.userId === user.id">Modifier</button>
+  <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
 </div>
 <app-longueur-update *ngIf="update" [longueur]="longueur" [cotations]="cotations"
                  (longueurUpdatedEvent)="updateLongueur($event)">

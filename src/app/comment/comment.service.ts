@@ -23,16 +23,13 @@ export class CommentService {
     return this.http.get<IComment[]>(this.ressourceUrl, {params: options, observe: 'response'});
   }
 
-  getOneComment(commentId: number): Observable<EntityResponseType> {
-    return this.http.get(`${this.ressourceUrl}/${commentId}`, {observe: 'response'});
-  }
-
   createComment(comment: CommentSave): Observable<EntityResponseType> {
     return this.http.post<IComment>(this.ressourceUrl, comment, {observe: 'response'});
   }
 
-  updateComment(comment: Comment): Observable<EntityResponseType> {
-    return this.http.put<IComment>(`${this.ressourceUrl}/${comment.id}`, comment, {observe: 'response'});
+  updateComment(comment: Comment, userId: number): Observable<EntityResponseType> {
+    const options = createRequestOption({userId});
+    return this.http.put<IComment>(`${this.ressourceUrl}/${comment.id}`, comment, {params: options, observe: 'response'});
   }
 
   deleteComment(commentId: number): Observable<any> {
