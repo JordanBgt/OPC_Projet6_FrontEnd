@@ -11,8 +11,9 @@ import { TokenStorageService } from '../security/token-storage.service';
 import { isAdmin } from '../shared/auth-utils';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HTTP_STATUS_NOCONTENT } from '../../../app.constants';
-import { SpotDetailService } from '../services/spot-detail.service';
 import { SpotService } from '../services/spot.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ISecteur, Secteur } from '../shared/model/secteur.model';
 
 type EntityResponseType = HttpResponse<ISpot>;
 
@@ -30,6 +31,7 @@ export class SpotDetailComponent implements OnInit {
   update = false;
   user: any;
   isAdmin: boolean;
+  secteurForm: FormGroup;
 
   constructor(private spotService: SpotService,
               private route: ActivatedRoute,
@@ -38,7 +40,8 @@ export class SpotDetailComponent implements OnInit {
               private carouselConfig: NgbCarouselConfig,
               private tokenStorageService: TokenStorageService,
               private snackBar: MatSnackBar,
-              private router: Router) {
+              private router: Router,
+              private formBuilder: FormBuilder) {
     this.carouselConfig.interval = 3000;
   }
 
@@ -49,6 +52,7 @@ export class SpotDetailComponent implements OnInit {
     this.loadSpot();
     this.loadCotations();
     this.loadSecteurs();
+    this.initSecteurForm();
   }
 
   onUpdate() {
@@ -76,13 +80,45 @@ export class SpotDetailComponent implements OnInit {
   }
 
   loadSecteurs() {
-    this.secteurService.getAllSecteurs({unpaged: true}).subscribe((res: HttpResponse<any>) => this.secteurs = res.body.content);
+    this.secteurService.getAllSecteurs({unpaged: true, spotId: this.spotId})
+      .subscribe((res: HttpResponse<any>) => this.secteurs = res.body.content);
+  }
+
+  initSecteurForm() {
+    this.secteurForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      description: ['', Validators.required]
+    });
   }
 
   updateSpot(spot: Spot) {
     this.spotService.updateSpot(spot, this.user.id).subscribe((res: EntityResponseType) => this.spot = res.body,
       (error => console.log(JSON.stringify(error))),
       () => this.update = false);
+  }
+
+  onAddSecteur() {
+    const formValue = this.secteurForm.value;
+    const secteur = new Secteur(null, formValue.name, formValue.description, this.user.id, this.spotId);
+    this.secteurService.createSecteur(secteur).subscribe((res: HttpResponse<ISecteur>) => console.log(res.body),
+      (error => console.error(error)),
+      () => this.loadSecteurs());
+  }
+
+  onDeleteSecteur(secteurId: number) {
+    let status: number;
+    this.secteurService.deleteSecteur(secteurId).subscribe((res: HttpResponse<any>) => status = res.status,
+      (error => console.error(error)),
+      () => {
+        if (status === HTTP_STATUS_NOCONTENT) {
+          this.snackBar.open('Secteur supprimé', 'Ok', {duration: 5000});
+          this.loadSecteurs();
+        }
+      });
+  }
+
+  onEditSecteur(secteurId: number) {
+    this.router.navigate([`secteurs/${secteurId}`]);
   }
 
 }
