@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { IVoie, Voie } from '../shared/model/voie.model';
-import { VoieService } from './voie.service';
+import { VoieService } from '../services/voie.service';
 import { IVoieLight } from '../shared/model/voie-light.model';
 import { ICotation } from '../shared/model/cotation.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { CotationService } from '../cotation/cotation.service';
+import { CotationService } from '../services/cotation.service';
 import { Router } from '@angular/router';
 import { ITEMS_PER_PAGE } from '../../../app.constants';
 import { TokenStorageService } from '../security/token-storage.service';

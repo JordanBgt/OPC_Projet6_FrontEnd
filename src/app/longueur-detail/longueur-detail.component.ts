@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ILongueur, Longueur } from '../shared/model/longueur.model';
 import { ICotation } from '../shared/model/cotation.model';
-import { LongueurDetailService } from './longueur-detail.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CotationService } from '../cotation/cotation.service';
+import { CotationService } from '../services/cotation.service';
 import { TokenStorageService } from '../security/token-storage.service';
 import { isAdmin } from '../shared/auth-utils';
 import { HTTP_STATUS_NOCONTENT } from '../../../app.constants';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LongueurService } from '../services/longueur.service';
 
 type EntityResponseType = HttpResponse<ILongueur>;
 
@@ -26,7 +26,7 @@ export class LongueurDetailComponent implements OnInit {
   user: any;
   isAdmin: boolean;
 
-  constructor(private longueurDetailService: LongueurDetailService,
+  constructor(private longueurService: LongueurService,
               private route: ActivatedRoute,
               private cotationService: CotationService,
               private tokenStorageService: TokenStorageService,
@@ -47,7 +47,7 @@ export class LongueurDetailComponent implements OnInit {
 
   onDelete() {
     let status: number;
-    this.longueurDetailService.deleteLongueur(this.longueurId).subscribe((res: any) => status = res.status,
+    this.longueurService.deleteLongueur(this.longueurId).subscribe((res: any) => status = res.status,
       (error => console.error(error)),
       () => {
       if (status === HTTP_STATUS_NOCONTENT) {
@@ -58,7 +58,7 @@ export class LongueurDetailComponent implements OnInit {
   }
 
   loadLongueur() {
-    this.longueurDetailService.getOneLongueur(this.longueurId)
+    this.longueurService.getOneLongueur(this.longueurId)
       .subscribe((res: EntityResponseType) => this.longueur = res.body);
   }
 
@@ -68,7 +68,7 @@ export class LongueurDetailComponent implements OnInit {
   }
 
   updateLongueur(longueur: Longueur) {
-    this.longueurDetailService.updateLongueur(longueur, this.user.id)
+    this.longueurService.updateLongueur(longueur, this.user.id)
       .subscribe((res: EntityResponseType) => this.longueur = res.body,
         (error => console.error(error)),
         () => this.update = false);

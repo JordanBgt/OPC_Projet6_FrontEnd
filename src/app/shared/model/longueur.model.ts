@@ -1,4 +1,3 @@
-import {Voie} from './voie.model';
 import { ICotation } from './cotation.model';
 
 export interface ILongueur {
@@ -8,6 +7,7 @@ export interface ILongueur {
   cotationMax?: ICotation;
   description?: string;
   userId?: number;
+  voieId?: number;
 }
 
 export class Longueur implements ILongueur {
@@ -17,7 +17,8 @@ export class Longueur implements ILongueur {
     public cotationMin?: ICotation,
     public cotationMax?: ICotation,
     public description?: string,
-    public userId?: number
+    public userId?: number,
+    public voieId?: number
   ) {
   }
 }

@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ISecteur, Secteur } from '../shared/model/secteur.model';
 import { HttpResponse } from '@angular/common/http';
 import { VoieLight } from '../shared/model/voie-light.model';
-import { SecteurDetailService } from './secteur-detail.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { VoieService } from '../voie/voie.service';
+import { VoieService } from '../services/voie.service';
 import { TokenStorageService } from '../security/token-storage.service';
 import { isAdmin } from '../shared/auth-utils';
 import { HTTP_STATUS_NOCONTENT } from '../../../app.constants';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SecteurService } from '../services/secteur.service';
 
 type EntityResponseType = HttpResponse<ISecteur>;
 
@@ -26,7 +26,7 @@ export class SecteurDetailComponent implements OnInit {
   user: any;
   isAdmin: boolean;
 
-  constructor(private secteurDetailService: SecteurDetailService,
+  constructor(private secteurService: SecteurService,
               private route: ActivatedRoute,
               private voieService: VoieService,
               private tokenStorageService: TokenStorageService,
@@ -47,7 +47,7 @@ export class SecteurDetailComponent implements OnInit {
 
   onDelete() {
     let status: number;
-    this.secteurDetailService.deleteSecteur(this.secteurId).subscribe((res: any) => status = res.status,
+    this.secteurService.deleteSecteur(this.secteurId).subscribe((res: any) => status = res.status,
       (error => console.error(error)),
       () => {
       if (status === HTTP_STATUS_NOCONTENT) {
@@ -58,7 +58,7 @@ export class SecteurDetailComponent implements OnInit {
   }
 
   loadSecteur() {
-    this.secteurDetailService.getOneSecteur(this.secteurId)
+    this.secteurService.getOneSecteur(this.secteurId)
       .subscribe((res: EntityResponseType) => this.secteur = res.body);
   }
 
@@ -68,7 +68,7 @@ export class SecteurDetailComponent implements OnInit {
   }
 
   updateSecteur(secteur: Secteur) {
-    this.secteurDetailService.updateSecteur(secteur, this.user.id).subscribe((res: EntityResponseType) => this.secteur = res.body,
+    this.secteurService.updateSecteur(secteur, this.user.id).subscribe((res: EntityResponseType) => this.secteur = res.body,
       (error => console.error(error)),
       () => this.update = false);
   }

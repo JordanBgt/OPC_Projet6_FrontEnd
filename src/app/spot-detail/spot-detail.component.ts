@@ -2,16 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { ISpot, Spot } from '../shared/model/spot.model';
 import { ICotation } from '../shared/model/cotation.model';
 import { SecteurLight } from '../shared/model/secteur-light.model';
-import { SpotDetailService } from './spot-detail.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CotationService } from '../cotation/cotation.service';
-import { SecteurService } from '../secteur/secteur.service';
+import { CotationService } from '../services/cotation.service';
+import { SecteurService } from '../services/secteur.service';
 import { HttpResponse } from '@angular/common/http';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TokenStorageService } from '../security/token-storage.service';
 import { isAdmin } from '../shared/auth-utils';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HTTP_STATUS_NOCONTENT } from '../../../app.constants';
+import { SpotDetailService } from '../services/spot-detail.service';
+import { SpotService } from '../services/spot.service';
 
 type EntityResponseType = HttpResponse<ISpot>;
 
@@ -30,7 +31,7 @@ export class SpotDetailComponent implements OnInit {
   user: any;
   isAdmin: boolean;
 
-  constructor(private spotDetailService: SpotDetailService,
+  constructor(private spotService: SpotService,
               private route: ActivatedRoute,
               private cotationService: CotationService,
               private secteurService: SecteurService,
@@ -56,7 +57,7 @@ export class SpotDetailComponent implements OnInit {
 
   onDelete() {
     let status: number;
-    this.spotDetailService.deleteSpot(this.spotId).subscribe((res: any) => status = res.status,
+    this.spotService.deleteSpot(this.spotId).subscribe((res: any) => status = res.status,
       (error => console.error(error)),
       () => {
       if (status === HTTP_STATUS_NOCONTENT) {
@@ -67,7 +68,7 @@ export class SpotDetailComponent implements OnInit {
   }
 
   loadSpot() {
-    this.spotDetailService.getOneSpot(this.spotId).subscribe((res: EntityResponseType) => this.spot = res.body);
+    this.spotService.getOneSpot(this.spotId).subscribe((res: EntityResponseType) => this.spot = res.body);
   }
 
   loadCotations() {
@@ -79,7 +80,7 @@ export class SpotDetailComponent implements OnInit {
   }
 
   updateSpot(spot: Spot) {
-    this.spotDetailService.updateSpot(spot, this.user.id).subscribe((res: EntityResponseType) => this.spot = res.body,
+    this.spotService.updateSpot(spot, this.user.id).subscribe((res: EntityResponseType) => this.spot = res.body,
       (error => console.log(JSON.stringify(error))),
       () => this.update = false);
   }

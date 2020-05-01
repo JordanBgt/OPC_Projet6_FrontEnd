@@ -3,14 +3,14 @@ import { HttpResponse } from '@angular/common/http';
 import { IVoie, Voie } from '../shared/model/voie.model';
 import { ICotation } from '../shared/model/cotation.model';
 import { LongueurLight } from '../shared/model/longueur-light.model';
-import { CotationService } from '../cotation/cotation.service';
-import { LongueurService } from '../longueur/longueur.service';
+import { CotationService } from '../services/cotation.service';
+import { LongueurService } from '../services/longueur.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { VoieDetailService } from './voie-detail.service';
 import { TokenStorageService } from '../security/token-storage.service';
 import { isAdmin } from '../shared/auth-utils';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HTTP_STATUS_NOCONTENT } from '../../../app.constants';
+import { VoieService } from '../services/voie.service';
 
 type EntityResponseType = HttpResponse<IVoie>;
 
@@ -29,7 +29,7 @@ export class VoieDetailComponent implements OnInit {
   user: any;
   isAdmin: boolean;
 
-  constructor(private voieDetailService: VoieDetailService,
+  constructor(private voieService: VoieService,
               private cotationService: CotationService,
               private longueurService: LongueurService,
               private route: ActivatedRoute,
@@ -52,7 +52,7 @@ export class VoieDetailComponent implements OnInit {
 
   onDelete() {
     let status: number;
-    this.voieDetailService.deleteVoie(this.voieId).subscribe((res: any) => status = res.status,
+    this.voieService.deleteVoie(this.voieId).subscribe((res: any) => status = res.status,
       (error => console.error(error)),
       () => {
       if (status === HTTP_STATUS_NOCONTENT) {
@@ -63,7 +63,7 @@ export class VoieDetailComponent implements OnInit {
   }
 
   loadVoie() {
-    this.voieDetailService.getOneVoie(this.voieId).subscribe((res: EntityResponseType) => this.voie = res.body);
+    this.voieService.getOneVoie(this.voieId).subscribe((res: EntityResponseType) => this.voie = res.body);
   }
 
   loadCotations() {
@@ -76,7 +76,7 @@ export class VoieDetailComponent implements OnInit {
   }
 
   updateVoie(voie: Voie) {
-    this.voieDetailService.updateVoie(voie, this.user.id).subscribe((res: EntityResponseType) => this.voie = res.body,
+    this.voieService.updateVoie(voie, this.user.id).subscribe((res: EntityResponseType) => this.voie = res.body,
       (error => console.error(error)),
       () => this.update = false);
   }

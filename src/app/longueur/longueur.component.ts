@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ILongueur } from '../shared/model/longueur.model';
-import { LongueurService } from './longueur.service';
+import { LongueurService } from '../services/longueur.service';
 import { ILongueurLight } from '../shared/model/longueur-light.model';
 import { ICotation } from '../shared/model/cotation.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CotationService } from '../cotation/cotation.service';
+import { CotationService } from '../services/cotation.service';
 import { ITEMS_PER_PAGE } from '../../../app.constants';
 import { LongueurSave } from '../shared/model/longueur-save.model';
 import { TokenStorageService } from '../security/token-storage.service';

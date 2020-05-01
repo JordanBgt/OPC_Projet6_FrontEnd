@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ISecteur } from '../shared/model/secteur.model';
-import { SecteurService } from './secteur.service';
+import { SecteurService } from '../services/secteur.service';
 import { ISecteurLight } from '../shared/model/secteur-light.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';

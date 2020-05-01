@@ -1,4 +1,3 @@
-import { ILongueur } from './longueur.model';
 import { ICotation } from './cotation.model';
 
 export interface IVoie {
@@ -6,9 +5,9 @@ export interface IVoie {
   name?: string;
   cotationMin?: ICotation;
   cotationMax?: ICotation;
-  longueurs?: ILongueur[];
   description?: string;
   userId?: number;
+  secteurId?: number;
 }
 
 export class Voie implements IVoie {
@@ -17,9 +16,9 @@ export class Voie implements IVoie {
     public name?: string,
     public cotationMin?: ICotation,
     public cotationMax?: ICotation,
-    public longueurs?: ILongueur[],
     public description?: string,
-    public userId?: number
+    public userId?: number,
+    public secteurId?: number
   ) {
   }
 }
