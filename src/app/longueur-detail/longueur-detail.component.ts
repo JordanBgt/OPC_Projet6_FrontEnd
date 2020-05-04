@@ -31,7 +31,9 @@ export class LongueurDetailComponent implements OnInit {
               private cotationService: CotationService,
               private tokenStorageService: TokenStorageService,
               private router: Router,
-              private snackBar: MatSnackBar) { }
+              private snackBar: MatSnackBar) {
+    this.cotations = [];
+  }
 
   ngOnInit() {
     this.user = this.tokenStorageService.getUser();

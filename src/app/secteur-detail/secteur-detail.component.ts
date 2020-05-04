@@ -9,6 +9,10 @@ import { isAdmin } from '../shared/auth-utils';
 import { HTTP_STATUS_NOCONTENT } from '../../../app.constants';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SecteurService } from '../services/secteur.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IVoie, Voie } from '../shared/model/voie.model';
+import { ICotation } from '../shared/model/cotation.model';
+import { CotationService } from '../services/cotation.service';
 
 type EntityResponseType = HttpResponse<ISecteur>;
 
@@ -25,13 +29,20 @@ export class SecteurDetailComponent implements OnInit {
   update = false;
   user: any;
   isAdmin: boolean;
+  voieForm: FormGroup;
+  cotations: ICotation[];
 
   constructor(private secteurService: SecteurService,
               private route: ActivatedRoute,
               private voieService: VoieService,
               private tokenStorageService: TokenStorageService,
               private snackBar: MatSnackBar,
-              private router: Router) { }
+              private router: Router,
+              private formBuilder: FormBuilder,
+              private cotationService: CotationService) {
+    this.voies = [];
+    this.cotations = [];
+  }
 
   ngOnInit() {
     this.user = this.tokenStorageService.getUser();
@@ -39,6 +50,8 @@ export class SecteurDetailComponent implements OnInit {
     this.secteurId = +this.route.snapshot.paramMap.get('id');
     this.loadSecteur();
     this.loadVoies();
+    this.loadCotations();
+    this.initVoieForm();
   }
 
   onUpdate() {
@@ -63,8 +76,13 @@ export class SecteurDetailComponent implements OnInit {
   }
 
   loadVoies() {
-    this.voieService.getAllVoies({unpaged: true})
+    this.voieService.getAllVoies({unpaged: true, secteurId: this.secteurId})
       .subscribe((res: HttpResponse<any>) => this.voies = res.body.content);
+  }
+
+  loadCotations() {
+    this.cotationService.getAllCotations().subscribe((res: HttpResponse<ICotation[]>) => this.cotations = res.body,
+      (error: Error) => error.message);
   }
 
   updateSecteur(secteur: Secteur) {
@@ -73,4 +91,37 @@ export class SecteurDetailComponent implements OnInit {
       () => this.update = false);
   }
 
+  initVoieForm() {
+    this.voieForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      description: ['', Validators.required],
+      cotationMin: ['', Validators.required],
+      cotationMax: ['', Validators.required]
+    });
+  }
+
+  onAddVoie() {
+    const formValue = this.voieForm.value;
+    const voie = new Voie(null, formValue.name, formValue.cotationMin, formValue.cotationMax, formValue.description,
+      this.user.id, this.secteurId);
+    this.voieService.createVoie(voie).subscribe((res: HttpResponse<IVoie>) => console.log(res.body),
+      (error => console.error(error)),
+      () => this.loadVoies());
+  }
+
+  onDeleteVoie(voieId: number) {
+    let status: number;
+    this.voieService.deleteVoie(voieId).subscribe((res: HttpResponse<any>) => status = res.status,
+      (error => console.error(error)),
+      () => {
+      if (status === HTTP_STATUS_NOCONTENT) {
+        this.snackBar.open('Voie supprimée', 'Ok', {duration: 5000});
+        this.loadVoies();
+      }
+      });
+  }
+
+  onEditVoie(voieId: number) {
+    this.router.navigate([`voies/${voieId}`]);
+  }
 }

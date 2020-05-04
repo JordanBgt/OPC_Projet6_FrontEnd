@@ -39,6 +39,7 @@ export class VoieComponent implements OnInit {
               private router: Router,
               private tokenStorageService: TokenStorageService) {
     this.voies = [];
+    this.cotations = [];
     this.size = ITEMS_PER_PAGE;
     this.page = 0;
   }

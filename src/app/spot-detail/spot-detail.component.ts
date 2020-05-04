@@ -43,6 +43,8 @@ export class SpotDetailComponent implements OnInit {
               private router: Router,
               private formBuilder: FormBuilder) {
     this.carouselConfig.interval = 3000;
+    this.cotations = [];
+    this.secteurs = [];
   }
 
   ngOnInit() {

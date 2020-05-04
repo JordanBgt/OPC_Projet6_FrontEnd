@@ -45,6 +45,7 @@ export class SpotComponent implements OnInit {
               private carouselConfig: NgbCarouselConfig,
               private tokenStorageService: TokenStorageService) {
     this.spots = [];
+    this.cotations = [];
     this.size = ITEMS_PER_PAGE;
     this.page = 0;
     this.carouselConfig.interval = 0;

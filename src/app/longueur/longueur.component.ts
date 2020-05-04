@@ -40,6 +40,7 @@ export class LongueurComponent implements OnInit {
               private cotationService: CotationService,
               private tokenStorageService: TokenStorageService) {
     this.longueurs = [];
+    this.cotations = [];
     this.page = 0;
     this.size = ITEMS_PER_PAGE;
   }

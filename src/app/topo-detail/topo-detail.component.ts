@@ -35,7 +35,10 @@ export class TopoDetailComponent implements OnInit {
               private spotService: SpotService,
               private tokenStorageService: TokenStorageService,
               private router: Router,
-              private snackBar: MatSnackBar) { }
+              private snackBar: MatSnackBar) {
+    this.cotations = [];
+    this.spots = [];
+  }
 
   ngOnInit() {
     this.user = this.tokenStorageService.getUser();

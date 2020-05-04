@@ -4,6 +4,18 @@
       <mat-card-header class="card-header">
         <mat-card-title>{{secteur.name}}</mat-card-title>
       </mat-card-header>
+      <mat-card-content class="card-header-content">
+        <ul>
+          <li>
+            <button mat-stroked-button (click)="onUpdate()" *ngIf="isAdmin || secteur.userId === user.id">
+              Modifier
+            </button>
+          </li>
+          <li>
+            <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
+          </li>
+        </ul>
+      </mat-card-content>
     </div>
   </mat-card>
   <mat-card class="description" align="center">
@@ -13,14 +25,55 @@
     </mat-card-header>
     <mat-card-content>{{secteur.description}}</mat-card-content>
   </mat-card>
-  <mat-card *ngIf="secteur.voies?.length > 0" align="center">
+  <mat-card  align="center">
     <mat-card-header>
       <div mat-card-avatar class="list-image"></div>
-      <mat-card-title [matBadge]="secteur.voies.length | numberToString" matBadgeOverlap="false" matBadgeColor="warn">Liste des voies</mat-card-title>
+      <mat-card-title [matBadge]="voies.length | numberToString" matBadgeOverlap="false" matBadgeColor="warn">
+        Liste des voies
+      </mat-card-title>
     </mat-card-header>
-    <mat-card-content *ngFor="let voie of secteur.voies">{{voie.name}}</mat-card-content>
+    <mat-card-content *ngFor="let voie of voies" class="voies">
+      <span>{{voie.name}}</span>
+      <button mat-mini-fab color="primary" (click)="onEditVoie(voie.id)"><img src="assets/edit.svg"></button>
+      <button mat-mini-fab color="warn" (click)="onDeleteVoie(voie.id)"><img src="assets/delete.svg"></button>
+    </mat-card-content>
+    <mat-card-actions>
+      <div class="row createFormPanel">
+        <mat-accordion class="createAccordion">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>Créer voie</mat-panel-title>
+            </mat-expansion-panel-header>
+            <form [formGroup]="voieForm" (ngSubmit)="onAddVoie()" class="createForm">
+              <mat-form-field appearance="outline" class="createName">
+                <mat-label>Nom</mat-label>
+                <input matInput formControlName="name">
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="createCotation">
+                <mat-label>Cotation min</mat-label>
+                <mat-select formControlName="cotationMin">
+                  <mat-option disabled>Cotation min</mat-option>
+                  <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="createCotation">
+                <mat-label>Cotation max</mat-label>
+                <mat-select formControlName="cotationMax">
+                  <mat-option disabled>Cotation max</mat-option>
+                  <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="createDescription">
+                <mat-label>Description</mat-label>
+                <textarea matInput formControlName="description"></textarea>
+              </mat-form-field>
+              <button type="submit" class="btn btn-primary submit">Valider</button>
+            </form>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </mat-card-actions>
   </mat-card>
-  <button mat-stroked-button (click)="onUpdate()" *ngIf="isAdmin || secteur.userId === user.id">Modifier</button>
-  <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
 </div>
-<app-secteur-update *ngIf="update" [secteur]="secteur" [voies]="voies" (secteurUpdatedEvent)="updateSecteur($event)"></app-secteur-update>
+<app-secteur-update *ngIf="update" [secteur]="secteur" [voies]="voies" (secteurUpdatedEvent)="updateSecteur($event)">
+</app-secteur-update>

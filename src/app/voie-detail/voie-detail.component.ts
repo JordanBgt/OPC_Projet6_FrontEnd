@@ -11,6 +11,8 @@ import { isAdmin } from '../shared/auth-utils';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HTTP_STATUS_NOCONTENT } from '../../../app.constants';
 import { VoieService } from '../services/voie.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ILongueur, Longueur } from '../shared/model/longueur.model';
 
 type EntityResponseType = HttpResponse<IVoie>;
 
@@ -28,6 +30,7 @@ export class VoieDetailComponent implements OnInit {
   update = false;
   user: any;
   isAdmin: boolean;
+  longueurForm: FormGroup;
 
   constructor(private voieService: VoieService,
               private cotationService: CotationService,
@@ -35,7 +38,11 @@ export class VoieDetailComponent implements OnInit {
               private route: ActivatedRoute,
               private tokenStorageService: TokenStorageService,
               private router: Router,
-              private snackBar: MatSnackBar) { }
+              private snackBar: MatSnackBar,
+              private formBuilder: FormBuilder) {
+    this.longueurs = [];
+    this.cotations = [];
+  }
 
   ngOnInit() {
     this.user = this.tokenStorageService.getUser();
@@ -44,6 +51,7 @@ export class VoieDetailComponent implements OnInit {
     this.loadVoie();
     this.loadCotations();
     this.loadLongueurs();
+    this.initLongueurForm();
   }
 
   onUpdate() {
@@ -71,7 +79,7 @@ export class VoieDetailComponent implements OnInit {
   }
 
   loadLongueurs() {
-    this.longueurService.getAllLongueurs({unpaged: true})
+    this.longueurService.getAllLongueurs({unpaged: true, voieId: this.voieId})
       .subscribe((res: HttpResponse<any>) => this.longueurs = res.body.content);
   }
 
@@ -79,5 +87,39 @@ export class VoieDetailComponent implements OnInit {
     this.voieService.updateVoie(voie, this.user.id).subscribe((res: EntityResponseType) => this.voie = res.body,
       (error => console.error(error)),
       () => this.update = false);
+  }
+
+  initLongueurForm() {
+    this.longueurForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      description: ['', Validators.required],
+      cotationMin: ['', Validators.required],
+      cotationMax: ['', Validators.required]
+    });
+  }
+
+  onAddLongueur() {
+    const formValue = this.longueurForm.value;
+    const longueur = new Longueur(null, formValue.name, formValue.cotationMin, formValue.cotationMax,
+      formValue.description, this.user.id, this.voieId);
+    this.longueurService.createLongueur(longueur).subscribe((res: HttpResponse<ILongueur>) => console.log(res.body),
+      (error => console.error(error)),
+      () => this.loadLongueurs());
+  }
+
+  onEditLongueur(longueurId: number) {
+    this.router.navigate([`longueurs/${longueurId}`]);
+  }
+
+  onDeleteLongueur(longueurId: number) {
+    let status: number;
+    this.longueurService.deleteLongueur(longueurId).subscribe((res: HttpResponse<any>) => status = res.status,
+      (error => console.error(error)),
+      () => {
+      if (status === HTTP_STATUS_NOCONTENT) {
+        this.snackBar.open('Longueur supprimée', 'Ok', {duration: 5000});
+        this.loadLongueurs();
+      }
+      });
   }
 }

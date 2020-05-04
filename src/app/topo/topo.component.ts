@@ -42,6 +42,7 @@ export class TopoComponent implements OnInit {
               private cotationService: CotationService,
               private tokenStorageService: TokenStorageService) {
     this.topos = [];
+    this.cotations = [];
     this.size = ITEMS_PER_PAGE;
     this.page = 0;
   }
