@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { VoieService } from '../app/voie/voie.service';
+import { VoieService } from '../app/services/voie.service';
 
 describe('VoieService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

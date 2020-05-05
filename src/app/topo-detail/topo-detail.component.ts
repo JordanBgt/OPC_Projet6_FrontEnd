@@ -3,14 +3,14 @@ import { ITopo, Topo } from '../shared/model/topo.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
 import { Cotation, ICotation } from '../shared/model/cotation.model';
-import { TopoDetailService } from './topo-detail.service';
-import { CotationService } from '../cotation/cotation.service';
-import { SpotService } from '../spot/spot.service';
+import { CotationService } from '../services/cotation.service';
+import { SpotService } from '../services/spot.service';
 import { SpotLight } from '../shared/model/spot-light.model';
 import { TokenStorageService } from '../security/token-storage.service';
 import { isAdmin } from '../shared/auth-utils';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HTTP_STATUS_NOCONTENT } from '../../../app.constants';
+import { TopoService } from '../services/topo.service';
 
 type EntityResponseType = HttpResponse<ITopo>;
 
@@ -29,13 +29,16 @@ export class TopoDetailComponent implements OnInit {
   user: any;
   isAdmin: boolean;
 
-  constructor(private topoDetailService: TopoDetailService,
+  constructor(private topoService: TopoService,
               private route: ActivatedRoute,
               private cotationService: CotationService,
               private spotService: SpotService,
               private tokenStorageService: TokenStorageService,
               private router: Router,
-              private snackBar: MatSnackBar) { }
+              private snackBar: MatSnackBar) {
+    this.cotations = [];
+    this.spots = [];
+  }
 
   ngOnInit() {
     this.user = this.tokenStorageService.getUser();
@@ -52,7 +55,7 @@ export class TopoDetailComponent implements OnInit {
 
   onDelete() {
     let status: number;
-    this.topoDetailService.deleteTopo(this.topoId).subscribe((res: any) => status = res.status,
+    this.topoService.deleteTopo(this.topoId).subscribe((res: any) => status = res.status,
       (error => console.error(error)),
       () => {
       if (status === HTTP_STATUS_NOCONTENT) {
@@ -63,7 +66,7 @@ export class TopoDetailComponent implements OnInit {
   }
 
   loadTopo() {
-    this.topoDetailService.getOneTopo(this.topoId).subscribe((res: EntityResponseType) => this.topo = res.body,
+    this.topoService.getOneTopo(this.topoId).subscribe((res: EntityResponseType) => this.topo = res.body,
       (error) => console.error(error),
       () => console.log(this.topo));
   }
@@ -77,7 +80,7 @@ export class TopoDetailComponent implements OnInit {
   }
 
   updateTopo(topo: Topo) {
-    this.topoDetailService.updateTopo(topo).subscribe((res: EntityResponseType) => this.topo = res.body,
+    this.topoService.updateTopo(topo).subscribe((res: EntityResponseType) => this.topo = res.body,
       (error => console.error(error)),
       () => this.update = false);
   }

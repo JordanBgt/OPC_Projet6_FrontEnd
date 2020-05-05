@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { TopoService } from './topo.service';
+import { TopoService } from '../services/topo.service';
 import { HttpResponse } from '@angular/common/http';
 import { ITopo } from '../shared/model/topo.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ICotation } from '../shared/model/cotation.model';
-import { CotationService } from '../cotation/cotation.service';
+import { CotationService } from '../services/cotation.service';
 import { TopoSave } from '../shared/model/topo-save.model';
 import { ITEMS_PER_PAGE } from '../../../app.constants';
 import { ITopoLight } from '../shared/model/topo-light.model';
@@ -42,6 +42,7 @@ export class TopoComponent implements OnInit {
               private cotationService: CotationService,
               private tokenStorageService: TokenStorageService) {
     this.topos = [];
+    this.cotations = [];
     this.size = ITEMS_PER_PAGE;
     this.page = 0;
   }

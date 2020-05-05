@@ -43,7 +43,9 @@
       <mat-card-header class="card-header">
         <mat-card-title>{{secteur.name}}</mat-card-title>
       </mat-card-header>
-      <img mat-card-image src="../assets/logo.png" alt="photo spot">
+      <div class="logo-entite-container">
+        <img src="../assets/secteur.png" alt="logo secteur" class="logo-entite">
+      </div>
       <mat-card-actions align="center">
         <button mat-stroked-button routerLink="{{secteur.id}}">Detail</button>
       </mat-card-actions>

@@ -32,7 +32,7 @@ export class SecteurUpdateComponent implements OnInit {
 
   onUpdate() {
     const formValue = this.secteurUpdateForm.value;
-    this.secteurUpdated = new Secteur(this.secteur.id, formValue.name, formValue.voies, formValue.description);
+    this.secteurUpdated = new Secteur(this.secteur.id, formValue.name, formValue.description, this.secteur.userId, this.secteur.spotId);
     this.secteurUpdatedEvent.emit(this.secteurUpdated);
   }
 

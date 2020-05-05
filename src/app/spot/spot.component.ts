@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ISpot } from '../shared/model/spot.model';
-import { SpotService } from './spot.service';
+import { SpotService } from '../services/spot.service';
 import { HttpResponse } from '@angular/common/http';
 import { ISpotLight } from '../shared/model/spot-light.model';
 import { ITEMS_PER_PAGE } from '../../../app.constants';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CotationService } from '../cotation/cotation.service';
+import { CotationService } from '../services/cotation.service';
 import { ICotation } from '../shared/model/cotation.model';
 import { SpotSave } from '../shared/model/spot-save.model';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -45,6 +45,7 @@ export class SpotComponent implements OnInit {
               private carouselConfig: NgbCarouselConfig,
               private tokenStorageService: TokenStorageService) {
     this.spots = [];
+    this.cotations = [];
     this.size = ITEMS_PER_PAGE;
     this.page = 0;
     this.carouselConfig.interval = 0;

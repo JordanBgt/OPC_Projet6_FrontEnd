@@ -70,7 +70,9 @@
         <mat-card-title>{{voie.name}}</mat-card-title>
         <mat-card-subtitle>Cotation : {{voie.cotationMin.label}} - {{voie.cotationMax.label}}</mat-card-subtitle>
       </mat-card-header>
-      <img mat-card-image src="../assets/logo.png" alt="photo spot">
+      <div class="logo-entite-container">
+        <img src="../assets/voie.png" alt="logo voie" class="logo-entite">
+      </div>
       <mat-card-actions align="center">
         <button mat-stroked-button routerLink="{{voie.id}}">Detail</button>
       </mat-card-actions>

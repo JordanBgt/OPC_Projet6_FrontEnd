@@ -7,6 +7,12 @@
       <mat-card-content class="card-header-content">
         <ul>
           <li><img src="../../assets/cotation.svg"/>{{voie.cotationMin.label}} - {{voie.cotationMax.label}}</li>
+          <li>
+            <button mat-stroked-button (click)="onUpdate()" *ngIf="isAuthorized">Modifier</button>
+          </li>
+          <li>
+            <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
+          </li>
         </ul>
       </mat-card-content>
     </div>
@@ -18,15 +24,57 @@
     </mat-card-header>
     <mat-card-content>{{voie.description}}</mat-card-content>
   </mat-card>
-  <mat-card *ngIf="voie.longueurs?.length > 0" align="center">
+  <mat-card align="center">
     <mat-card-header>
       <div mat-card-avatar class="list-image"></div>
-      <mat-card-title [matBadge]="voie.longueurs.length | numberToString" matBadgeOverlap="false" matBadgeColor="warn">Liste des longueurs</mat-card-title>
+      <mat-card-title [matBadge]="longueurs.length | numberToString" matBadgeOverlap="false" matBadgeColor="warn">
+        Liste des longueurs
+      </mat-card-title>
     </mat-card-header>
-    <mat-card-content *ngFor="let longueur of voie.longueurs">{{longueur.name}}</mat-card-content>
+    <mat-card-content *ngFor="let longueur of longueurs" class="longueurs">
+      <span>{{longueur.name}}</span>
+      <div *ngIf="isAuthorized">
+        <button mat-mini-fab color="primary" (click)="onEditLongueur(longueur.id)"><img src="assets/edit.svg"></button>
+        <button mat-mini-fab color="warn" (click)="onDeleteLongueur(longueur.id)"><img src="assets/delete.svg"></button>
+      </div>
+    </mat-card-content>
+    <mat-card-actions *ngIf="isAuthorized">
+      <div class="row createFormPanel">
+        <mat-accordion class="createAccordion">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>Créer longueur</mat-panel-title>
+            </mat-expansion-panel-header>
+            <form [formGroup]="longueurForm" (ngSubmit)="onAddLongueur()" class="createForm">
+              <mat-form-field appearance="outline" class="createName">
+                <mat-label>Nom</mat-label>
+                <input matInput formControlName="name">
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="createCotation">
+                <mat-label>Cotation min</mat-label>
+                <mat-select formControlName="cotationMin">
+                  <mat-option disabled>Cotation min</mat-option>
+                  <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="createCotation">
+                <mat-label>Cotation max</mat-label>
+                <mat-select formControlName="cotationMax">
+                  <mat-option disabled>Cotation max</mat-option>
+                  <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="createDescription">
+                <mat-label>Description</mat-label>
+                <textarea matInput formControlName="description"></textarea>
+              </mat-form-field>
+              <button type="submit" class="btn btn-primary submit">Valider</button>
+            </form>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </mat-card-actions>
   </mat-card>
-  <button mat-stroked-button (click)="onUpdate()" *ngIf="isAdmin || voie.userId === user.id">Modifier</button>
-  <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
 </div>
 <app-voie-update *ngIf="update" [voie]="voie" [cotations]="cotations" [longueurs]="longueurs"
                  (voieUpdatedEvent)="updateVoie($event)">

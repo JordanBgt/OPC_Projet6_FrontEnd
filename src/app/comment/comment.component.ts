@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IComment } from '../shared/model/comment.model';
-import { CommentService } from './comment.service';
+import { CommentService } from '../services/comment.service';
 import { HttpResponse } from '@angular/common/http';
 import { HTTP_STATUS_NOCONTENT, ITEMS_PER_PAGE } from '../../../app.constants';
 import { MatSnackBar } from '@angular/material/snack-bar';
