@@ -1,10 +1,13 @@
 <div class="entityDetailContent" *ngIf="!update && spot">
   <mat-card class="header" align="center">
-    <ngb-carousel class="carousel">
+    <ngb-carousel class="carousel" *ngIf="spot.photos?.length > 0; else defaultPhoto">
       <ng-template ngbSlide *ngFor="let photo of spot.photos">
         <img src="../assets/{{photo.name}}" class="carousel-img">
       </ng-template>
     </ngb-carousel>
+    <ng-template #defaultPhoto>
+      <img src="../assets/logo.png">
+    </ng-template>
     <div class="content">
       <mat-card-header class="card-header">
         <mat-card-title>{{spot.name}}</mat-card-title>

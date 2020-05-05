@@ -70,7 +70,9 @@
         <mat-card-title>{{longueur.name}}</mat-card-title>
         <mat-card-subtitle>Cotation : {{longueur.cotationMin.label}} - {{longueur.cotationMax.label}}</mat-card-subtitle>
       </mat-card-header>
-      <img mat-card-image src="../assets/logo.png" alt="photo spot">
+      <div class="logo-entite-container">
+        <img src="../assets/longueur.png" alt="logo longueur" class="logo-entite">
+      </div>
       <mat-card-actions align="center">
         <button mat-stroked-button routerLink="{{longueur.id}}">Detail</button>
       </mat-card-actions>
