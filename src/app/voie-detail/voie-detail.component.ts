@@ -31,6 +31,7 @@ export class VoieDetailComponent implements OnInit {
   user: any;
   isAdmin: boolean;
   longueurForm: FormGroup;
+  isAuthorized = false;
 
   constructor(private voieService: VoieService,
               private cotationService: CotationService,
@@ -54,6 +55,10 @@ export class VoieDetailComponent implements OnInit {
     this.initLongueurForm();
   }
 
+  checkIfAuthorized() {
+    this.isAuthorized = this.isAdmin || this.user.id === this.voie.userId;
+  }
+
   onUpdate() {
     this.update = true;
   }
@@ -71,7 +76,9 @@ export class VoieDetailComponent implements OnInit {
   }
 
   loadVoie() {
-    this.voieService.getOneVoie(this.voieId).subscribe((res: EntityResponseType) => this.voie = res.body);
+    this.voieService.getOneVoie(this.voieId).subscribe((res: EntityResponseType) => this.voie = res.body,
+      (error => console.error(error)),
+      () => this.checkIfAuthorized());
   }
 
   loadCotations() {

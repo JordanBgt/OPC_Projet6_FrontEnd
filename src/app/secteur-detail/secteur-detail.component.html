@@ -7,7 +7,7 @@
       <mat-card-content class="card-header-content">
         <ul>
           <li>
-            <button mat-stroked-button (click)="onUpdate()" *ngIf="isAdmin || secteur.userId === user.id">
+            <button mat-stroked-button (click)="onUpdate()" *ngIf="isAuthorized">
               Modifier
             </button>
           </li>
@@ -34,10 +34,12 @@
     </mat-card-header>
     <mat-card-content *ngFor="let voie of voies" class="voies">
       <span>{{voie.name}}</span>
-      <button mat-mini-fab color="primary" (click)="onEditVoie(voie.id)"><img src="assets/edit.svg"></button>
-      <button mat-mini-fab color="warn" (click)="onDeleteVoie(voie.id)"><img src="assets/delete.svg"></button>
+      <div *ngIf="isAuthorized">
+        <button mat-mini-fab color="primary" (click)="onEditVoie(voie.id)"><img src="assets/edit.svg"></button>
+        <button mat-mini-fab color="warn" (click)="onDeleteVoie(voie.id)"><img src="assets/delete.svg"></button>
+      </div>
     </mat-card-content>
-    <mat-card-actions>
+    <mat-card-actions *ngIf="isAuthorized">
       <div class="row createFormPanel">
         <mat-accordion class="createAccordion">
           <mat-expansion-panel>

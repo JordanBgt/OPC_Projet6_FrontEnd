@@ -8,7 +8,7 @@
         <ul>
           <li><img src="../../assets/cotation.svg"/>{{voie.cotationMin.label}} - {{voie.cotationMax.label}}</li>
           <li>
-            <button mat-stroked-button (click)="onUpdate()" *ngIf="isAdmin || voie.userId === user.id">Modifier</button>
+            <button mat-stroked-button (click)="onUpdate()" *ngIf="isAuthorized">Modifier</button>
           </li>
           <li>
             <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
@@ -33,10 +33,12 @@
     </mat-card-header>
     <mat-card-content *ngFor="let longueur of longueurs" class="longueurs">
       <span>{{longueur.name}}</span>
-      <button mat-mini-fab color="primary" (click)="onEditLongueur(longueur.id)"><img src="assets/edit.svg"></button>
-      <button mat-mini-fab color="warn" (click)="onDeleteLongueur(longueur.id)"><img src="assets/delete.svg"></button>
+      <div *ngIf="isAuthorized">
+        <button mat-mini-fab color="primary" (click)="onEditLongueur(longueur.id)"><img src="assets/edit.svg"></button>
+        <button mat-mini-fab color="warn" (click)="onDeleteLongueur(longueur.id)"><img src="assets/delete.svg"></button>
+      </div>
     </mat-card-content>
-    <mat-card-actions>
+    <mat-card-actions *ngIf="isAuthorized">
       <div class="row createFormPanel">
         <mat-accordion class="createAccordion">
           <mat-expansion-panel>

@@ -32,6 +32,7 @@ export class SpotDetailComponent implements OnInit {
   user: any;
   isAdmin: boolean;
   secteurForm: FormGroup;
+  isAuthorized = false;
 
   constructor(private spotService: SpotService,
               private route: ActivatedRoute,
@@ -45,6 +46,10 @@ export class SpotDetailComponent implements OnInit {
     this.carouselConfig.interval = 3000;
     this.cotations = [];
     this.secteurs = [];
+  }
+
+  checkIfAuthorized() {
+    this.isAuthorized = this.isAdmin || this.user.id === this.spot.userId;
   }
 
   ngOnInit() {
@@ -74,7 +79,9 @@ export class SpotDetailComponent implements OnInit {
   }
 
   loadSpot() {
-    this.spotService.getOneSpot(this.spotId).subscribe((res: EntityResponseType) => this.spot = res.body);
+    this.spotService.getOneSpot(this.spotId).subscribe((res: EntityResponseType) => this.spot = res.body,
+      (error => console.error(error)),
+      () => this.checkIfAuthorized());
   }
 
   loadCotations() {

@@ -31,6 +31,7 @@ export class SecteurDetailComponent implements OnInit {
   isAdmin: boolean;
   voieForm: FormGroup;
   cotations: ICotation[];
+  isAuthorized = false;
 
   constructor(private secteurService: SecteurService,
               private route: ActivatedRoute,
@@ -54,6 +55,10 @@ export class SecteurDetailComponent implements OnInit {
     this.initVoieForm();
   }
 
+  checkIfAuthorized() {
+    this.isAuthorized = this.isAdmin || this.user.id === this.secteur.userId;
+  }
+
   onUpdate() {
     this.update = true;
   }
@@ -72,7 +77,9 @@ export class SecteurDetailComponent implements OnInit {
 
   loadSecteur() {
     this.secteurService.getOneSecteur(this.secteurId)
-      .subscribe((res: EntityResponseType) => this.secteur = res.body);
+      .subscribe((res: EntityResponseType) => this.secteur = res.body,
+        (error => console.error(error)),
+        () => this.checkIfAuthorized());
   }
 
   loadVoies() {
