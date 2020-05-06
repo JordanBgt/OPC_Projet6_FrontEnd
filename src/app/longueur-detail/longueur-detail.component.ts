@@ -9,6 +9,8 @@ import { isAdmin } from '../shared/auth-utils';
 import { HTTP_STATUS_NOCONTENT } from '../../../app.constants';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LongueurService } from '../services/longueur.service';
+import { IVoieLight } from '../shared/model/voie-light.model';
+import { VoieService } from '../services/voie.service';
 
 type EntityResponseType = HttpResponse<ILongueur>;
 
@@ -25,13 +27,15 @@ export class LongueurDetailComponent implements OnInit {
   update = false;
   user: any;
   isAdmin: boolean;
+  voies: IVoieLight[];
 
   constructor(private longueurService: LongueurService,
               private route: ActivatedRoute,
               private cotationService: CotationService,
               private tokenStorageService: TokenStorageService,
               private router: Router,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar,
+              private voieService: VoieService) {
     this.cotations = [];
   }
 
@@ -41,6 +45,7 @@ export class LongueurDetailComponent implements OnInit {
     this.longueurId = +this.route.snapshot.paramMap.get('id');
     this.loadLongueur();
     this.loadCotations();
+    this.loadVoies();
   }
 
   onUpdate() {
@@ -67,6 +72,12 @@ export class LongueurDetailComponent implements OnInit {
   loadCotations() {
     this.cotationService.getAllCotations()
       .subscribe((res: HttpResponse<ICotation[]>) => this.cotations = res.body);
+  }
+
+  loadVoies() {
+    this.voieService.getAllVoies({unpaged: true})
+      .subscribe((res: HttpResponse<any>) => this.voies = res.body.content,
+        (error => console.error(error)));
   }
 
   updateLongueur(longueur: Longueur) {

@@ -4,11 +4,13 @@ import { IVoie, Voie } from '../shared/model/voie.model';
 import { VoieService } from '../services/voie.service';
 import { IVoieLight } from '../shared/model/voie-light.model';
 import { ICotation } from '../shared/model/cotation.model';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CotationService } from '../services/cotation.service';
 import { Router } from '@angular/router';
 import { ITEMS_PER_PAGE } from '../../../app.constants';
 import { TokenStorageService } from '../security/token-storage.service';
+import { ISecteurLight } from '../shared/model/secteur-light.model';
+import { SecteurService } from '../services/secteur.service';
 
 type EntityResponseType = HttpResponse<IVoie>;
 type EntityArrayResponseType = HttpResponse<IVoieLight[]>;
@@ -32,14 +34,17 @@ export class VoieComponent implements OnInit {
   createVoieForm: FormGroup;
   isLoggedIn: boolean;
   user: any;
+  secteurs: ISecteurLight[];
 
   constructor(private voieService: VoieService,
               private formBuilder: FormBuilder,
               private cotationService: CotationService,
               private router: Router,
-              private tokenStorageService: TokenStorageService) {
+              private tokenStorageService: TokenStorageService,
+              private secteurService: SecteurService) {
     this.voies = [];
     this.cotations = [];
+    this.secteurs = [];
     this.size = ITEMS_PER_PAGE;
     this.page = 0;
   }
@@ -54,19 +59,26 @@ export class VoieComponent implements OnInit {
       (error: Error) => error.message);
   }
 
+  loadSecteurs() {
+    this.secteurService.getAllSecteurs({unpaged: true})
+      .subscribe((res: HttpResponse<any>) => this.secteurs = res.body.content,
+        (error => console.error(error)));
+  }
+
   ngOnInit() {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
     this.user = this.tokenStorageService.getUser();
     this.loadAll();
     this.loadCotations();
+    this.loadSecteurs();
     this.initSearchForm();
     this.initCreateVoieForm();
   }
 
   paginateVoies(data: any) {
     this.totalPages = data.content.totalPages;
-    for (let i = 0; i < data.content.length; i++) {
-      this.voies.push(data.content[i]);
+    for (const voie of data.content) {
+      this.voies.push(voie);
     }
   }
 
@@ -85,10 +97,11 @@ export class VoieComponent implements OnInit {
 
   initCreateVoieForm() {
     this.createVoieForm = this.formBuilder.group({
-      name: '',
-      description: '',
-      cotationMin: '',
-      cotationMax: ''
+      name: ['', Validators.required],
+      description: ['', Validators.required],
+      cotationMin: ['', Validators.required],
+      cotationMax: ['', Validators.required],
+      secteurs: ['']
     });
   }
 
@@ -103,12 +116,8 @@ export class VoieComponent implements OnInit {
 
   onCreate() {
     const formValue = this.createVoieForm.value;
-    const voie = new Voie();
-    voie.userId = this.user.id;
-    voie.name = formValue.name;
-    voie.description = formValue.description;
-    voie.cotationMin = formValue.cotationMin;
-    voie.cotationMax = formValue.cotationMax;
+    const voie = new Voie(null, formValue.name, formValue.cotationMin, formValue.cotationMax, formValue.description,
+      this.user.id, formValue.secteurs.id);
     let voieCreated: IVoie;
     this.voieService.createVoie(voie).subscribe((res: EntityResponseType) => voieCreated = res.body,
       (error => console.error(error)),

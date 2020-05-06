@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Cotation } from '../shared/model/cotation.model';
 import { Voie } from '../shared/model/voie.model';
-import { Longueur } from '../shared/model/longueur.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { findIndexCotation } from '../shared/entity-utils';
+import { findIndexCotation, findIndexEntity } from '../shared/entity-utils';
 import { LongueurLight } from '../shared/model/longueur-light.model';
+import { SecteurLight } from '../shared/model/secteur-light.model';
 
 @Component({
   selector: 'app-voie-update',
@@ -15,7 +15,7 @@ export class VoieUpdateComponent implements OnInit {
 
   @Input() voie: Voie;
   @Input() cotations: Cotation[];
-  @Input() longueurs: Longueur[];
+  @Input() secteurs: SecteurLight[];
   @Output() voieUpdatedEvent = new EventEmitter();
   voieUpdated: Voie;
   indexCotationMin: number;
@@ -35,7 +35,7 @@ export class VoieUpdateComponent implements OnInit {
       description: this.voie.description,
       cotationMin: this.cotations[this.indexCotationMin],
       cotationMax: this.cotations[this.indexCotationMax],
-      longueurs: ['']
+      secteurs: this.secteurs[findIndexEntity(this.secteurs, this.voie.secteurId)]
     });
   }
 
@@ -47,11 +47,7 @@ export class VoieUpdateComponent implements OnInit {
   onUpdate() {
     const formValue = this.voieUpdateForm.value;
     this.voieUpdated = new Voie(this.voie.id, formValue.name, formValue.cotationMin, formValue.cotationMax,
-      formValue.longueurs, formValue.description);
+      formValue.description, this.voie.userId, formValue.secteurs.id);
     this.voieUpdatedEvent.emit(this.voieUpdated);
-  }
-
-  compareObjects(o1: LongueurLight, o2: LongueurLight): boolean {
-    return o1.id === o2.id;
   }
 }

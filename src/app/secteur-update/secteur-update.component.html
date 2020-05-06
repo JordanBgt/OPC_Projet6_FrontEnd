@@ -14,9 +14,9 @@
     </div>
     <div class="row">
       <mat-form-field appearance="outline">
-        <mat-label>Liste des voies</mat-label>
-        <mat-select formControlName="voies" multiple [compareWith]="compareObjects" [(ngModel)]="secteur.voies">
-          <mat-option *ngFor="let voie of voies" [value]="voie">{{voie.name}}</mat-option>
+        <mat-label>Liste des spots</mat-label>
+        <mat-select formControlName="spots">
+          <mat-option *ngFor="let spot of spots" [value]="spot">{{spot.name}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>

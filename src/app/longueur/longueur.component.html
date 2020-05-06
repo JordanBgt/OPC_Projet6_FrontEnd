@@ -59,6 +59,12 @@
             <mat-label>Description</mat-label>
             <textarea matInput formControlName="description"></textarea>
           </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Liste des voies</mat-label>
+            <mat-select formControlName="voies">
+              <mat-option *ngFor="let voie of voies" [value]="voie">{{voie.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
           <button type="submit" class="btn btn-primary submit">Valider</button>
         </form>
       </mat-expansion-panel>

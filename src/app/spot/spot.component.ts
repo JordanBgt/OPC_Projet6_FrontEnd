@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ISpot } from '../shared/model/spot.model';
+import { ISpot, Spot } from '../shared/model/spot.model';
 import { SpotService } from '../services/spot.service';
 import { HttpResponse } from '@angular/common/http';
 import { ISpotLight } from '../shared/model/spot-light.model';
@@ -121,14 +121,8 @@ export class SpotComponent implements OnInit {
 
   onCreate() {
     const formValue = this.createSpotForm.value;
-    const spot = new SpotSave();
-    spot.userId = this.user.id;
-    spot.name = formValue.name;
-    spot.country = formValue.country;
-    spot.city = formValue.city;
-    spot.cotationMin = formValue.cotationMin;
-    spot.cotationMax = formValue.cotationMax;
-    spot.description = formValue.description;
+    const spot = new Spot(null, formValue.country, formValue.city, formValue.description, false, null,
+      null, this.user.id, formValue.name, formValue.cotationMin, formValue.cotationMax);
     let spotCreated: ISpot;
     this.spotService.createSpot(spot).subscribe((res: EntityResponseType) => spotCreated = res.body,
       (error => console.error(error)),

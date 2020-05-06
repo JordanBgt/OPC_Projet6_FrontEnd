@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ILongueur } from '../shared/model/longueur.model';
+import { ILongueur, Longueur } from '../shared/model/longueur.model';
 import { LongueurService } from '../services/longueur.service';
 import { ILongueurLight } from '../shared/model/longueur-light.model';
 import { ICotation } from '../shared/model/cotation.model';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CotationService } from '../services/cotation.service';
 import { ITEMS_PER_PAGE } from '../../../app.constants';
-import { LongueurSave } from '../shared/model/longueur-save.model';
 import { TokenStorageService } from '../security/token-storage.service';
+import { IVoieLight } from '../shared/model/voie-light.model';
+import { VoieService } from '../services/voie.service';
 
 type EntityResponseType = HttpResponse<ILongueur>;
 type EntityArrayResponseType = HttpResponse<ILongueurLight[]>;
@@ -23,6 +24,7 @@ export class LongueurComponent implements OnInit {
 
   longueurs: ILongueurLight[];
   cotations: ICotation[];
+  voies: IVoieLight[];
   size: number;
   page: number;
   totalPages: number;
@@ -38,9 +40,11 @@ export class LongueurComponent implements OnInit {
               private formBuilder: FormBuilder,
               private router: Router,
               private cotationService: CotationService,
-              private tokenStorageService: TokenStorageService) {
+              private tokenStorageService: TokenStorageService,
+              private voieService: VoieService) {
     this.longueurs = [];
     this.cotations = [];
+    this.voies = [];
     this.page = 0;
     this.size = ITEMS_PER_PAGE;
   }
@@ -55,19 +59,26 @@ export class LongueurComponent implements OnInit {
     this.cotationService.getAllCotations().subscribe((res: HttpResponse<ICotation[]>) => this.cotations = res.body);
   }
 
+  loadVoies() {
+    this.voieService.getAllVoies({unpaged: true})
+      .subscribe((res: HttpResponse<any>) => this.voies = res.body.content,
+        (error => console.error(error)));
+  }
+
   ngOnInit() {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
     this.user = this.tokenStorageService.getUser();
     this.loadAll();
     this.loadCotations();
+    this.loadVoies();
     this.initSearchForm();
     this.initCreateLongueurForm();
   }
 
   paginateLongueurs(data: any) {
     this.totalPages = data.totalPages;
-    for (let i = 0; i < data.content.length; i++) {
-      this.longueurs.push(data.content[i]);
+    for (const longueur of data.content) {
+      this.longueurs.push(longueur);
     }
   }
 
@@ -86,10 +97,11 @@ export class LongueurComponent implements OnInit {
 
   initCreateLongueurForm() {
     this.createLongueurForm = this.formBuilder.group({
-      name: '',
-      description: '',
-      cotationMin: '',
-      cotationMax: ''
+      name: ['', Validators.required],
+      description: ['', Validators.required],
+      cotationMin: ['', Validators.required],
+      cotationMax: ['', Validators.required],
+      voies: ['']
     });
   }
 
@@ -104,12 +116,8 @@ export class LongueurComponent implements OnInit {
 
   onCreate() {
     const formValue = this.createLongueurForm.value;
-    const longueur = new LongueurSave();
-    longueur.userId = this.user.id;
-    longueur.name = formValue.name;
-    longueur.description = formValue.description;
-    longueur.cotationMin = formValue.cotationMin;
-    longueur.cotationMax = formValue.cotationMax;
+    const longueur = new Longueur(null, formValue.name, formValue.cotationMin, formValue.cotationMax,
+      formValue.description, this.user.id, formValue.voies.id);
     let longueurCreated: ILongueur;
     this.longueurService.createLongueur(longueur).subscribe((res: EntityResponseType) => longueurCreated = res.body,
       (error => console.log(error)),

@@ -13,6 +13,9 @@ import { HTTP_STATUS_NOCONTENT } from '../../../app.constants';
 import { VoieService } from '../services/voie.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ILongueur, Longueur } from '../shared/model/longueur.model';
+import { ISecteur } from '../shared/model/secteur.model';
+import { ISecteurLight } from '../shared/model/secteur-light.model';
+import { SecteurService } from '../services/secteur.service';
 
 type EntityResponseType = HttpResponse<IVoie>;
 
@@ -32,6 +35,7 @@ export class VoieDetailComponent implements OnInit {
   isAdmin: boolean;
   longueurForm: FormGroup;
   isAuthorized = false;
+  secteurs: ISecteurLight[];
 
   constructor(private voieService: VoieService,
               private cotationService: CotationService,
@@ -40,9 +44,11 @@ export class VoieDetailComponent implements OnInit {
               private tokenStorageService: TokenStorageService,
               private router: Router,
               private snackBar: MatSnackBar,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private secteurService: SecteurService) {
     this.longueurs = [];
     this.cotations = [];
+    this.secteurs = [];
   }
 
   ngOnInit() {
@@ -52,6 +58,7 @@ export class VoieDetailComponent implements OnInit {
     this.loadVoie();
     this.loadCotations();
     this.loadLongueurs();
+    this.loadSecteurs();
     this.initLongueurForm();
   }
 
@@ -88,6 +95,12 @@ export class VoieDetailComponent implements OnInit {
   loadLongueurs() {
     this.longueurService.getAllLongueurs({unpaged: true, voieId: this.voieId})
       .subscribe((res: HttpResponse<any>) => this.longueurs = res.body.content);
+  }
+
+  loadSecteurs() {
+    this.secteurService.getAllSecteurs({unpaged: true})
+      .subscribe((res: HttpResponse<any>) => this.secteurs = res.body.content,
+        (error => console.error(error)));
   }
 
   updateVoie(voie: Voie) {

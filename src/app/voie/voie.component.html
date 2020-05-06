@@ -59,6 +59,12 @@
             <mat-label>Description</mat-label>
             <textarea matInput formControlName="description"></textarea>
           </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Liste des secteurs</mat-label>
+            <mat-select formControlName="secteurs">
+              <mat-option *ngFor="let secteur of secteurs" [value]="secteur">{{secteur.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
           <button type="submit" class="btn btn-primary submit">Valider</button>
         </form>
       </mat-expansion-panel>

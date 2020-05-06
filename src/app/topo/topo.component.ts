@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { TopoService } from '../services/topo.service';
 import { HttpResponse } from '@angular/common/http';
-import { ITopo } from '../shared/model/topo.model';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { ITopo, Topo } from '../shared/model/topo.model';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ICotation } from '../shared/model/cotation.model';
 import { CotationService } from '../services/cotation.service';
-import { TopoSave } from '../shared/model/topo-save.model';
 import { ITEMS_PER_PAGE } from '../../../app.constants';
 import { ITopoLight } from '../shared/model/topo-light.model';
 import { TokenStorageService } from '../security/token-storage.service';
+import { ISpotLight } from '../shared/model/spot-light.model';
+import { SpotService } from '../services/spot.service';
 
 type EntityResponseType = HttpResponse<ITopo>;
 type EntityArrayResponseType = HttpResponse<ITopoLight[]>;
@@ -24,6 +25,7 @@ export class TopoComponent implements OnInit {
   topos: ITopoLight[];
   topoForm: FormGroup;
   cotations: ICotation[];
+  spots: ISpotLight[];
   size: number;
   page: number;
   searchForm: FormGroup;
@@ -40,9 +42,11 @@ export class TopoComponent implements OnInit {
               private formBuilder: FormBuilder,
               private router: Router,
               private cotationService: CotationService,
-              private tokenStorageService: TokenStorageService) {
+              private tokenStorageService: TokenStorageService,
+              private spotService: SpotService) {
     this.topos = [];
     this.cotations = [];
+    this.spots = [];
     this.size = ITEMS_PER_PAGE;
     this.page = 0;
   }
@@ -55,7 +59,14 @@ export class TopoComponent implements OnInit {
 
   loadCotations() {
     this.cotationService.getAllCotations().subscribe((res: HttpResponse<ICotation[]>) => this.cotations = res.body,
-      (error: Error) => error.message);
+      (error => console.error(error)));
+  }
+
+  loadSpots() {
+    this.spotService.getAllSpots({unpaged: true})
+      .subscribe((res: HttpResponse<any>) => this.spots = res.body.content,
+        (error => console.error(error)),
+        () => console.log(JSON.stringify(this.spots)));
   }
 
   ngOnInit() {
@@ -63,18 +74,20 @@ export class TopoComponent implements OnInit {
     this.user = this.tokenStorageService.getUser();
     this.loadAll();
     this.loadCotations();
+    this.loadSpots();
     this.initTopoForm();
     this.initSearchForm();
   }
 
   initTopoForm() {
     this.topoForm = this.formBuilder.group({
-      name: '',
-      country: '',
-      region: '',
-      cotationMin: '',
-      cotationMax: '',
-      description: ''
+      name: ['', Validators.required],
+      country: ['', Validators.required],
+      region: ['', Validators.required],
+      cotationMin: ['', Validators.required],
+      cotationMax: ['', Validators.required],
+      description: ['', Validators.required],
+      spots: ['']
     });
   }
 
@@ -90,14 +103,8 @@ export class TopoComponent implements OnInit {
 
   onCreate() {
     const formValue = this.topoForm.value;
-    const topo = new TopoSave();
-    topo.userId = this.user.id;
-    topo.name = formValue.name;
-    topo.country = formValue.country;
-    topo.region = formValue.region;
-    topo.cotationMin = formValue.cotationMin;
-    topo.cotationMax = formValue.cotationMax;
-    topo.description = formValue.description;
+    const topo = new Topo(null, formValue.name, formValue.description, formValue.cotationMin, formValue.cotationMax,
+      null, formValue.country, formValue.region, formValue.spots, this.user.id, null, new Date(), null);
     let topoCreated: ITopo;
     this.topoService.createTopo(topo).subscribe((res: EntityResponseType) => topoCreated = res.body,
       (error: Error) => console.error(error.message),
@@ -111,8 +118,8 @@ export class TopoComponent implements OnInit {
 
    paginateTopos(data: any) {
     this.totalPages = data.totalPages;
-    for (let i = 0; i < data.content.length; i++) {
-      this.topos.push(data.content[i]);
+    for (const topo of data.content) {
+      this.topos.push(topo);
     }
   }
 
@@ -131,5 +138,4 @@ export class TopoComponent implements OnInit {
     this.topos = [];
     this.page = 0;
   }
-
 }

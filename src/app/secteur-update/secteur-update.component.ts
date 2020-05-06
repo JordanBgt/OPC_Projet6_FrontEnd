@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Secteur } from '../shared/model/secteur.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { VoieLight } from '../shared/model/voie-light.model';
+import { SpotLight } from '../shared/model/spot-light.model';
+import { findIndexEntity } from '../shared/entity-utils';
 
 @Component({
   selector: 'app-secteur-update',
@@ -11,7 +13,7 @@ import { VoieLight } from '../shared/model/voie-light.model';
 export class SecteurUpdateComponent implements OnInit {
 
   @Input() secteur: Secteur;
-  @Input() voies: VoieLight[];
+  @Input() spots: SpotLight[];
   @Output() secteurUpdatedEvent = new EventEmitter();
   secteurUpdated: Secteur;
   secteurUpdateForm: FormGroup;
@@ -26,17 +28,13 @@ export class SecteurUpdateComponent implements OnInit {
     this.secteurUpdateForm = this.formBuilder.group({
       name: this.secteur.name,
       description: this.secteur.description,
-      voies: ['']
+      spots: this.spots[findIndexEntity(this.spots, this.secteur.spotId)]
     });
   }
 
   onUpdate() {
     const formValue = this.secteurUpdateForm.value;
-    this.secteurUpdated = new Secteur(this.secteur.id, formValue.name, formValue.description, this.secteur.userId, this.secteur.spotId);
+    this.secteurUpdated = new Secteur(this.secteur.id, formValue.name, formValue.description, this.secteur.userId, formValue.spots.id);
     this.secteurUpdatedEvent.emit(this.secteurUpdated);
-  }
-
-  compareObjects(o1: VoieLight, o2: VoieLight): boolean {
-    return o1.id === o2.id;
   }
 }

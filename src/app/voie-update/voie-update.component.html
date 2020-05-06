@@ -28,9 +28,9 @@
     </div>
     <div class="row">
       <mat-form-field appearance="outline">
-        <mat-label>Liste des longueurs</mat-label>
-        <mat-select formControlName="longueurs" multiple [compareWith]="compareObjects" [(ngModel)]="voie.longueurs">
-          <mat-option *ngFor="let longueur of longueurs" [value]="longueur">{{longueur.name}}</mat-option>
+        <mat-label>Liste des secteurs</mat-label>
+        <mat-select formControlName="secteurs">
+          <mat-option *ngFor="let secteur of secteurs" [value]="secteur">{{secteur.name}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>

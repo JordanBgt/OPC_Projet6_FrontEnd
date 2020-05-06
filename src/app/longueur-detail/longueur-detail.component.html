@@ -21,6 +21,6 @@
   <button mat-stroked-button (click)="onUpdate()" *ngIf="isAdmin || longueur.userId === user.id">Modifier</button>
   <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
 </div>
-<app-longueur-update *ngIf="update" [longueur]="longueur" [cotations]="cotations"
+<app-longueur-update *ngIf="update" [longueur]="longueur" [cotations]="cotations" [voies]="voies"
                  (longueurUpdatedEvent)="updateLongueur($event)">
 </app-longueur-update>

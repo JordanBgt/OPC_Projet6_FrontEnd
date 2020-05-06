@@ -2,7 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Longueur } from '../shared/model/longueur.model';
 import { Cotation } from '../shared/model/cotation.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { findIndexCotation } from '../shared/entity-utils';
+import { findIndexCotation, findIndexEntity } from '../shared/entity-utils';
+import { VoieLight } from '../shared/model/voie-light.model';
 
 @Component({
   selector: 'app-longueur-update',
@@ -13,6 +14,7 @@ export class LongueurUpdateComponent implements OnInit {
 
   @Input() longueur: Longueur;
   @Input() cotations: Cotation[];
+  @Input() voies: VoieLight[];
   @Output() longueurUpdatedEvent = new EventEmitter();
   longueurUpdated: Longueur;
   indexCotationMin: number;
@@ -31,7 +33,8 @@ export class LongueurUpdateComponent implements OnInit {
       name: this.longueur.name,
       description: this.longueur.description,
       cotationMin: this.cotations[this.indexCotationMin],
-      cotationMax: this.cotations[this.indexCotationMax]
+      cotationMax: this.cotations[this.indexCotationMax],
+      voies: this.voies[findIndexEntity(this.voies, this.longueur.voieId)]
     });
   }
 
@@ -43,7 +46,7 @@ export class LongueurUpdateComponent implements OnInit {
   onUpdate() {
     const formValue = this.longueurUpdateForm.value;
     this.longueurUpdated = new Longueur(this.longueur.id, formValue.name, formValue.cotationMin, formValue.cotationMax,
-      formValue.description);
+      formValue.description, this.longueur.userId, formValue.voies.id);
     this.longueurUpdatedEvent.emit(this.longueurUpdated);
   }
 

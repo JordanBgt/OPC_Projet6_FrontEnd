@@ -72,6 +72,12 @@
             <mat-label>Description</mat-label>
             <textarea matInput formControlName="description"></textarea>
           </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Liste des spots</mat-label>
+            <mat-select formControlName="spots" multiple>
+              <mat-option *ngFor="let spot of spots" [value]="spot">{{spot.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
           <button type="submit" class="btn btn-primary submit">Valider</button>
         </form>
       </mat-expansion-panel>

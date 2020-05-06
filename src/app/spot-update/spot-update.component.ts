@@ -55,8 +55,4 @@ export class SpotUpdateComponent implements OnInit {
       formValue.name, formValue.cotationMin, formValue.cotationMax);
     this.spotUpdatedEvent.emit(this.spotUpdated);
   }
-
-  compareObjects(o1: SecteurLight, o2: SecteurLight): boolean {
-    return o1.id === o2.id;
-  }
 }
