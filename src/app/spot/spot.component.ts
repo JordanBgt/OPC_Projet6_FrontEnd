@@ -8,7 +8,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CotationService } from '../services/cotation.service';
 import { ICotation } from '../shared/model/cotation.model';
-import { SpotSave } from '../shared/model/spot-save.model';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TokenStorageService } from '../security/token-storage.service';
 

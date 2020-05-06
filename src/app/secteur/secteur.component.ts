@@ -6,7 +6,6 @@ import { ISecteurLight } from '../shared/model/secteur-light.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ITEMS_PER_PAGE } from '../../../app.constants';
-import { SecteurSave } from '../shared/model/secteur-save.model';
 import { TokenStorageService } from '../security/token-storage.service';
 import { ISpotLight } from '../shared/model/spot-light.model';
 import { SpotService } from '../services/spot.service';
