@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenStorageService } from './security/token-storage.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,8 @@ export class AppComponent implements OnInit {
   isLoggedIn = false;
   username: string;
 
-  constructor(private tokenStorageService: TokenStorageService) {}
+  constructor(private tokenStorageService: TokenStorageService,
+              private snackBar: MatSnackBar) {}
 
   ngOnInit() {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
@@ -26,6 +28,7 @@ export class AppComponent implements OnInit {
 
   logout() {
     this.tokenStorageService.signout();
+    this.snackBar.open('Vous êtes déconnecté !', 'Ok', {duration: 2000});
     this.isLoggedIn = false;
   }
 }
