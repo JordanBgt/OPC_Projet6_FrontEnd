@@ -42,13 +42,14 @@ topo en « disponible ». La plateforme se contente de mettre en contact les deu
 ## Partie FRONT-END
 Application Angular
 
-* Angular CLI 8.3.19
+* Angular CLI 9.1.7
+* Typescript 3.8.3
 * Node 12.13.0
-* Rxjs 6.4.0
-* Angular material 8.2.3
+* Rxjs 6.5.5
+* Angular material 9.2.4
 * NgBootstrap 5.3.0
 * Infinite Scroll 8.0.1
-
+* Ngx-material-file-input 2.1.1
 
 ## Déploiement
  *A VENIR*

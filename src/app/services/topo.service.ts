@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpResponse } from '@angular/common/http';
 import { ITopo, Topo } from '../shared/model/topo.model';
 import { Observable } from 'rxjs';
 import { createRequestOption } from '../shared/request-utils';
@@ -36,5 +36,11 @@ export class TopoService {
 
   deleteTopo(topoId: number): Observable<HttpResponse<any>> {
     return this.http.delete(`${this.ressourceUrl}/${topoId}`, {observe: 'response'});
+  }
+
+  uploadPhoto(file: File, fileName: string, topoId: number): void {
+    const formData = new FormData();
+    formData.append('file', file, fileName);
+    this.http.post(`${this.ressourceUrl}/${topoId}/photos`, formData).subscribe();
   }
 }

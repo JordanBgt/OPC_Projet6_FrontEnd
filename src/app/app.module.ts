@@ -51,6 +51,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthGuardService } from './security/auth-guard.service';
 import { httpErrorInterceptorProviders } from './http-error-interceptor';
+import { MaterialFileInputModule } from 'ngx-material-file-input';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -103,7 +104,8 @@ registerLocaleData(localeFr, 'fr');
     MatBadgeModule,
     MatSnackBarModule,
     MatDialogModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MaterialFileInputModule
   ],
   providers: [
     {provide: LOCALE_ID, useValue: 'fr'},

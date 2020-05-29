@@ -11,6 +11,7 @@ import { isAdmin } from '../shared/auth-utils';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HTTP_STATUS_NOCONTENT } from '../../../app.constants';
 import { TopoService } from '../services/topo.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 type EntityResponseType = HttpResponse<ITopo>;
 
@@ -28,6 +29,7 @@ export class TopoDetailComponent implements OnInit {
   update = false;
   user: any;
   isAdmin: boolean;
+  uploadPhotoForm: FormGroup;
 
   constructor(private topoService: TopoService,
               private route: ActivatedRoute,
@@ -35,7 +37,8 @@ export class TopoDetailComponent implements OnInit {
               private spotService: SpotService,
               private tokenStorageService: TokenStorageService,
               private router: Router,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar,
+              private formBuilder: FormBuilder) {
     this.cotations = [];
     this.spots = [];
   }
@@ -47,10 +50,24 @@ export class TopoDetailComponent implements OnInit {
     this.loadTopo();
     this.loadCotations();
     this.loadSpots();
+    this.initUploadPhotoForm();
   }
 
   onUpdate() {
     this.update = true;
+  }
+
+  initUploadPhotoForm() {
+    this.uploadPhotoForm = this.formBuilder.group({
+      photo: ''
+    });
+  }
+
+  onUploadPhoto() {
+    const file: File = this.uploadPhotoForm.value.photo.files[0];
+    const extension = file.type.slice(file.type.indexOf('/') + 1);
+    const filename = `${this.topo.name}-photo.${extension}`;
+    this.topoService.uploadPhoto(file, filename, this.topoId);
   }
 
   onDelete() {
