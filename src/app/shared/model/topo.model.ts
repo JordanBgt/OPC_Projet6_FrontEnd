@@ -1,8 +1,8 @@
 import { ISpot } from './spot.model';
-import { IPhoto } from './photo.model';
 import { ICotation } from './cotation.model';
+import { Photo } from './photo.model';
 
-export interface ITopo {
+export class Topo {
   id?: number;
   name?: string;
   description?: string;
@@ -15,24 +15,12 @@ export interface ITopo {
   creatorId?: number;
   tenantId?: number;
   publicationDate?: Date;
-  photo?: IPhoto;
-}
+  photo?: Photo;
 
-export class Topo implements ITopo {
-  constructor(
-    public id?: number,
-    public name?: string,
-    public description?: string,
-    public cotationMin?: ICotation,
-    public cotationMax?: ICotation,
-    public isAvailable?: boolean,
-    public country?: string,
-    public region?: string,
-    public spots?: ISpot[],
-    public creatorId?: number,
-    public tenantId?: number,
-    public publicationDate?: Date,
-    public photo?: IPhoto
-  ) {
+  constructor(data: Partial<Topo>) {
+    Object.assign(this, data, {
+      photo: data.photo != null ? new Photo(data.photo) : null
+    });
   }
 }
+

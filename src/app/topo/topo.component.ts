@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { TopoService } from '../services/topo.service';
 import { HttpResponse } from '@angular/common/http';
-import { ITopo, Topo } from '../shared/model/topo.model';
+import { Topo } from '../shared/model/topo.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ICotation } from '../shared/model/cotation.model';
 import { CotationService } from '../services/cotation.service';
 import { ITEMS_PER_PAGE } from '../../../app.constants';
-import { ITopoLight } from '../shared/model/topo-light.model';
+import { ITopoLight, TopoLight } from '../shared/model/topo-light.model';
 import { TokenStorageService } from '../security/token-storage.service';
 import { ISpotLight } from '../shared/model/spot-light.model';
 import { SpotService } from '../services/spot.service';
+import { tap } from 'rxjs/operators';
 
-type EntityResponseType = HttpResponse<ITopo>;
-type EntityArrayResponseType = HttpResponse<ITopoLight[]>;
+type EntityResponseType = HttpResponse<Topo>;
 
 @Component({
   selector: 'app-topo',
@@ -53,8 +53,15 @@ export class TopoComponent implements OnInit {
 
   loadAll() {
     this.topoService.getAllTopos({page: this.page, size: this.size, country: this.country, name: this.name,
-      cotationMin: this.cotationMin, cotationMax: this.cotationMax, isAvailable: this.isAvailable})
-      .subscribe((res: EntityArrayResponseType ) => this.paginateTopos(res.body));
+      cotationMin: this.cotationMin, cotationMax: this.cotationMax, isAvailable: this.isAvailable}).pipe(
+        tap(data => {
+          this.totalPages = data.totalPages;
+          for (const topo of data.content) {
+            this.topos.push(new Topo(topo));
+          }
+        })
+    )
+      .subscribe();
   }
 
   loadCotations() {
@@ -103,9 +110,11 @@ export class TopoComponent implements OnInit {
 
   onCreate() {
     const formValue = this.topoForm.value;
-    const topo = new Topo(null, formValue.name, formValue.description, formValue.cotationMin, formValue.cotationMax,
-      null, formValue.country, formValue.region, formValue.spots, this.user.id, null, new Date(), null);
-    let topoCreated: ITopo;
+    const topo = new Topo({id: null, name: formValue.name, description: formValue.description,
+      cotationMin: formValue.cotationMin, cotationMax: formValue.cotationMax, isAvailable: null,
+      country: formValue.country, region: formValue.region, spots: formValue.spots, creatorId: this.user.id,
+      tenantId: null, publicationDate: new Date(), photo: null});
+    let topoCreated: Topo;
     this.topoService.createTopo(topo).subscribe((res: EntityResponseType) => topoCreated = res.body,
       (error: Error) => console.error(error.message),
       () => this.router.navigate([`/topos/${topoCreated.id}`]) );
@@ -114,13 +123,6 @@ export class TopoComponent implements OnInit {
   loadPage(page) {
     this.page = page;
     this.loadAll();
-  }
-
-   paginateTopos(data: any) {
-    this.totalPages = data.totalPages;
-    for (const topo of data.content) {
-      this.topos.push(topo);
-    }
   }
 
   onSearch() {
