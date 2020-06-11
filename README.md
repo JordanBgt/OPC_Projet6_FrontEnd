@@ -55,5 +55,17 @@ Application Angular
  *A VENIR*
 
 ## Lancement de l'application
+
+Pour installer les dépendances : 
+
+    npm install
+    
+Ou : 
+
+    yarn install
+    
+Pour lancer le serveur :
+
     ng serve
+    
 Application disponible à l'adresse suivante : [http://localhost:4200](http://localhost:4200)
