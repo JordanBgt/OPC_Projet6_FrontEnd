@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
 import { IVoie, Voie } from '../shared/model/voie.model';
 import { ICotation } from '../shared/model/cotation.model';
 import { LongueurLight } from '../shared/model/longueur-light.model';
@@ -12,12 +11,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { HTTP_STATUS_NOCONTENT } from '../../../app.constants';
 import { VoieService } from '../services/voie.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ILongueur, Longueur } from '../shared/model/longueur.model';
-import { ISecteur } from '../shared/model/secteur.model';
+import { Longueur } from '../shared/model/longueur.model';
 import { ISecteurLight } from '../shared/model/secteur-light.model';
 import { SecteurService } from '../services/secteur.service';
-
-type EntityResponseType = HttpResponse<IVoie>;
+import { catchError, tap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-voie-detail',
@@ -71,42 +69,58 @@ export class VoieDetailComponent implements OnInit {
   }
 
   onDelete() {
-    let status: number;
-    this.voieService.deleteVoie(this.voieId).subscribe((res: any) => status = res.status,
-      (error => console.error(error)),
-      () => {
-      if (status === HTTP_STATUS_NOCONTENT) {
-        this.snackBar.open('Voie supprimée', 'Ok', {duration: 5000});
-        this.router.navigate(['voies']);
-      }
-      });
+    this.voieService.deleteVoie(this.voieId).pipe(
+      tap((res: any) => {
+        if (res.status === HTTP_STATUS_NOCONTENT) {
+          this.snackBar.open('Voie supprimée', 'Ok', {duration: 5000});
+          this.router.navigate(['voies']);
+        } else {
+          this.snackBar.open('Erreur lors de la suppression de la voie', 'Ok', {duration: 5000});
+        }
+      }),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   loadVoie() {
-    this.voieService.getOneVoie(this.voieId).subscribe((res: EntityResponseType) => this.voie = res.body,
-      (error => console.error(error)),
-      () => this.checkIfAuthorized());
+    this.voieService.getOneVoie(this.voieId).pipe(
+      tap((res: IVoie) => {
+      this.voie = res;
+      this.checkIfAuthorized();
+      }),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   loadCotations() {
-    this.cotationService.getAllCotations().subscribe((res: HttpResponse<ICotation[]>) => this.cotations = res.body);
+    this.cotationService.getAllCotations().pipe(
+      tap((res: ICotation[]) => this.cotations = res),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   loadLongueurs() {
-    this.longueurService.getAllLongueurs({unpaged: true, voieId: this.voieId})
-      .subscribe((res: HttpResponse<any>) => this.longueurs = res.body.content);
+    this.longueurService.getAllLongueurs({unpaged: true, voieId: this.voieId}).pipe(
+      tap((res: any) => res.content.forEach(longueur => this.longueurs.push(longueur))),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   loadSecteurs() {
-    this.secteurService.getAllSecteurs({unpaged: true})
-      .subscribe((res: HttpResponse<any>) => this.secteurs = res.body.content,
-        (error => console.error(error)));
+    this.secteurService.getAllSecteurs({unpaged: true}).pipe(
+      tap((res: any) => res.content.forEach(secteur => this.secteurs.push(secteur))),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   updateVoie(voie: Voie) {
-    this.voieService.updateVoie(voie, this.user.id).subscribe((res: EntityResponseType) => this.voie = res.body,
-      (error => console.error(error)),
-      () => this.update = false);
+    this.voieService.updateVoie(voie, this.user.id).pipe(
+      tap((res: IVoie) => {
+        this.voie = res;
+        this.update = false;
+      }),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   initLongueurForm() {
@@ -122,9 +136,10 @@ export class VoieDetailComponent implements OnInit {
     const formValue = this.longueurForm.value;
     const longueur = new Longueur(null, formValue.name, formValue.cotationMin, formValue.cotationMax,
       formValue.description, this.user.id, this.voieId);
-    this.longueurService.createLongueur(longueur).subscribe((res: HttpResponse<ILongueur>) => console.log(res.body),
-      (error => console.error(error)),
-      () => this.loadLongueurs());
+    this.longueurService.createLongueur(longueur).pipe(
+      tap(() => this.loadLongueurs()),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   onEditLongueur(longueurId: number) {
@@ -132,14 +147,16 @@ export class VoieDetailComponent implements OnInit {
   }
 
   onDeleteLongueur(longueurId: number) {
-    let status: number;
-    this.longueurService.deleteLongueur(longueurId).subscribe((res: HttpResponse<any>) => status = res.status,
-      (error => console.error(error)),
-      () => {
-      if (status === HTTP_STATUS_NOCONTENT) {
-        this.snackBar.open('Longueur supprimée', 'Ok', {duration: 5000});
-        this.loadLongueurs();
-      }
-      });
+    this.longueurService.deleteLongueur(longueurId).pipe(
+      tap((res: any) => {
+        if (res.status === HTTP_STATUS_NOCONTENT) {
+          this.snackBar.open('Longueur supprimée', 'Ok', {duration: 5000});
+          this.loadLongueurs();
+        } else {
+          this.snackBar.open('Erreur lors de la suppression de la longueur', 'Ok', {duration: 5000});
+        }
+      }),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 }

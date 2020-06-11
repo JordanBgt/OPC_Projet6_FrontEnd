@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ISecteur, Secteur } from '../shared/model/secteur.model';
 import { Observable } from 'rxjs';
 import { createRequestOption } from '../shared/request-utils';
-
-type EntityResponseType = HttpResponse<ISecteur>;
-type EntityArrayResponseType = HttpResponse<ISecteur[]>;
 
 @Injectable({
   providedIn: 'root'
@@ -16,25 +13,25 @@ export class SecteurService {
 
   constructor(protected http: HttpClient) { }
 
-  getAllSecteurs(req?: any): Observable<EntityArrayResponseType> {
+  getAllSecteurs(req?: any): Observable<any> {
     const options = createRequestOption(req);
-    return this.http.get<ISecteur[]>(this.ressourceUrl, {params: options, observe: 'response'});
+    return this.http.get<any>(this.ressourceUrl, {params: options});
   }
 
-  createSecteur(secteur: Secteur): Observable<EntityResponseType> {
-    return this.http.post<ISecteur>(this.ressourceUrl, secteur, {observe: 'response'});
+  createSecteur(secteur: Secteur): Observable<ISecteur> {
+    return this.http.post<ISecteur>(this.ressourceUrl, secteur);
   }
 
-  getOneSecteur(secteurId: number): Observable<EntityResponseType> {
-    return this.http.get<ISecteur>(`${this.ressourceUrl}/${secteurId}`, {observe: 'response'});
+  getOneSecteur(secteurId: number): Observable<ISecteur> {
+    return this.http.get<ISecteur>(`${this.ressourceUrl}/${secteurId}`);
   }
 
-  updateSecteur(secteur: Secteur, userId: number): Observable<EntityResponseType> {
+  updateSecteur(secteur: Secteur, userId: number): Observable<ISecteur> {
     const options = createRequestOption({userId});
-    return this.http.put<ISecteur>(`${this.ressourceUrl}/${secteur.id}`, secteur, {params: options, observe: 'response'});
+    return this.http.put<ISecteur>(`${this.ressourceUrl}/${secteur.id}`, secteur, {params: options});
   }
 
-  deleteSecteur(secteurId: number): Observable<HttpResponse<any>> {
+  deleteSecteur(secteurId: number): Observable<any> {
     return this.http.delete(`${this.ressourceUrl}/${secteurId}`, {observe: 'response'});
   }
 }

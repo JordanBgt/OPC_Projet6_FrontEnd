@@ -61,8 +61,10 @@ export class SpotComponent implements OnInit {
 
 
   loadCotations() {
-    this.cotationService.getAllCotations().subscribe((res: HttpResponse<ICotation[]>) => this.cotations = res.body,
-      (error: Error) => error.message);
+    this.cotationService.getAllCotations().pipe(
+      tap((res: ICotation[]) => this.cotations = res),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   ngOnInit() {

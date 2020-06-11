@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ILongueur, Longueur } from '../shared/model/longueur.model';
 import { Observable } from 'rxjs';
 import { createRequestOption } from '../shared/request-utils';
-
-type EntityResponseType = HttpResponse<ILongueur>;
-type EntityArrayResponseType = HttpResponse<ILongueur[]>;
 
 @Injectable({
   providedIn: 'root'
@@ -16,25 +13,25 @@ export class LongueurService {
 
   constructor(protected http: HttpClient) { }
 
-  getAllLongueurs(req?: any): Observable<EntityArrayResponseType> {
+  getAllLongueurs(req?: any): Observable<any> {
     const options = createRequestOption(req);
-    return this.http.get<ILongueur[]>(this.ressourceUrl, {params: options, observe: 'response'});
+    return this.http.get<any>(this.ressourceUrl, {params: options});
   }
 
-  createLongueur(longueur: Longueur): Observable<EntityResponseType> {
-    return this.http.post<ILongueur>(this.ressourceUrl, longueur, {observe: 'response'});
+  createLongueur(longueur: Longueur): Observable<ILongueur> {
+    return this.http.post<ILongueur>(this.ressourceUrl, longueur);
   }
 
-  getOneLongueur(longueurId: number): Observable<EntityResponseType> {
-    return this.http.get<ILongueur>(`${this.ressourceUrl}/${longueurId}`, {observe: 'response'});
+  getOneLongueur(longueurId: number): Observable<ILongueur> {
+    return this.http.get<ILongueur>(`${this.ressourceUrl}/${longueurId}`);
   }
 
-  updateLongueur(longueur: Longueur, userId): Observable<EntityResponseType> {
+  updateLongueur(longueur: Longueur, userId): Observable<ILongueur> {
     const options = createRequestOption({userId});
-    return this.http.put<ILongueur>(`${this.ressourceUrl}/${longueur.id}`, longueur, {params: options, observe: 'response'});
+    return this.http.put<ILongueur>(`${this.ressourceUrl}/${longueur.id}`, longueur, {params: options});
   }
 
-  deleteLongueur(longueurId: number): Observable<HttpResponse<any>> {
+  deleteLongueur(longueurId: number): Observable<any> {
     return this.http.delete(`${this.ressourceUrl}/${longueurId}`, {observe: 'response'});
   }
 }

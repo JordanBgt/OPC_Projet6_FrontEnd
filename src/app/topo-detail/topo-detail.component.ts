@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Topo } from '../shared/model/topo.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpResponse } from '@angular/common/http';
 import { ICotation } from '../shared/model/cotation.model';
 import { CotationService } from '../services/cotation.service';
 import { SpotService } from '../services/spot.service';
@@ -74,15 +73,17 @@ export class TopoDetailComponent implements OnInit {
   }
 
   onDelete() {
-    let status: number;
-    this.topoService.deleteTopo(this.topoId).subscribe((res: any) => status = res.status,
-      (error => console.error(error)),
-      () => {
-      if (status === HTTP_STATUS_NOCONTENT) {
-        this.snackBar.open('Topo supprimé !', 'Ok', {duration: 5000});
-        this.router.navigate(['topos']);
-      }
-      });
+    this.topoService.deleteTopo(this.topoId).pipe(
+      tap((res: any) => {
+        if (res.status === HTTP_STATUS_NOCONTENT) {
+          this.snackBar.open('Topo supprimé !', 'Ok', {duration: 5000});
+          this.router.navigate(['topos']);
+        } else {
+          this.snackBar.open('Erreur lors de la suppression du topo !', 'Ok', {duration: 5000});
+        }
+      }),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   loadTopo() {
@@ -95,7 +96,10 @@ export class TopoDetailComponent implements OnInit {
   }
 
   loadCotations() {
-    this.cotationService.getAllCotations().subscribe((res: HttpResponse<ICotation[]>) => this.cotations = res.body);
+    this.cotationService.getAllCotations().pipe(
+      tap((res: ICotation[]) => this.cotations = res),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   loadSpots() {

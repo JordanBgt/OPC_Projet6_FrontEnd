@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { TopoService } from '../services/topo.service';
-import { HttpResponse } from '@angular/common/http';
 import { Topo } from '../shared/model/topo.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,8 +12,6 @@ import { SpotService } from '../services/spot.service';
 import { catchError, tap } from 'rxjs/operators';
 import { SpotLight } from '../shared/model/spot-light.model';
 import { throwError } from 'rxjs';
-
-type EntityResponseType = HttpResponse<Topo>;
 
 @Component({
   selector: 'app-topo',
@@ -66,8 +63,10 @@ export class TopoComponent implements OnInit {
   }
 
   loadCotations() {
-    this.cotationService.getAllCotations().subscribe((res: HttpResponse<ICotation[]>) => this.cotations = res.body,
-      (error => console.error(error)));
+    this.cotationService.getAllCotations().pipe(
+      tap((res: ICotation[]) => this.cotations = res),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   loadSpots() {

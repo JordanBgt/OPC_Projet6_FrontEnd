@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
 import { ILongueur, Longueur } from '../shared/model/longueur.model';
 import { LongueurService } from '../services/longueur.service';
 import { ILongueurLight } from '../shared/model/longueur-light.model';
@@ -11,9 +10,8 @@ import { ITEMS_PER_PAGE } from '../../../app.constants';
 import { TokenStorageService } from '../security/token-storage.service';
 import { IVoieLight } from '../shared/model/voie-light.model';
 import { VoieService } from '../services/voie.service';
-
-type EntityResponseType = HttpResponse<ILongueur>;
-type EntityArrayResponseType = HttpResponse<ILongueurLight[]>;
+import { catchError, tap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-longueur',
@@ -51,18 +49,24 @@ export class LongueurComponent implements OnInit {
 
   loadAll() {
     this.longueurService.getAllLongueurs({size: this.size, page: this.page, name: this.name,
-      cotationMin: this.cotationMin, cotationMax: this.cotationMax})
-      .subscribe((res: EntityArrayResponseType) => this.paginateLongueurs(res.body));
+      cotationMin: this.cotationMin, cotationMax: this.cotationMax}).pipe(
+        tap((res: any) => this.paginateLongueurs(res)),
+        catchError(error => throwError(error))
+    ).subscribe();
   }
 
   loadCotations() {
-    this.cotationService.getAllCotations().subscribe((res: HttpResponse<ICotation[]>) => this.cotations = res.body);
+    this.cotationService.getAllCotations().pipe(
+      tap((res: ICotation[]) => this.cotations = res),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   loadVoies() {
-    this.voieService.getAllVoies({unpaged: true})
-      .subscribe((res: HttpResponse<any>) => this.voies = res.body.content,
-        (error => console.error(error)));
+    this.voieService.getAllVoies({unpaged: true}).pipe(
+      tap((res: any) => res.content.forEach(voie => this.voies.push(voie))),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   ngOnInit() {
@@ -119,9 +123,12 @@ export class LongueurComponent implements OnInit {
     const longueur = new Longueur(null, formValue.name, formValue.cotationMin, formValue.cotationMax,
       formValue.description, this.user.id, formValue.voies.id);
     let longueurCreated: ILongueur;
-    this.longueurService.createLongueur(longueur).subscribe((res: EntityResponseType) => longueurCreated = res.body,
-      (error => console.log(error)),
-      () => this.router.navigate([`/longueurs/${longueurCreated.id}`]));
+    this.longueurService.createLongueur(longueur).pipe(
+      tap((res: ILongueur) => {
+        longueurCreated = res;
+        this.router.navigate([`/longueurs/${longueurCreated.id}`]);
+      })
+    ).subscribe();
   }
 
   clearLongueursAndPage() {

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
 import { IVoie, Voie } from '../shared/model/voie.model';
 import { VoieService } from '../services/voie.service';
 import { IVoieLight } from '../shared/model/voie-light.model';
@@ -11,9 +10,8 @@ import { ITEMS_PER_PAGE } from '../../../app.constants';
 import { TokenStorageService } from '../security/token-storage.service';
 import { ISecteurLight } from '../shared/model/secteur-light.model';
 import { SecteurService } from '../services/secteur.service';
-
-type EntityResponseType = HttpResponse<IVoie>;
-type EntityArrayResponseType = HttpResponse<IVoieLight[]>;
+import { catchError, tap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-voie',
@@ -51,18 +49,24 @@ export class VoieComponent implements OnInit {
 
   loadAll() {
     this.voieService.getAllVoies({page: this.page, size: this.size, name: this.name, cotationMin: this.cotationMin,
-      cotationMax: this.cotationMax}).subscribe((res: EntityArrayResponseType) => this.paginateVoies(res.body));
+      cotationMax: this.cotationMax}).pipe(
+        tap((res: any) => this.paginateVoies(res)),
+        catchError(error => throwError(error))
+    ).subscribe();
   }
 
   loadCotations() {
-    this.cotationService.getAllCotations().subscribe((res: HttpResponse<ICotation[]>) => this.cotations = res.body,
-      (error: Error) => error.message);
+    this.cotationService.getAllCotations().pipe(
+      tap((res: ICotation[]) => this.cotations = res),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   loadSecteurs() {
-    this.secteurService.getAllSecteurs({unpaged: true})
-      .subscribe((res: HttpResponse<any>) => this.secteurs = res.body.content,
-        (error => console.error(error)));
+    this.secteurService.getAllSecteurs({unpaged: true}).pipe(
+      tap((res: any) => res.content.forEach(secteur => this.secteurs.push(secteur))),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   ngOnInit() {
@@ -119,9 +123,13 @@ export class VoieComponent implements OnInit {
     const voie = new Voie(null, formValue.name, formValue.cotationMin, formValue.cotationMax, formValue.description,
       this.user.id, formValue.secteurs.id);
     let voieCreated: IVoie;
-    this.voieService.createVoie(voie).subscribe((res: EntityResponseType) => voieCreated = res.body,
-      (error => console.error(error)),
-      () => this.router.navigate([`/voies/${voieCreated.id}`]));
+    this.voieService.createVoie(voie).pipe(
+      tap((res: IVoie) => {
+        voieCreated = res;
+        this.router.navigate([`/voies/${voieCreated.id}`]);
+      }),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   clearVoiesAndPage() {

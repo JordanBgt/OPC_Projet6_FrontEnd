@@ -10,15 +10,13 @@ import { HTTP_STATUS_NOCONTENT } from '../../../app.constants';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SecteurService } from '../services/secteur.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IVoie, Voie } from '../shared/model/voie.model';
+import { Voie } from '../shared/model/voie.model';
 import { ICotation } from '../shared/model/cotation.model';
 import { CotationService } from '../services/cotation.service';
 import { SpotService } from '../services/spot.service';
 import { SpotLight } from '../shared/model/spot-light.model';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-
-type EntityResponseType = HttpResponse<ISecteur>;
 
 @Component({
   selector: 'app-secteur-detail',
@@ -72,32 +70,41 @@ export class SecteurDetailComponent implements OnInit {
   }
 
   onDelete() {
-    let status: number;
-    this.secteurService.deleteSecteur(this.secteurId).subscribe((res: any) => status = res.status,
-      (error => console.error(error)),
-      () => {
-      if (status === HTTP_STATUS_NOCONTENT) {
-        this.snackBar.open('Secteur supprimé', 'Ok', {duration: 5000});
-        this.router.navigate(['secteurs']);
-      }
-      });
+    this.secteurService.deleteSecteur(this.secteurId).pipe(
+      tap((res: any) => {
+        if (res.status === HTTP_STATUS_NOCONTENT) {
+          this.snackBar.open('Secteur supprimé', 'Ok', {duration: 5000});
+          this.router.navigate(['secteurs']);
+        } else {
+          this.snackBar.open('Erreur lors de la suppression du secteur', 'Ok', {duration: 5000});
+        }
+      }),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   loadSecteur() {
-    this.secteurService.getOneSecteur(this.secteurId)
-      .subscribe((res: EntityResponseType) => this.secteur = res.body,
-        (error => console.error(error)),
-        () => this.checkIfAuthorized());
+    this.secteurService.getOneSecteur(this.secteurId).pipe(
+      tap((res: ISecteur) => {
+        this.secteur = res;
+        this.checkIfAuthorized();
+      }),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   loadVoies() {
-    this.voieService.getAllVoies({unpaged: true, secteurId: this.secteurId})
-      .subscribe((res: HttpResponse<any>) => this.voies = res.body.content);
+    this.voieService.getAllVoies({unpaged: true, secteurId: this.secteurId}).pipe(
+      tap((res: any) => res.content.forEach(voie => this.voies.push(voie))),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   loadCotations() {
-    this.cotationService.getAllCotations().subscribe((res: HttpResponse<ICotation[]>) => this.cotations = res.body,
-      (error: Error) => error.message);
+    this.cotationService.getAllCotations().pipe(
+      tap((res: ICotation[]) => this.cotations = res),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   loadSpots() {
@@ -108,9 +115,13 @@ export class SecteurDetailComponent implements OnInit {
   }
 
   updateSecteur(secteur: Secteur) {
-    this.secteurService.updateSecteur(secteur, this.user.id).subscribe((res: EntityResponseType) => this.secteur = res.body,
-      (error => console.error(error)),
-      () => this.update = false);
+    this.secteurService.updateSecteur(secteur, this.user.id).pipe(
+      tap((res: ISecteur) => {
+        this.secteur = res;
+        this.update = false;
+      }),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   initVoieForm() {
@@ -126,21 +137,24 @@ export class SecteurDetailComponent implements OnInit {
     const formValue = this.voieForm.value;
     const voie = new Voie(null, formValue.name, formValue.cotationMin, formValue.cotationMax, formValue.description,
       this.user.id, this.secteurId);
-    this.voieService.createVoie(voie).subscribe((res: HttpResponse<IVoie>) => console.log(res.body),
-      (error => console.error(error)),
-      () => this.loadVoies());
+    this.voieService.createVoie(voie).pipe(
+      tap(() => this.loadVoies()),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   onDeleteVoie(voieId: number) {
-    let status: number;
-    this.voieService.deleteVoie(voieId).subscribe((res: HttpResponse<any>) => status = res.status,
-      (error => console.error(error)),
-      () => {
-      if (status === HTTP_STATUS_NOCONTENT) {
-        this.snackBar.open('Voie supprimée', 'Ok', {duration: 5000});
-        this.loadVoies();
-      }
-      });
+    this.voieService.deleteVoie(voieId).pipe(
+      tap((res: any) => {
+        if (res.status === HTTP_STATUS_NOCONTENT) {
+          this.snackBar.open('Voie supprimée', 'Ok', {duration: 5000});
+          this.loadVoies();
+        } else {
+          this.snackBar.open('Erreur lors de la suppression de la voie', 'Ok', {duration: 5000});
+        }
+      }),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   onEditVoie(voieId: number) {

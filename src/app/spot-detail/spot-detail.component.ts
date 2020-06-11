@@ -13,11 +13,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { HTTP_STATUS_NOCONTENT } from '../../../app.constants';
 import { SpotService } from '../services/spot.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ISecteur, Secteur } from '../shared/model/secteur.model';
+import { Secteur } from '../shared/model/secteur.model';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-
-type EntityResponseType = HttpResponse<Spot>;
 
 @Component({
   selector: 'app-spot-detail',
@@ -88,15 +86,17 @@ export class SpotDetailComponent implements OnInit {
   }
 
   onDelete() {
-    let status: number;
-    this.spotService.deleteSpot(this.spotId).subscribe((res: any) => status = res.status,
-      (error => console.error(error)),
-      () => {
-      if (status === HTTP_STATUS_NOCONTENT) {
-        this.snackBar.open('Spot supprimé !', 'OK', {duration: 5000});
-        this.router.navigate(['spots']);
-      }
-      });
+    this.spotService.deleteSpot(this.spotId).pipe(
+      tap((res: any) => {
+        if (res.status === HTTP_STATUS_NOCONTENT) {
+          this.snackBar.open('Spot supprimé !', 'OK', {duration: 5000});
+          this.router.navigate(['spots']);
+        } else {
+          this.snackBar.open('Erreur lors de la suppression du spot !', 'OK', {duration: 5000});
+        }
+      }),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   loadSpot() {
@@ -109,12 +109,17 @@ export class SpotDetailComponent implements OnInit {
   }
 
   loadCotations() {
-    this.cotationService.getAllCotations().subscribe((res: HttpResponse<ICotation[]>) => this.cotations = res.body);
+    this.cotationService.getAllCotations().pipe(
+      tap((res: ICotation[]) => this.cotations = res),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   loadSecteurs() {
-    this.secteurService.getAllSecteurs({unpaged: true, spotId: this.spotId})
-      .subscribe((res: HttpResponse<any>) => this.secteurs = res.body.content);
+    this.secteurService.getAllSecteurs({unpaged: true, spotId: this.spotId}).pipe(
+      tap((res: any) => res.content.forEach(secteur => this.secteurs.push(secteur))),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   initSecteurForm() {
@@ -134,21 +139,24 @@ export class SpotDetailComponent implements OnInit {
   onAddSecteur() {
     const formValue = this.secteurForm.value;
     const secteur = new Secteur(null, formValue.name, formValue.description, this.user.id, this.spotId);
-    this.secteurService.createSecteur(secteur).subscribe((res: HttpResponse<ISecteur>) => console.log(res.body),
-      (error => console.error(error)),
-      () => this.loadSecteurs());
+    this.secteurService.createSecteur(secteur).pipe(
+      tap(() => this.loadSecteurs()),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   onDeleteSecteur(secteurId: number) {
-    let status: number;
-    this.secteurService.deleteSecteur(secteurId).subscribe((res: HttpResponse<any>) => status = res.status,
-      (error => console.error(error)),
-      () => {
-        if (status === HTTP_STATUS_NOCONTENT) {
+    this.secteurService.deleteSecteur(secteurId).pipe(
+      tap((res: any) => {
+        if (res.status === HTTP_STATUS_NOCONTENT) {
           this.snackBar.open('Secteur supprimé', 'Ok', {duration: 5000});
           this.loadSecteurs();
+        } else {
+          this.snackBar.open('Erreur lors de la suppression du secteur', 'Ok', {duration: 5000});
         }
-      });
+      }),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   onEditSecteur(secteurId: number) {

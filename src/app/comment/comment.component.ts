@@ -8,6 +8,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CommentDialogComponent } from '../comment-dialog/comment-dialog.component';
 import { CommentSave } from '../shared/model/comment-save.model';
 import { TokenStorageService } from '../security/token-storage.service';
+import { catchError, tap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 type EntityArrayResponseType = HttpResponse<IComment[]>;
 type EntityResponseType = HttpResponse<IComment>;
 
@@ -40,8 +42,10 @@ export class CommentComponent implements OnInit {
   }
 
   loadAll() {
-    this.commentService.getAllComments({page: this.page, spotId: this.spotId})
-      .subscribe((res: EntityArrayResponseType) => this.paginateComments(res.body));
+    this.commentService.getAllComments({page: this.page, spotId: this.spotId}).pipe(
+      tap((res: any) => this.paginateComments(res)),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   paginateComments(data: any) {
@@ -95,9 +99,13 @@ export class CommentComponent implements OnInit {
     dialogRef.afterClosed().subscribe(data => comment.content = data.content,
       (error => console.error(error)),
       () => {
-      this.commentService.createComment(comment).subscribe((res: EntityResponseType) => commentUpdated = res.body,
-        (error => console.error(error)),
-        () => this.comments.unshift(commentUpdated));
-      });
+        this.commentService.createComment(comment).pipe(
+          tap((res: IComment) => {
+            commentUpdated = res;
+            this.comments.unshift(commentUpdated);
+          }),
+          catchError(error => throwError(error))
+        ).subscribe();
+    });
   }
 }
