@@ -8,9 +8,9 @@
     <ng-template #defaultPhoto>
       <img src="../assets/logo.png">
     </ng-template>
-    <form [formGroup]="uploadPhotoForm">
+    <form [formGroup]="uploadPhotoForm" *ngIf="isAuthorized">
       <mat-form-field appearance="outline">
-        <mat-label>Ajouter/modifier photo</mat-label>
+        <mat-label>Ajouter photo</mat-label>
         <ngx-mat-file-input formControlName="photo" accept="image/*, image/jpg" (change)="onUploadPhoto()"></ngx-mat-file-input>
       </mat-form-field>
     </form>

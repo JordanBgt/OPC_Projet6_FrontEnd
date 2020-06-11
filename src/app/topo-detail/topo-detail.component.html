@@ -17,6 +17,8 @@
           <li><img src="../assets/cotation.svg"/>{{topo.cotationMin.label}} - {{topo.cotationMax.label}}</li>
           <li><img src="../assets/calendar.svg">{{topo.publicationDate}}</li>
         </ul>
+        <button mat-stroked-button (click)="onUpdate()" *ngIf="isAuthorized">Modifier</button>
+        <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
       </mat-card-content>
   </div>
   </mat-card>

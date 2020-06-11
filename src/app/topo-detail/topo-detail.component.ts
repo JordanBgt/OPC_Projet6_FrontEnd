@@ -29,6 +29,7 @@ export class TopoDetailComponent implements OnInit {
   user: any;
   isAdmin: boolean;
   uploadPhotoForm: FormGroup;
+  isAuthorized = false;
 
   constructor(private topoService: TopoService,
               private route: ActivatedRoute,
@@ -52,6 +53,10 @@ export class TopoDetailComponent implements OnInit {
     this.initUploadPhotoForm();
   }
 
+  checkIfAuthorized() {
+    this.isAuthorized = this.isAdmin || this.user.id === this.topo.creatorId;
+  }
+
   onUpdate() {
     this.update = true;
   }
@@ -66,7 +71,7 @@ export class TopoDetailComponent implements OnInit {
     const file: File = this.uploadPhotoForm.value.photo.files[0];
     const extension = file.type.slice(file.type.indexOf('/') + 1);
     const filename = `${this.topo.name}-photo.${extension}`;
-    this.topoService.uploadPhoto(file, filename, this.topoId).pipe(
+    this.topoService.uploadPhoto(file, filename, this.topoId, this.topo.creatorId, this.user.id).pipe(
       tap((res: Topo) => this.topo = new Topo(res)),
       catchError(error => throwError(error))
     ).subscribe();
@@ -90,6 +95,7 @@ export class TopoDetailComponent implements OnInit {
     this.topoService.getOneTopo(this.topoId).pipe(
       tap((res: any) => {
         this.topo = new Topo(res);
+        this.checkIfAuthorized();
       }),
       catchError(error => throwError(error))
     ).subscribe();
@@ -112,7 +118,7 @@ export class TopoDetailComponent implements OnInit {
   }
 
   updateTopo(topo: Topo) {
-    this.topoService.updateTopo(topo).pipe(
+    this.topoService.updateTopo(topo, this.user.id).pipe(
       tap((res: Topo) => {
         this.topo = new Topo(res);
         this.update = false;

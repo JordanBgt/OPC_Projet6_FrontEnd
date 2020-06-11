@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Spot } from '../shared/model/spot.model';
 import { Observable } from 'rxjs';
 import { createRequestOption } from '../shared/request-utils';
@@ -36,9 +36,10 @@ export class SpotService {
     return this.http.delete(`${this.ressourceUrl}/${spotId}`, {observe: 'response'});
   }
 
-  uploadPhoto(file: File, fileName: string, spotId: number): Observable<Spot> {
+  uploadPhoto(file: File, fileName: string, spotId: number, spotUserId: number, userId: number): Observable<Spot> {
+    const options = createRequestOption({spotUserId, userId});
     const formData = new FormData();
     formData.append('file', file, fileName);
-    return this.http.post<Spot>(`${this.ressourceUrl}/${spotId}/photos`, formData);
+    return this.http.post<Spot>(`${this.ressourceUrl}/${spotId}/photos`, formData, {params: options});
   }
 }

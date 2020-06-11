@@ -26,17 +26,19 @@ export class TopoService {
     return this.http.get<any>(`${this.ressourceUrl}/${topoId}`);
   }
 
-  updateTopo(topo: Topo): Observable<Topo> {
-    return this.http.put<Topo>(`${this.ressourceUrl}/${topo.id}`, topo);
+  updateTopo(topo: Topo, userId: number): Observable<Topo> {
+    const options = createRequestOption({userId});
+    return this.http.put<Topo>(`${this.ressourceUrl}/${topo.id}`, topo, {params: options});
   }
 
   deleteTopo(topoId: number): Observable<HttpResponse<any>> {
     return this.http.delete(`${this.ressourceUrl}/${topoId}`, {observe: 'response'});
   }
 
-  uploadPhoto(file: File, fileName: string, topoId: number): Observable<Topo> {
+  uploadPhoto(file: File, fileName: string, topoId: number, topoCreatorId: number, userId: number): Observable<Topo> {
+    const options = createRequestOption({topoCreatorId, userId});
     const formData = new FormData();
     formData.append('file', file, fileName);
-    return this.http.post<Topo>(`${this.ressourceUrl}/${topoId}/photos`, formData);
+    return this.http.post<Topo>(`${this.ressourceUrl}/${topoId}/photos`, formData, {params: options});
   }
 }

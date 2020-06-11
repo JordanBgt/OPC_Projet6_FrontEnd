@@ -5,7 +5,6 @@ import { SecteurLight } from '../shared/model/secteur-light.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CotationService } from '../services/cotation.service';
 import { SecteurService } from '../services/secteur.service';
-import { HttpResponse } from '@angular/common/http';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TokenStorageService } from '../security/token-storage.service';
 import { isAdmin } from '../shared/auth-utils';
@@ -77,9 +76,9 @@ export class SpotDetailComponent implements OnInit {
   onUploadPhoto() {
     const file: File = this.uploadPhotoForm.value.photo.files[0];
     const extension = file.type.slice(file.type.indexOf('/') + 1);
-    const photoIndex = this.spot.photos.length;
+    const photoIndex = this.spot.photos != null ? this.spot.photos.length : 0;
     const fileName = `${this.spot.name}-photo-${photoIndex + 1}.${extension}`;
-    this.spotService.uploadPhoto(file, fileName, this.spotId).pipe(
+    this.spotService.uploadPhoto(file, fileName, this.spotId, this.spot.userId, this.user.id).pipe(
       tap((res: Spot) => this.spot = res),
       catchError(error => throwError(error))
     ).subscribe();
