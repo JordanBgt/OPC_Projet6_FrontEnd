@@ -1,10 +1,10 @@
 <div class="entityDetailContent" *ngIf="!update && topo">
   <mat-card class="header" align="center">
-    <!--<img *ngIf="topo.photo" class="entityImage" src="../assets/{{topo.photo.name}}"/>-->
+    <img *ngIf="topo.photo" class="entityImage" [src]="topo.photo.fileToBase64String"/>
     <form [formGroup]="uploadPhotoForm">
       <mat-form-field appearance="outline">
         <mat-label>Ajouter/modifier photo</mat-label>
-        <ngx-mat-file-input formControlName="photo" accept="image/png, image/jpg" (change)="onUploadPhoto()"></ngx-mat-file-input>
+        <ngx-mat-file-input formControlName="photo" accept="image/*, image/jpg" (change)="onUploadPhoto()"></ngx-mat-file-input>
       </mat-form-field>
     </form>
     <div class="content">

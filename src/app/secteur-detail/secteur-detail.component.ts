@@ -13,8 +13,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IVoie, Voie } from '../shared/model/voie.model';
 import { ICotation } from '../shared/model/cotation.model';
 import { CotationService } from '../services/cotation.service';
-import { ISpotLight } from '../shared/model/spot-light.model';
 import { SpotService } from '../services/spot.service';
+import { SpotLight } from '../shared/model/spot-light.model';
+import { catchError, tap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 type EntityResponseType = HttpResponse<ISecteur>;
 
@@ -34,7 +36,7 @@ export class SecteurDetailComponent implements OnInit {
   voieForm: FormGroup;
   cotations: ICotation[];
   isAuthorized = false;
-  spots: ISpotLight[];
+  spots: SpotLight[];
 
   constructor(private secteurService: SecteurService,
               private route: ActivatedRoute,
@@ -99,9 +101,10 @@ export class SecteurDetailComponent implements OnInit {
   }
 
   loadSpots() {
-    this.spotService.getAllSpots({unpaged: true})
-      .subscribe((res: HttpResponse<any>) => this.spots = res.body.content,
-        (error => console.error(error)));
+    this.spotService.getAllSpots({unpaged: true}).pipe(
+      tap((res: any) => this.spots = res.content),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   updateSecteur(secteur: Secteur) {

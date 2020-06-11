@@ -1,4 +1,4 @@
-import { ISpot } from './spot.model';
+import { Spot } from './spot.model';
 import { ICotation } from './cotation.model';
 import { Photo } from './photo.model';
 
@@ -11,7 +11,7 @@ export class Topo {
   isAvailable?: boolean;
   country?: string;
   region?: string;
-  spots?: ISpot[];
+  spots?: Spot[];
   creatorId?: number;
   tenantId?: number;
   publicationDate?: Date;

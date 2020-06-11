@@ -7,11 +7,12 @@ import { Router } from '@angular/router';
 import { ICotation } from '../shared/model/cotation.model';
 import { CotationService } from '../services/cotation.service';
 import { ITEMS_PER_PAGE } from '../../../app.constants';
-import { ITopoLight, TopoLight } from '../shared/model/topo-light.model';
+import { TopoLight } from '../shared/model/topo-light.model';
 import { TokenStorageService } from '../security/token-storage.service';
-import { ISpotLight } from '../shared/model/spot-light.model';
 import { SpotService } from '../services/spot.service';
-import { tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
+import { SpotLight } from '../shared/model/spot-light.model';
+import { throwError } from 'rxjs';
 
 type EntityResponseType = HttpResponse<Topo>;
 
@@ -22,10 +23,10 @@ type EntityResponseType = HttpResponse<Topo>;
 })
 export class TopoComponent implements OnInit {
 
-  topos: ITopoLight[];
+  topos: TopoLight[];
   topoForm: FormGroup;
   cotations: ICotation[];
-  spots: ISpotLight[];
+  spots: SpotLight[];
   size: number;
   page: number;
   searchForm: FormGroup;
@@ -57,7 +58,7 @@ export class TopoComponent implements OnInit {
         tap(data => {
           this.totalPages = data.totalPages;
           for (const topo of data.content) {
-            this.topos.push(new Topo(topo));
+            this.topos.push(new TopoLight(topo));
           }
         })
     )
@@ -70,10 +71,10 @@ export class TopoComponent implements OnInit {
   }
 
   loadSpots() {
-    this.spotService.getAllSpots({unpaged: true})
-      .subscribe((res: HttpResponse<any>) => this.spots = res.body.content,
-        (error => console.error(error)),
-        () => console.log(JSON.stringify(this.spots)));
+    this.spotService.getAllSpots({unpaged: true}).pipe(
+      tap((res: any) => this.spots = res.content),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   ngOnInit() {
@@ -115,9 +116,13 @@ export class TopoComponent implements OnInit {
       country: formValue.country, region: formValue.region, spots: formValue.spots, creatorId: this.user.id,
       tenantId: null, publicationDate: new Date(), photo: null});
     let topoCreated: Topo;
-    this.topoService.createTopo(topo).subscribe((res: EntityResponseType) => topoCreated = res.body,
-      (error: Error) => console.error(error.message),
-      () => this.router.navigate([`/topos/${topoCreated.id}`]) );
+    this.topoService.createTopo(topo).pipe(
+      tap((res: Topo) => {
+        topoCreated = new Topo(res);
+        this.router.navigate([`/topos/${topoCreated.id}`]);
+      }),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   loadPage(page) {

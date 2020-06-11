@@ -95,7 +95,7 @@
       </mat-card-header>
       <ngb-carousel *ngIf="spot.photos?.length > 0; else defaultPhoto" class="carousel">
         <ng-template ngbSlide *ngFor="let photo of spot.photos">
-          <img src="../assets/{{photo.name}}" class="carousel-img">
+          <img [src]="photo.fileToBase64String" class="carousel-img">
         </ng-template>
       </ngb-carousel>
       <ng-template #defaultPhoto>

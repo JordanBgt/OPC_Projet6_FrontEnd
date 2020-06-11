@@ -1,7 +1,7 @@
 import { ICotation } from './cotation.model';
-import { IPhoto } from './photo.model';
+import { Photo } from './photo.model';
 
-export interface ISpotLight {
+export class SpotLight {
   id?: number;
   country?: string;
   city?: string;
@@ -10,20 +10,21 @@ export interface ISpotLight {
   name?: string;
   cotationMin?: ICotation;
   cotationMax?: ICotation;
-  photos?: IPhoto[];
-}
+  photos?: Photo[];
 
-export class SpotLight implements ISpotLight {
-  constructor(
-    public id?: number,
-    public country?: string,
-    public city?: string,
-    public official?: boolean,
-    public userId?: number,
-    public name?: string,
-    public cotationMin?: ICotation,
-    public cotationMax?: ICotation,
-    public photos?: IPhoto[]
-  ) {
+  constructor(data: Partial<SpotLight>) {
+    Object.assign(this, data, {
+      photos: data.photos != null ? data.photos.length > 0 ? this.setPhotos(data.photos) : null : null
+    });
+  }
+
+  setPhotos(photos: any): Photo[] {
+    console.log('photos', photos);
+    const photoArray = new Array<Photo>();
+    photos.forEach(photo => {
+      photoArray.push(new Photo(photo));
+    });
+    return photoArray;
   }
 }
+

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ITopo, Topo } from '../shared/model/topo.model';
+import { Topo } from '../shared/model/topo.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
-import { Cotation, ICotation } from '../shared/model/cotation.model';
+import { ICotation } from '../shared/model/cotation.model';
 import { CotationService } from '../services/cotation.service';
 import { SpotService } from '../services/spot.service';
 import { SpotLight } from '../shared/model/spot-light.model';
@@ -12,8 +12,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { HTTP_STATUS_NOCONTENT } from '../../../app.constants';
 import { TopoService } from '../services/topo.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
-
-type EntityResponseType = HttpResponse<ITopo>;
+import { catchError, tap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-topo-detail',
@@ -22,7 +22,7 @@ type EntityResponseType = HttpResponse<ITopo>;
 })
 export class TopoDetailComponent implements OnInit {
 
-  topo: ITopo;
+  topo: Topo;
   topoId: number;
   cotations: ICotation[];
   spots: SpotLight[];
@@ -67,7 +67,10 @@ export class TopoDetailComponent implements OnInit {
     const file: File = this.uploadPhotoForm.value.photo.files[0];
     const extension = file.type.slice(file.type.indexOf('/') + 1);
     const filename = `${this.topo.name}-photo.${extension}`;
-    this.topoService.uploadPhoto(file, filename, this.topoId);
+    this.topoService.uploadPhoto(file, filename, this.topoId).pipe(
+      tap((res: Topo) => this.topo = new Topo(res)),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   onDelete() {
@@ -83,9 +86,12 @@ export class TopoDetailComponent implements OnInit {
   }
 
   loadTopo() {
-    this.topoService.getOneTopo(this.topoId).subscribe((res: EntityResponseType) => this.topo = res.body,
-      (error) => console.error(error),
-      () => console.log(this.topo));
+    this.topoService.getOneTopo(this.topoId).pipe(
+      tap((res: any) => {
+        this.topo = new Topo(res);
+      }),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   loadCotations() {
@@ -93,12 +99,21 @@ export class TopoDetailComponent implements OnInit {
   }
 
   loadSpots() {
-    this.spotService.getAllSpots({unpaged: true}).subscribe((res: HttpResponse<any>) => this.spots = res.body.content);
+    this.spotService.getAllSpots({unpaged: true}).pipe(
+      tap((res: any) => {
+        res.content.forEach(spot => this.spots.push(new SpotLight(spot)));
+      }),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   updateTopo(topo: Topo) {
-    this.topoService.updateTopo(topo).subscribe((res: EntityResponseType) => this.topo = res.body,
-      (error => console.error(error)),
-      () => this.update = false);
+    this.topoService.updateTopo(topo).pipe(
+      tap((res: Topo) => {
+        this.topo = new Topo(res);
+        this.update = false;
+      }),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ISpot, Spot } from '../shared/model/spot.model';
+import { Spot } from '../shared/model/spot.model';
 import { ICotation } from '../shared/model/cotation.model';
 import { SecteurLight } from '../shared/model/secteur-light.model';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,8 +14,10 @@ import { HTTP_STATUS_NOCONTENT } from '../../../app.constants';
 import { SpotService } from '../services/spot.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ISecteur, Secteur } from '../shared/model/secteur.model';
+import { catchError, tap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
-type EntityResponseType = HttpResponse<ISpot>;
+type EntityResponseType = HttpResponse<Spot>;
 
 @Component({
   selector: 'app-spot-detail',
@@ -24,7 +26,7 @@ type EntityResponseType = HttpResponse<ISpot>;
 })
 export class SpotDetailComponent implements OnInit {
 
-  spot: ISpot;
+  spot: Spot;
   spotId: number;
   cotations: ICotation[];
   secteurs: SecteurLight[];
@@ -33,6 +35,7 @@ export class SpotDetailComponent implements OnInit {
   isAdmin: boolean;
   secteurForm: FormGroup;
   isAuthorized = false;
+  uploadPhotoForm: FormGroup;
 
   constructor(private spotService: SpotService,
               private route: ActivatedRoute,
@@ -60,10 +63,28 @@ export class SpotDetailComponent implements OnInit {
     this.loadCotations();
     this.loadSecteurs();
     this.initSecteurForm();
+    this.initUploadPhotoForm();
   }
 
   onUpdate() {
     this.update = true;
+  }
+
+  initUploadPhotoForm() {
+    this.uploadPhotoForm = this.formBuilder.group({
+      photo: ''
+    });
+  }
+
+  onUploadPhoto() {
+    const file: File = this.uploadPhotoForm.value.photo.files[0];
+    const extension = file.type.slice(file.type.indexOf('/') + 1);
+    const photoIndex = this.spot.photos.length;
+    const fileName = `${this.spot.name}-photo-${photoIndex + 1}.${extension}`;
+    this.spotService.uploadPhoto(file, fileName, this.spotId).pipe(
+      tap((res: Spot) => this.spot = res),
+      catchError(error => throwError(error))
+    ).subscribe();
   }
 
   onDelete() {
@@ -79,9 +100,12 @@ export class SpotDetailComponent implements OnInit {
   }
 
   loadSpot() {
-    this.spotService.getOneSpot(this.spotId).subscribe((res: EntityResponseType) => this.spot = res.body,
-      (error => console.error(error)),
-      () => this.checkIfAuthorized());
+    this.spotService.getOneSpot(this.spotId).pipe(
+      tap((res: any) => {
+        this.spot = new Spot(res);
+        this.checkIfAuthorized();
+      }),
+    ).subscribe();
   }
 
   loadCotations() {
@@ -101,9 +125,10 @@ export class SpotDetailComponent implements OnInit {
   }
 
   updateSpot(spot: Spot) {
-    this.spotService.updateSpot(spot, this.user.id).subscribe((res: EntityResponseType) => this.spot = res.body,
-      (error => console.log(JSON.stringify(error))),
-      () => this.update = false);
+    this.spotService.updateSpot(spot, this.user.id).pipe(
+      tap((res: Spot) => this.spot = res),
+      tap(() => this.update = false)
+    ).subscribe();
   }
 
   onAddSecteur() {
