@@ -15,6 +15,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Secteur } from '../shared/model/secteur.model';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-spot-detail',
@@ -43,7 +44,7 @@ export class SpotDetailComponent implements OnInit {
               private snackBar: MatSnackBar,
               private router: Router,
               private formBuilder: FormBuilder) {
-    this.carouselConfig.interval = 3000;
+    this.carouselConfig.interval = 0;
     this.cotations = [];
     this.secteurs = [];
   }
@@ -130,8 +131,11 @@ export class SpotDetailComponent implements OnInit {
 
   updateSpot(spot: Spot) {
     this.spotService.updateSpot(spot, this.user.id).pipe(
-      tap((res: Spot) => this.spot = res),
-      tap(() => this.update = false)
+      tap((res: Spot) => {
+        this.spot = new Spot(res);
+        this.update = false;
+      }),
+      catchError(error => throwError(error))
     ).subscribe();
   }
 
@@ -162,4 +166,8 @@ export class SpotDetailComponent implements OnInit {
     this.router.navigate([`secteurs/${secteurId}`]);
   }
 
+  onOfficialToggleChange(value: MatSlideToggleChange) {
+    this.spot.official = value.checked;
+    this.updateSpot(this.spot);
+  }
 }

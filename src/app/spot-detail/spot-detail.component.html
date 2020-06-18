@@ -6,7 +6,7 @@
       </ng-template>
     </ngb-carousel>
     <ng-template #defaultPhoto>
-      <img src="../assets/logo.png">
+      <img src="assets/logo.png">
     </ng-template>
     <form [formGroup]="uploadPhotoForm" *ngIf="isAuthorized">
       <mat-form-field appearance="outline">
@@ -16,15 +16,20 @@
     </form>
     <div class="content">
       <mat-card-header class="card-header">
+        <div *ngIf="spot.official" mat-card-avatar class="official-logo"></div>
         <mat-card-title>{{spot.name}}</mat-card-title>
       </mat-card-header>
       <mat-card-content class="card-header-content">
         <ul>
-          <li><img src="../../assets/location.svg"/>{{spot.country}} - {{spot.city}}</li>
-          <li><img src="../../assets/cotation.svg"/>{{spot.cotationMin.label}} - {{spot.cotationMax.label}}</li>
+          <li><img src="assets/location.svg"/>{{spot.country}} - {{spot.city}}</li>
+          <li><img src="assets/cotation.svg"/>{{spot.cotationMin.label}} - {{spot.cotationMax.label}}</li>
         </ul>
         <button mat-stroked-button (click)="onUpdate()" *ngIf="isAuthorized">Modifier</button>
         <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
+        <mat-slide-toggle *ngIf="isAdmin" (change)="onOfficialToggleChange($event)" color="primary"
+                          [checked]="spot.official" labelPosition="before">
+          Officialisé par Les amis de l'escalade ?
+        </mat-slide-toggle>
       </mat-card-content>
     </div>
   </mat-card>
