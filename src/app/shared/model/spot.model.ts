@@ -20,7 +20,6 @@ export class Spot {
   }
 
   setPhotos(photos: any): Photo[] {
-    console.log('photos', photos);
     const photoArray = new Array<Photo>();
     photos.forEach(photo => {
       photoArray.push(new Photo(photo));

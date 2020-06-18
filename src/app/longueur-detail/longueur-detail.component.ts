@@ -37,6 +37,7 @@ export class LongueurDetailComponent implements OnInit {
               private snackBar: MatSnackBar,
               private voieService: VoieService) {
     this.cotations = [];
+    this.voies = [];
   }
 
   ngOnInit() {

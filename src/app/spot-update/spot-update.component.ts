@@ -49,7 +49,6 @@ export class SpotUpdateComponent implements OnInit {
 
   onUpdate() {
     const formValue = this.spotUpdateForm.value;
-    console.log(JSON.stringify(formValue));
     this.spotUpdated = new Spot({id: this.spot.id, country: formValue.country, city: formValue.city,
       description: formValue.description, official: formValue.isOfficial, topoId: this.spot.topoId,
       photos: this.spot.photos, userId: this.spot.userId, name: formValue.name, cotationMin: formValue.cotationMin,
