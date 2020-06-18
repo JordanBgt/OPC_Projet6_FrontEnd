@@ -10,8 +10,6 @@ import { CommentSave } from '../shared/model/comment-save.model';
 import { TokenStorageService } from '../security/token-storage.service';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-type EntityArrayResponseType = HttpResponse<IComment[]>;
-type EntityResponseType = HttpResponse<IComment>;
 
 @Component({
   selector: 'app-comment',

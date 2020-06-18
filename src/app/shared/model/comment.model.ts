@@ -1,8 +1,10 @@
+import { UserLight } from './user-light.model';
+
 export interface IComment {
   id?: number;
   content?: string;
   date?: Date;
-  userId?: number;
+  user?: UserLight;
   spotId?: number;
 }
 
@@ -11,7 +13,7 @@ export class Comment implements IComment {
     public id?: number,
     public content?: string,
     public date?: Date,
-    public user?: number,
+    public user?: UserLight,
     public spotId?: number
   ) {
   }
