@@ -52,6 +52,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthGuardService } from './security/auth-guard.service';
 import { httpErrorInterceptorProviders } from './http-error-interceptor';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
+import { MatListModule } from '@angular/material/list';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -105,7 +106,8 @@ registerLocaleData(localeFr, 'fr');
     MatSnackBarModule,
     MatDialogModule,
     MatTooltipModule,
-    MaterialFileInputModule
+    MaterialFileInputModule,
+    MatListModule
   ],
   providers: [
     {provide: LOCALE_ID, useValue: 'fr'},
