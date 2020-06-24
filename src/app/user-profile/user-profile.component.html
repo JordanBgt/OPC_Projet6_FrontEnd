@@ -1,0 +1,96 @@
+<ng-container *ngIf="userProfileObs$ | async as userProfile">
+  <mat-card class="profil" align="center">
+    <mat-card-header>
+      <div mat-card-avatar class="profil-image"></div>
+      <mat-card-title>Informations profil</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item>
+          <span class="item-header">Username</span>
+          <span class="item-data">{{userProfile.user.username}}</span>
+        </mat-list-item>
+        <mat-list-item>
+          <span class="item-header">Email</span>
+          <span class="item-data">{{userProfile.user.email}}</span>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="spots" align="center">
+    <mat-card-header>
+      <div mat-card-avatar class="list-image"></div>
+      <mat-card-title>Liste des spots créés</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ng-container *ngIf="userProfile.spotsCreated?.length > 0; else noSpot">
+        <mat-list>
+          <mat-list-item *ngFor="let spot of userProfile.spotsCreated">
+            <button mat-button [routerLink]="['/spots', spot.id]">{{spot.name}}</button>
+          </mat-list-item>
+        </mat-list>
+      </ng-container>
+      <ng-template #noSpot>
+        Vous n'avez pas encore créé de Spot
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="topos-created" align="center">
+    <mat-card-header>
+      <div mat-card-avatar class="list-image"></div>
+      <mat-card-title>Liste des topos créés</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ng-container *ngIf="userProfile.toposCreated?.length > 0; else noTopoCreated">
+        <mat-list>
+          <mat-list-item *ngFor="let topo of userProfile.toposCreated">
+            <button mat-button [routerLink]="['/topos', topo.id]">{{topo.name}}</button>
+          </mat-list-item>
+        </mat-list>
+      </ng-container>
+      <ng-template #noTopoCreated>
+        Vous n'avez pas encore créé de Topo
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="topos-owned" align="center">
+    <mat-card-header>
+      <div mat-card-avatar class="list-image"></div>
+      <mat-card-title>Liste des topos possédés</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ng-container *ngIf="userProfile.toposOwned?.length > 0; else noTopoOwned">
+        <mat-list>
+          <mat-list-item *ngFor="let topoUser of userProfile.toposOwned">
+            <button mat-button [routerLink]="['/topos', topoUser.topo.id]">{{topoUser.topo.name}}</button>
+          </mat-list-item>
+        </mat-list>
+      </ng-container>
+      <ng-template #noTopoOwned>
+        Vous ne possédez pas de Topo
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="topos-rent" align="center">
+    <mat-card-header>
+      <div mat-card-avatar class="list-image"></div>
+      <mat-card-title>Liste des topos loués (location en cours)</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ng-container *ngIf="userProfile.toposRent?.length >0; else noTopoRent">
+        <mat-list>
+          <mat-list-item *ngFor="let topo of userProfile.toposRent">
+            <button mat-button [routerLink]="['/topos', topo.id]">{{topo.name}}</button>
+          </mat-list-item>
+        </mat-list>
+      </ng-container>
+      <ng-template #noTopoRent>
+        Vous n'avez pas de location en cours
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+</ng-container>

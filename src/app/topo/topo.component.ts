@@ -31,7 +31,6 @@ export class TopoComponent implements OnInit {
   name: string;
   cotationMin: number;
   cotationMax: number;
-  isAvailable: boolean;
   totalPages: number;
   isLoggedIn: boolean;
   user: any;
@@ -51,7 +50,7 @@ export class TopoComponent implements OnInit {
 
   loadAll() {
     this.topoService.getAllTopos({page: this.page, size: this.size, country: this.country, name: this.name,
-      cotationMin: this.cotationMin, cotationMax: this.cotationMax, isAvailable: this.isAvailable}).pipe(
+      cotationMin: this.cotationMin, cotationMax: this.cotationMax}).pipe(
         tap(data => {
           this.totalPages = data.totalPages;
           for (const topo of data.content) {
@@ -111,9 +110,7 @@ export class TopoComponent implements OnInit {
   onCreate() {
     const formValue = this.topoForm.value;
     const topo = new Topo({id: null, name: formValue.name, description: formValue.description,
-      cotationMin: formValue.cotationMin, cotationMax: formValue.cotationMax, isAvailable: null,
-      country: formValue.country, region: formValue.region, spots: formValue.spots, creatorId: this.user.id,
-      tenantId: null, publicationDate: new Date(), photo: null});
+      cotationMin: formValue.cotationMin, cotationMax: formValue.cotationMax, publicationDate: new Date(), photo: null});
     let topoCreated: Topo;
     this.topoService.createTopo(topo).pipe(
       tap((res: Topo) => {
@@ -135,7 +132,6 @@ export class TopoComponent implements OnInit {
     this.name = formValue.name !== '' ? formValue.name : null;
     this.cotationMin = formValue.cotationMin !== null ? formValue.cotationMin.id : null;
     this.cotationMax = formValue.cotationMax !== null ? formValue.cotationMax.id : null;
-    this.isAvailable = formValue.available === true;
     this.clearToposAndPage();
     this.loadAll();
   }

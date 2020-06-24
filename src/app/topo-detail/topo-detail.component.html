@@ -38,6 +38,18 @@
     </mat-card-header>
     <mat-card-content *ngFor="let spot of topo.spots">{{spot.name}}</mat-card-content>
   </mat-card>
+  <mat-card>
+    <mat-card-header>
+      <div mat-card-avatar class="list-image"></div>
+      <mat-card-title [matBadge]="topo.topoUsers.length | numberToString" matBadgeOverlap="false" matBadgeColor="warn">
+        Liste des utilisateurs possédant ce topo
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content *ngFor="let topoUser of topo.topoUsers">
+      {{topoUser.owner.username}}
+      <button mat-button [disabled]="!topoUser.available" (click)="bookTopo(topoUser)">Réserver</button>
+    </mat-card-content>
+  </mat-card>
 </div>
 <app-topo-update [topo]="topo" [cotations]="cotations" [spots]="spots" *ngIf="update"
                  (topoUpdatedEvent)="updateTopo($event)">

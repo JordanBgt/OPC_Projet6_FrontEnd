@@ -1,6 +1,7 @@
 import { Spot } from './spot.model';
 import { ICotation } from './cotation.model';
 import { Photo } from './photo.model';
+import { TopoUser } from './topo-user.model';
 
 export class Topo {
   id?: number;
@@ -8,14 +9,13 @@ export class Topo {
   description?: string;
   cotationMin?: ICotation;
   cotationMax?: ICotation;
-  isAvailable?: boolean;
   country?: string;
   region?: string;
   spots?: Spot[];
   creatorId?: number;
-  tenantId?: number;
   publicationDate?: Date;
   photo?: Photo;
+  topoUsers: TopoUser[];
 
   constructor(data: Partial<Topo>) {
     Object.assign(this, data, {

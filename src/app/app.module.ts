@@ -45,7 +45,7 @@ import localeFr from '@angular/common/locales/fr';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CommentDialogComponent } from './comment-dialog/comment-dialog.component';
-import { ProfileComponent } from './profile/profile.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 import { authInterceptorProviders } from './security/auth.interceptor';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -83,7 +83,7 @@ registerLocaleData(localeFr, 'fr');
     LongueurUpdateComponent,
     VoieUpdateComponent,
     CommentDialogComponent,
-    ProfileComponent
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,

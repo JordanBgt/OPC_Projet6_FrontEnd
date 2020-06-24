@@ -3,6 +3,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Topo } from '../shared/model/topo.model';
 import { Observable } from 'rxjs';
 import { createRequestOption } from '../shared/request-utils';
+import { TopoUser } from '../shared/model/topo-user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -40,5 +41,9 @@ export class TopoService {
     const formData = new FormData();
     formData.append('file', file, fileName);
     return this.http.post<Topo>(`${this.ressourceUrl}/${topoId}/photos`, formData, {params: options});
+  }
+
+  bookTopo(topoId: number, topoUser: TopoUser): Observable<TopoUser> {
+    return this.http.post<TopoUser>(`${this.ressourceUrl}/${topoId}/bookings`, topoUser);
   }
 }

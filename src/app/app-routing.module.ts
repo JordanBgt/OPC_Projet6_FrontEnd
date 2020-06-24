@@ -13,7 +13,7 @@ import { LongueurDetailComponent } from './longueur-detail/longueur-detail.compo
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { ProfileComponent } from './profile/profile.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 import { AuthGuardService as AuthGuard } from './security/auth-guard.service';
 
 
@@ -21,7 +21,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'profile', component: UserProfileComponent, canActivate: [AuthGuard] },
   { path: 'topos', component: TopoComponent },
   { path: 'topos/:id', component: TopoDetailComponent, canActivate: [AuthGuard] },
   { path: 'spots', component: SpotComponent },

@@ -13,6 +13,8 @@ import { TopoService } from '../services/topo.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { TopoUser } from '../shared/model/topo-user.model';
+import { BookingState } from '../shared/model/booking-state.enum';
 
 @Component({
   selector: 'app-topo-detail',
@@ -122,6 +124,19 @@ export class TopoDetailComponent implements OnInit {
       tap((res: Topo) => {
         this.topo = new Topo(res);
         this.update = false;
+      }),
+      catchError(error => throwError(error))
+    ).subscribe();
+  }
+
+  bookTopo(topoUser: TopoUser) { // TODO : message de confirmation de réservation => en attente d'acceptation
+    topoUser.available = false;
+    topoUser.tenant = this.user;
+    topoUser.bookingState = BookingState['en attente'];
+    this.topoService.bookTopo(this.topoId, topoUser).pipe(
+      tap(topoUserUpdated => {
+        const index = this.topo.topoUsers.findIndex(element => element.id === topoUserUpdated.id);
+        this.topo.topoUsers[index] = topoUserUpdated;
       }),
       catchError(error => throwError(error))
     ).subscribe();
