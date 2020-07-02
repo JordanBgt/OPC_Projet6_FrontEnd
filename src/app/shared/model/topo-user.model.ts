@@ -11,8 +11,6 @@ export class TopoUser {
   tenant: UserLight;
   topo: TopoLight;
 
-  constructor(data: Partial<TopoUser>) {
-    Object.assign(this, data);
-  }
+  constructor() {}
 
 }

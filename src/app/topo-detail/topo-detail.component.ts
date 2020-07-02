@@ -14,6 +14,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { TopoUser } from '../shared/model/topo-user.model';
+import { UserProfileService } from '../services/user-profile.service';
+import { TopoUserLight } from '../shared/model/topo-user-light.model';
 
 @Component({
   selector: 'app-topo-detail',
@@ -31,6 +33,7 @@ export class TopoDetailComponent implements OnInit {
   isAdmin: boolean;
   uploadPhotoForm: FormGroup;
   isAuthorized = false;
+  isOwnedByUser: boolean;
 
   constructor(private topoService: TopoService,
               private route: ActivatedRoute,
@@ -39,7 +42,8 @@ export class TopoDetailComponent implements OnInit {
               private tokenStorageService: TokenStorageService,
               private router: Router,
               private snackBar: MatSnackBar,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private userProfileService: UserProfileService) {
     this.cotations = [];
     this.spots = [];
   }
@@ -97,6 +101,7 @@ export class TopoDetailComponent implements OnInit {
       tap((res: any) => {
         this.topo = new Topo(res);
         this.checkIfAuthorized();
+        this.checkIfUserOwnsTopo();
       }),
       catchError(error => throwError(error))
     ).subscribe();
@@ -140,5 +145,23 @@ export class TopoDetailComponent implements OnInit {
       }),
       catchError(error => throwError(error))
     ).subscribe();
+  }
+
+  onAddTopoToUser() {
+    const topoUser = new TopoUser();
+    topoUser.topo = this.topo;
+    topoUser.owner = this.user;
+    this.userProfileService.createTopoUser(topoUser).pipe(
+      tap(topoUserCreated => {
+        this.topo.topoUsers.push(topoUserCreated);
+        this.checkIfUserOwnsTopo();
+        this.snackBar.open('Topo ajouté à votre liste de topos possédés', 'Ok', {duration: 5000});
+      })
+    ).subscribe();
+  }
+
+  // Pour vérifier si l'utilisateur possède ce topo
+  checkIfUserOwnsTopo() {
+    this.isOwnedByUser = this.topo.topoUsers.find(topoUser => topoUser.owner.id === this.user.id) !== undefined;
   }
 }

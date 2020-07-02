@@ -22,4 +22,8 @@ export class UserProfileService {
   updateTopoUser(topoUser: TopoUser): Observable<TopoUser> {
     return this.http.post<TopoUser>(`${this.ressourceUrl}/bookings`, topoUser);
   }
+
+  createTopoUser(topoUser: TopoUser): Observable<TopoUser> {
+    return this.http.post<TopoUser>(`${this.ressourceUrl}/topos`, topoUser);
+  }
 }

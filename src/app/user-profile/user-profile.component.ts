@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenStorageService } from '../security/token-storage.service';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, filter, tap } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { UserProfileService } from '../services/user-profile.service';
 import { UserProfile } from '../shared/model/user-profile.model';
@@ -26,10 +26,10 @@ export class UserProfileComponent implements OnInit {
   ngOnInit() {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
     this.userConnected = this.tokenStorageService.getUser();
-    this.loadUser();
+    this.loadUserProfile();
   }
 
-  loadUser() {
+  loadUserProfile() {
     this.userProfileObs$ = this.userProfileService.getUserProfile(this.userConnected.id).pipe(
       tap(res => {
         this.userProfile = res;

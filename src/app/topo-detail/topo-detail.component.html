@@ -19,6 +19,7 @@
         </ul>
         <button mat-stroked-button (click)="onUpdate()" *ngIf="isAuthorized">Modifier</button>
         <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
+        <button mat-stroked-button (click)="onAddTopoToUser()" *ngIf="!isOwnedByUser">Ajouter à ma liste de topos</button>
       </mat-card-content>
   </div>
   </mat-card>
@@ -47,7 +48,7 @@
     </mat-card-header>
     <mat-card-content *ngFor="let topoUser of topo.topoUsers">
       {{topoUser.owner.username}}
-      <button mat-button [disabled]="!topoUser.available || topoUser.owner.id === user.id" (click)="bookTopo(topoUser)">Réserver</button>
+      <button mat-button [disabled]="!topoUser.available || topoUser.owner.id === user.id || isOwnedByUser" (click)="bookTopo(topoUser)">Réserver</button>
     </mat-card-content>
   </mat-card>
 </div>
