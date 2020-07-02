@@ -128,11 +128,13 @@ export class TopoDetailComponent implements OnInit {
     ).subscribe();
   }
 
-  bookTopo(topoUser: TopoUser) { // TODO : message de confirmation de réservation => en attente d'acceptation
+  bookTopo(topoUser: TopoUser) {
     topoUser.available = false;
     topoUser.tenant = this.user;
     this.topoService.bookTopo(this.topoId, topoUser).pipe(
       tap(topoUserUpdated => {
+        this.snackBar.open('Topo reservé, en attente de confirmation de la part du propriétaire !',
+          'Ok', {duration: 5000});
         const index = this.topo.topoUsers.findIndex(element => element.id === topoUserUpdated.id);
         this.topo.topoUsers[index] = topoUserUpdated;
       }),
