@@ -19,7 +19,7 @@ export class UserProfileService {
     return this.http.get<UserProfile>(this.ressourceUrl, {params: options});
   }
 
-  bookTopo(topoUser: TopoUser): Observable<TopoUser> {
+  updateTopoUser(topoUser: TopoUser): Observable<TopoUser> {
     return this.http.post<TopoUser>(`${this.ressourceUrl}/bookings`, topoUser);
   }
 }

@@ -53,6 +53,7 @@ import { AuthGuardService } from './security/auth-guard.service';
 import { httpErrorInterceptorProviders } from './http-error-interceptor';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { MatListModule } from '@angular/material/list';
+import { MatChipsModule } from '@angular/material/chips';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -107,7 +108,8 @@ registerLocaleData(localeFr, 'fr');
     MatDialogModule,
     MatTooltipModule,
     MaterialFileInputModule,
-    MatListModule
+    MatListModule,
+    MatChipsModule
   ],
   providers: [
     {provide: LOCALE_ID, useValue: 'fr'},

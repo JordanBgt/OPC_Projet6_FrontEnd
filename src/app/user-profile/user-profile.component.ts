@@ -5,6 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { UserProfileService } from '../services/user-profile.service';
 import { UserProfile } from '../shared/model/user-profile.model';
 import { BookingState } from '../shared/model/booking-state.enum';
+import { TopoUser } from '../shared/model/topo-user.model';
 
 @Component({
   selector: 'app-user-profile',
@@ -33,6 +34,20 @@ export class UserProfileComponent implements OnInit {
       tap(res => this.userProfile = res),
       catchError(error => throwError(error))
     );
+  }
+
+  updateTopoUser(topoUser: TopoUser, eventValue: BookingState | boolean) {
+    if (typeof eventValue === 'boolean') {
+      topoUser.available = eventValue;
+    } else {
+      topoUser.bookingState = eventValue;
+    }
+    this.userProfileService.updateTopoUser(topoUser).pipe(
+      tap(topoUserUpdated => {
+        const index = this.userProfile.toposOwned.findIndex(element => element.id === topoUserUpdated.id);
+        this.userProfile.toposOwned[index] = topoUserUpdated;
+      })
+    ).subscribe();
   }
 
 }
