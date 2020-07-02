@@ -31,7 +31,10 @@ export class UserProfileComponent implements OnInit {
 
   loadUser() {
     this.userProfileObs$ = this.userProfileService.getUserProfile(this.userConnected.id).pipe(
-      tap(res => this.userProfile = res),
+      tap(res => {
+        this.userProfile = res;
+        console.log('user profile', res);
+      }),
       catchError(error => throwError(error))
     );
   }

@@ -54,6 +54,7 @@ import { httpErrorInterceptorProviders } from './http-error-interceptor';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
+import { BookingStateToColorPipe } from './shared/booking-state-to-color.pipe';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -84,7 +85,8 @@ registerLocaleData(localeFr, 'fr');
     LongueurUpdateComponent,
     VoieUpdateComponent,
     CommentDialogComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    BookingStateToColorPipe
   ],
   imports: [
     BrowserModule,

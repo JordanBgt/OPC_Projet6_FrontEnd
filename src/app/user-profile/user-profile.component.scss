@@ -17,3 +17,19 @@
   display: flex;
   flex-flow: column wrap;
 }
+
+.accepted {
+  background-color: lightgreen;
+}
+
+.pending {
+  background-color: lightblue;
+}
+
+.refused {
+  background-color: lightcoral;
+}
+
+.default {
+  background-color: lightgrey;
+}

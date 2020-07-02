@@ -29,6 +29,7 @@
           <mat-list>
             <mat-list-item *ngFor="let spot of userProfile.spotsCreated">
               <button mat-button [routerLink]="['/spots', spot.id]">{{spot.name}}</button>
+              <mat-divider></mat-divider>
             </mat-list-item>
           </mat-list>
         </ng-container>
@@ -48,6 +49,7 @@
           <mat-list>
             <mat-list-item *ngFor="let topo of userProfile.toposCreated">
               <button mat-button [routerLink]="['/topos', topo.id]">{{topo.name}}</button>
+              <mat-divider></mat-divider>
             </mat-list-item>
           </mat-list>
         </ng-container>
@@ -112,7 +114,11 @@
         <ng-container *ngIf="userProfile.toposRent?.length >0; else noTopoRent">
           <mat-list>
             <mat-list-item *ngFor="let topo of userProfile.toposRent">
-              <button mat-button [routerLink]="['/topos', topo.id]">{{topo.name}}</button>
+              <button mat-button [routerLink]="['/topos', topo.topo.id]">{{topo.topo.name}}</button>
+              <mat-chip-list *ngIf="topo.bookingState != null">
+                <mat-chip class="{{topo.bookingState | bookingStateToColor}}">{{bookingState[topo.bookingState]}}</mat-chip>
+              </mat-chip-list>
+              {{topo.bookingDate}}
             </mat-list-item>
           </mat-list>
         </ng-container>
