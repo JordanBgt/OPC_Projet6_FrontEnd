@@ -6,7 +6,6 @@ export class TopoLight {
   name?: string;
   cotationMin?: ICotation;
   cotationMax?: ICotation;
-  isAvailable?: boolean;
   country?: string;
   region?: string;
   photo?: Photo;

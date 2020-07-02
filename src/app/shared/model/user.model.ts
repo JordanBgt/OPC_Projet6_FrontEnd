@@ -1,6 +1,4 @@
 import { Role } from './role.model';
-import { TopoLight } from './topo-light.model';
-import { SpotLight } from './spot-light.model';
 
 export class User  {
   id: number;
@@ -8,9 +6,6 @@ export class User  {
   password?: string;
   email: string;
   role: Role[];
-  toposCreated: TopoLight[];
-  toposRent: TopoLight[];
-  spotsCreated: SpotLight[];
 
   constructor() {}
 

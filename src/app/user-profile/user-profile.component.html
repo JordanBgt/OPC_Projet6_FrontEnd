@@ -1,0 +1,131 @@
+<ng-container *ngIf="userProfileObs$ | async as userProfile">
+  <div class="profile-container">
+    <mat-card class="profil" align="center">
+      <mat-card-header>
+        <div mat-card-avatar class="profil-image"></div>
+        <mat-card-title>Informations profil</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item>
+            <span class="item-header">Username</span>
+            <span class="item-data">{{userProfile.user.username}}</span>
+          </mat-list-item>
+          <mat-list-item>
+            <span class="item-header">Email</span>
+            <span class="item-data">{{userProfile.user.email}}</span>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="spots" align="center">
+      <mat-card-header>
+        <div mat-card-avatar class="list-image"></div>
+        <mat-card-title>Liste des spots créés</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ng-container *ngIf="userProfile.spotsCreated?.length > 0; else noSpot">
+          <mat-list>
+            <mat-list-item *ngFor="let spot of userProfile.spotsCreated">
+              <button mat-button [routerLink]="['/spots', spot.id]">{{spot.name}}</button>
+              <mat-divider></mat-divider>
+            </mat-list-item>
+          </mat-list>
+        </ng-container>
+        <ng-template #noSpot>
+          Vous n'avez pas encore créé de Spot
+        </ng-template>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="topos-created" align="center">
+      <mat-card-header>
+        <div mat-card-avatar class="list-image"></div>
+        <mat-card-title>Liste des topos créés</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ng-container *ngIf="userProfile.toposCreated?.length > 0; else noTopoCreated">
+          <mat-list>
+            <mat-list-item *ngFor="let topo of userProfile.toposCreated">
+              <button mat-button [routerLink]="['/topos', topo.id]">{{topo.name}}</button>
+              <mat-divider></mat-divider>
+            </mat-list-item>
+          </mat-list>
+        </ng-container>
+        <ng-template #noTopoCreated>
+          Vous n'avez pas encore créé de Topo
+        </ng-template>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="topos-owned" align="center">
+      <mat-card-header>
+        <div mat-card-avatar class="list-image"></div>
+        <mat-card-title>Liste des topos possédés</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ng-container *ngIf="userProfile.toposOwned?.length > 0; else noTopoOwned">
+          <mat-accordion *ngFor="let topoUser of userProfile.toposOwned">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>{{topoUser.topo.name}}</mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="panel-content">
+                <button mat-button [routerLink]="['/topos', topoUser.topo.id]">Consulter topo</button>
+                <ng-container *ngIf="topoUser.tenant; else noBooking">
+                  <p>Demande de réservation : {{topoUser.tenant.username}}</p>
+                  <p>Date : {{topoUser.bookingDate}}</p>
+                  <mat-form-field appearance="outline">
+                    <mat-label>État de la réservation</mat-label>
+                    <mat-select [value]="topoUser.bookingState"
+                                (selectionChange)="updateTopoUser(topoUser, $event.value)">
+                      <mat-option></mat-option>
+                      <mat-option *ngFor="let option of bookingState | keyvalue" [value]="option.key">
+                        {{option.value}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </ng-container>
+                <ng-template #noBooking>
+                  Pas de demande de réservation en cours
+                </ng-template>
+                <mat-slide-toggle [checked]="topoUser.available" labelPosition="before"
+                                  [disabled]="topoUser.tenant != null"
+                                  (change)="updateTopoUser(topoUser, $event.checked)">
+                  Est disponible ?
+                </mat-slide-toggle>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </ng-container>
+        <ng-template #noTopoOwned>
+          Vous ne possédez pas de Topo
+        </ng-template>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="topos-rent" align="center">
+      <mat-card-header>
+        <div mat-card-avatar class="list-image"></div>
+        <mat-card-title>Liste des topos loués (location en cours)</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ng-container *ngIf="userProfile.toposRent?.length >0; else noTopoRent">
+          <mat-list>
+            <mat-list-item *ngFor="let topo of userProfile.toposRent">
+              <button mat-button [routerLink]="['/topos', topo.topo.id]">{{topo.topo.name}}</button>
+              <mat-chip-list *ngIf="topo.bookingState != null">
+                <mat-chip class="{{topo.bookingState | bookingStateToColor}}">{{bookingState[topo.bookingState]}}</mat-chip>
+              </mat-chip-list>
+              {{topo.bookingDate}}
+            </mat-list-item>
+          </mat-list>
+        </ng-container>
+        <ng-template #noTopoRent>
+          Vous n'avez pas de location en cours
+        </ng-template>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</ng-container>

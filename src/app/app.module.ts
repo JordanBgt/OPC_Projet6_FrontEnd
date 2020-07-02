@@ -45,7 +45,7 @@ import localeFr from '@angular/common/locales/fr';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CommentDialogComponent } from './comment-dialog/comment-dialog.component';
-import { ProfileComponent } from './profile/profile.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 import { authInterceptorProviders } from './security/auth.interceptor';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -53,6 +53,8 @@ import { AuthGuardService } from './security/auth-guard.service';
 import { httpErrorInterceptorProviders } from './http-error-interceptor';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { MatListModule } from '@angular/material/list';
+import { MatChipsModule } from '@angular/material/chips';
+import { BookingStateToColorPipe } from './shared/booking-state-to-color.pipe';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -83,7 +85,8 @@ registerLocaleData(localeFr, 'fr');
     LongueurUpdateComponent,
     VoieUpdateComponent,
     CommentDialogComponent,
-    ProfileComponent
+    UserProfileComponent,
+    BookingStateToColorPipe
   ],
   imports: [
     BrowserModule,
@@ -107,7 +110,8 @@ registerLocaleData(localeFr, 'fr');
     MatDialogModule,
     MatTooltipModule,
     MaterialFileInputModule,
-    MatListModule
+    MatListModule,
+    MatChipsModule
   ],
   providers: [
     {provide: LOCALE_ID, useValue: 'fr'},

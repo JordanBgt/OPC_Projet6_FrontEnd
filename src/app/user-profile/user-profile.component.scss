@@ -1,0 +1,35 @@
+@import "src/app/shared/layout/entityDetail";
+
+.profile-container {
+  margin: auto;
+  width: 70%;
+  display: flex;
+  flex-flow: column wrap;
+  align-content: center;
+}
+
+.profil-image {
+  background-image: url("src/assets/user.svg");
+  background-size: cover;
+}
+
+.panel-content {
+  display: flex;
+  flex-flow: column wrap;
+}
+
+.accepted {
+  background-color: lightgreen;
+}
+
+.pending {
+  background-color: lightblue;
+}
+
+.refused {
+  background-color: lightcoral;
+}
+
+.default {
+  background-color: lightgrey;
+}
