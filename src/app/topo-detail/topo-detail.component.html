@@ -3,7 +3,7 @@
     <img *ngIf="topo.photo" class="entityImage" [src]="topo.photo.fileToBase64String"/>
     <form [formGroup]="uploadPhotoForm">
       <mat-form-field appearance="outline">
-        <mat-label>Ajouter/modifier photo</mat-label>
+        <mat-label>Modifier photo</mat-label>
         <ngx-mat-file-input formControlName="photo" accept="image/*, image/jpg" (change)="onUploadPhoto()"></ngx-mat-file-input>
       </mat-form-field>
     </form>

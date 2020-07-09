@@ -12,7 +12,7 @@ import { HTTP_STATUS_NOCONTENT } from '../../../app.constants';
 import { TopoService } from '../services/topo.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { catchError, tap } from 'rxjs/operators';
-import { Subscription, throwError } from 'rxjs';
+import { config, Subscription, throwError } from 'rxjs';
 import { TopoUser } from '../shared/model/topo-user.model';
 import { UserProfileService } from '../services/user-profile.service';
 import { TopoUserLight } from '../shared/model/topo-user-light.model';
@@ -79,7 +79,10 @@ export class TopoDetailComponent implements OnInit, OnDestroy {
     const extension = file.type.slice(file.type.indexOf('/') + 1);
     const filename = `${this.topo.name}-photo.${extension}`;
     this.subscriptions.push(this.topoService.uploadPhoto(file, filename, this.topoId, this.topo.creatorId, this.user.id).pipe(
-      tap((res: Topo) => this.topo = new Topo(res)),
+      tap((res: Topo) => {
+        this.topo = new Topo(res);
+        this.snackBar.open('Photo modifiée !', 'Ok', {duration: 5000});
+      }),
       catchError(error => throwError(error))
     ).subscribe());
   }
