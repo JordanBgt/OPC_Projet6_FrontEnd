@@ -1,7 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { IComment } from '../shared/model/comment.model';
 import { CommentService } from '../services/comment.service';
-import { HttpResponse } from '@angular/common/http';
 import { HTTP_STATUS_NOCONTENT, ITEMS_PER_PAGE } from '../../../app.constants';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -9,14 +8,14 @@ import { CommentDialogComponent } from '../comment-dialog/comment-dialog.compone
 import { CommentSave } from '../shared/model/comment-save.model';
 import { TokenStorageService } from '../security/token-storage.service';
 import { catchError, tap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { Subscription, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-comment',
   templateUrl: './comment.component.html',
   styleUrls: ['./comment.component.scss']
 })
-export class CommentComponent implements OnInit {
+export class CommentComponent implements OnInit, OnDestroy {
 
   @Input() spotId: number;
   comments: IComment[];
@@ -24,6 +23,7 @@ export class CommentComponent implements OnInit {
   page: number;
   totalPages: number;
   user: any;
+  subscriptions: Subscription[];
 
   constructor(private commentService: CommentService,
               private snackBar: MatSnackBar,
@@ -32,6 +32,7 @@ export class CommentComponent implements OnInit {
     this.comments = [];
     this.size = ITEMS_PER_PAGE;
     this.page = 0;
+    this.subscriptions = [];
   }
 
   ngOnInit() {
@@ -40,10 +41,10 @@ export class CommentComponent implements OnInit {
   }
 
   loadAll() {
-    this.commentService.getAllComments({page: this.page, spotId: this.spotId}).pipe(
+    this.subscriptions.push(this.commentService.getAllComments({page: this.page, spotId: this.spotId}).pipe(
       tap((res: any) => this.paginateComments(res)),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   paginateComments(data: any) {
@@ -60,7 +61,8 @@ export class CommentComponent implements OnInit {
 
   onDelete(commentId) {
     let status: number;
-    this.commentService.deleteComment(commentId).subscribe((res: any) => status = res.status,
+    this.subscriptions.push(this.commentService.deleteComment(commentId)
+      .subscribe((res: any) => status = res.status,
       (error => console.error(error)),
       () => {
       if (status === HTTP_STATUS_NOCONTENT) {
@@ -69,7 +71,7 @@ export class CommentComponent implements OnInit {
         this.comments = [];
         this.loadAll();
       }
-      });
+      }));
   }
 
   onUpdate(comment) {
@@ -79,9 +81,9 @@ export class CommentComponent implements OnInit {
 
     const dialogRef = this.dialog.open(CommentDialogComponent, dialogConfig);
 
-    dialogRef.afterClosed().subscribe(data => comment.content = data.content,
+    this.subscriptions.push(dialogRef.afterClosed().subscribe(data => comment.content = data.content,
       (error => console.error(error)),
-      () => this.commentService.updateComment(comment, this.user.id));
+      () => this.subscriptions.push(this.commentService.updateComment(comment, this.user.id).subscribe())));
   }
 
   onCreate() {
@@ -94,16 +96,20 @@ export class CommentComponent implements OnInit {
     comment.date = new Date();
     let commentUpdated: IComment;
     const dialogRef = this.dialog.open(CommentDialogComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(data => comment.content = data.content,
+    this.subscriptions.push(dialogRef.afterClosed().subscribe(data => comment.content = data.content,
       (error => console.error(error)),
       () => {
-        this.commentService.createComment(comment).pipe(
+        this.subscriptions.push(this.commentService.createComment(comment).pipe(
           tap((res: IComment) => {
             commentUpdated = res;
             this.comments.unshift(commentUpdated);
           }),
           catchError(error => throwError(error))
-        ).subscribe();
-    });
+        ).subscribe());
+    }));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

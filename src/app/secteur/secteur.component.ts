@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ISecteur, Secteur } from '../shared/model/secteur.model';
 import { SecteurService } from '../services/secteur.service';
 import { ISecteurLight } from '../shared/model/secteur-light.model';
@@ -9,14 +9,14 @@ import { TokenStorageService } from '../security/token-storage.service';
 import { SpotService } from '../services/spot.service';
 import { SpotLight } from '../shared/model/spot-light.model';
 import { catchError, tap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { Subscription, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-secteur',
   templateUrl: './secteur.component.html',
   styleUrls: ['./secteur.component.scss']
 })
-export class SecteurComponent implements OnInit {
+export class SecteurComponent implements OnInit, OnDestroy {
 
   secteurs: ISecteurLight[];
   spots: SpotLight[];
@@ -28,6 +28,7 @@ export class SecteurComponent implements OnInit {
   name: string;
   isLoggedIn: boolean;
   user: any;
+  subscriptions: Subscription[];
 
   constructor(private secteurService: SecteurService,
               private formBuilder: FormBuilder,
@@ -38,21 +39,22 @@ export class SecteurComponent implements OnInit {
     this.spots = [];
     this.page = 0;
     this.size = ITEMS_PER_PAGE;
+    this.subscriptions = [];
   }
 
   loadAll() {
-    this.secteurService.getAllSecteurs({page: this.page, size: this.size, name: this.name}).pipe(
+    this.subscriptions.push(this.secteurService.getAllSecteurs({page: this.page, size: this.size, name: this.name}).pipe(
       tap((res: any) => this.paginateSecteurs(res)),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   loadSpots() {
-    this.spotService.getAllSpots({unpaged: true}).pipe(
+    this.subscriptions.push(this.spotService.getAllSpots({unpaged: true}).pipe(
       tap((res: any) => {
         res.content.forEach(spot => this.spots.push(new SpotLight(spot)));
       })
-    );
+    ).subscribe());
   }
 
   ngOnInit() {
@@ -100,18 +102,22 @@ export class SecteurComponent implements OnInit {
     const formValue = this.createSecteurForm.value;
     const secteur = new Secteur(null, formValue.name, formValue.description, this.user.id, formValue.spots.id);
     let secteurCreated: ISecteur;
-    this.secteurService.createSecteur(secteur).pipe(
+    this.subscriptions.push(this.secteurService.createSecteur(secteur).pipe(
       tap((res: ISecteur) => {
         secteurCreated = res;
         this.router.navigate([`/secteurs/${secteurCreated.id}`]);
       }),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   clearSecteursAndPage() {
     this.secteurs = [];
     this.page = 0;
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
 }

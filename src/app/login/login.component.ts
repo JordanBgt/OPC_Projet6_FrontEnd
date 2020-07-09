@@ -1,35 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../security/auth.service';
 import { TokenStorageService } from '../security/token-storage.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '../shared/model/user.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   isLoggedIn = false;
   isLoginFailed = false;
   url: string;
+  subscriptions: Subscription[];
 
   constructor(private authService: AuthService,
               private tokenStorage: TokenStorageService,
               private formBuilder: FormBuilder,
               private route: ActivatedRoute,
-              private router: Router) { }
+              private router: Router) {
+    this.subscriptions = [];
+  }
 
   ngOnInit() {
-    this.route.queryParams.pipe(
+    this.subscriptions.push(this.route.queryParams.pipe(
       tap(params => {
         this.url = params.url;
       })
-    ).subscribe();
+    ).subscribe());
+
     if (this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
     }
@@ -48,7 +53,7 @@ export class LoginComponent implements OnInit {
     const user = new User();
     user.username = formValue.username;
     user.password = formValue.password;
-    this.authService.login(user).subscribe(
+    this.subscriptions.push(this.authService.login(user).subscribe(
       data => {
         this.tokenStorage.saveToken(data.token);
         this.tokenStorage.saveUser(data);
@@ -64,6 +69,10 @@ export class LoginComponent implements OnInit {
         },
           500);
       }
-    );
+    ));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

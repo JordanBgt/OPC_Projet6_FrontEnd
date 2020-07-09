@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Secteur } from '../shared/model/secteur.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { VoieLight } from '../shared/model/voie-light.model';
 import { SpotLight } from '../shared/model/spot-light.model';
 import { findIndexEntity } from '../shared/entity-utils';
 

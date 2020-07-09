@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Spot } from '../shared/model/spot.model';
 import { SpotService } from '../services/spot.service';
 import { HttpResponse } from '@angular/common/http';
@@ -10,7 +10,7 @@ import { ICotation } from '../shared/model/cotation.model';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TokenStorageService } from '../security/token-storage.service';
 import { catchError, tap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { Subscription, throwError } from 'rxjs';
 import { SpotLight } from '../shared/model/spot-light.model';
 
 @Component({
@@ -18,7 +18,7 @@ import { SpotLight } from '../shared/model/spot-light.model';
   templateUrl: './spot.component.html',
   styleUrls: ['./spot.component.scss']
 })
-export class SpotComponent implements OnInit {
+export class SpotComponent implements OnInit, OnDestroy {
 
   spots: SpotLight[];
   cotations: ICotation[];
@@ -35,6 +35,7 @@ export class SpotComponent implements OnInit {
   cotationMax: number;
   isLoggedIn: boolean;
   user: any;
+  subscriptions: Subscription[];
 
   constructor(private spotService: SpotService,
               private formBuilder: FormBuilder,
@@ -47,24 +48,25 @@ export class SpotComponent implements OnInit {
     this.size = ITEMS_PER_PAGE;
     this.page = 0;
     this.carouselConfig.interval = 0;
+    this.subscriptions = [];
   }
 
   loadAll() {
-    this.spotService.getAllSpots({page: this.page, size: this.size, country: this.country, city: this.city,
+    this.subscriptions.push(this.spotService.getAllSpots({page: this.page, size: this.size, country: this.country, city: this.city,
       name: this.name, isOfficial: this.isOfficial, cotationMin: this.cotationMin, cotationMax: this.cotationMax})
       .pipe(
        tap((res: HttpResponse<any>) => this.paginateTopos(res)),
         catchError(error => throwError(error))
       )
-      .subscribe();
+      .subscribe());
   }
 
 
   loadCotations() {
-    this.cotationService.getAllCotations().pipe(
+    this.subscriptions.push(this.cotationService.getAllCotations().pipe(
       tap((res: ICotation[]) => this.cotations = res),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   ngOnInit() {
@@ -128,15 +130,19 @@ export class SpotComponent implements OnInit {
       description: formValue.description, official: false, topoId: null, photos: null, userId: this.user.id,
       name: formValue.name, cotationMin: formValue.cotationMin, cotationMax: formValue.cotationMax});
     let spotCreated: Spot;
-    this.spotService.createSpot(spot).pipe(
+    this.subscriptions.push(this.spotService.createSpot(spot).pipe(
       tap((res: Spot) => spotCreated = res),
       tap(() => this.router.navigate([`/spots/${spotCreated.id}`])),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   clearSpotsAndPage() {
     this.spots = [];
     this.page = 0;
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

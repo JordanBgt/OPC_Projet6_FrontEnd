@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IVoie, Voie } from '../shared/model/voie.model';
 import { ICotation } from '../shared/model/cotation.model';
 import { LongueurLight } from '../shared/model/longueur-light.model';
@@ -15,14 +15,14 @@ import { Longueur } from '../shared/model/longueur.model';
 import { ISecteurLight } from '../shared/model/secteur-light.model';
 import { SecteurService } from '../services/secteur.service';
 import { catchError, tap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { Subscription, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-voie-detail',
   templateUrl: './voie-detail.component.html',
   styleUrls: ['./voie-detail.component.scss']
 })
-export class VoieDetailComponent implements OnInit {
+export class VoieDetailComponent implements OnInit, OnDestroy {
 
   voie: IVoie;
   voieId: number;
@@ -34,6 +34,7 @@ export class VoieDetailComponent implements OnInit {
   longueurForm: FormGroup;
   isAuthorized = false;
   secteurs: ISecteurLight[];
+  subscriptions: Subscription[];
 
   constructor(private voieService: VoieService,
               private cotationService: CotationService,
@@ -47,6 +48,7 @@ export class VoieDetailComponent implements OnInit {
     this.longueurs = [];
     this.cotations = [];
     this.secteurs = [];
+    this.subscriptions = [];
   }
 
   ngOnInit() {
@@ -69,7 +71,7 @@ export class VoieDetailComponent implements OnInit {
   }
 
   onDelete() {
-    this.voieService.deleteVoie(this.voieId).pipe(
+    this.subscriptions.push(this.voieService.deleteVoie(this.voieId).pipe(
       tap((res: any) => {
         if (res.status === HTTP_STATUS_NOCONTENT) {
           this.snackBar.open('Voie supprimée', 'Ok', {duration: 5000});
@@ -79,48 +81,48 @@ export class VoieDetailComponent implements OnInit {
         }
       }),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   loadVoie() {
-    this.voieService.getOneVoie(this.voieId).pipe(
+    this.subscriptions.push(this.voieService.getOneVoie(this.voieId).pipe(
       tap((res: IVoie) => {
       this.voie = res;
       this.checkIfAuthorized();
       }),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   loadCotations() {
-    this.cotationService.getAllCotations().pipe(
+    this.subscriptions.push(this.cotationService.getAllCotations().pipe(
       tap((res: ICotation[]) => this.cotations = res),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   loadLongueurs() {
-    this.longueurService.getAllLongueurs({unpaged: true, voieId: this.voieId}).pipe(
+    this.subscriptions.push(this.longueurService.getAllLongueurs({unpaged: true, voieId: this.voieId}).pipe(
       tap((res: any) => res.content.forEach(longueur => this.longueurs.push(longueur))),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   loadSecteurs() {
-    this.secteurService.getAllSecteurs({unpaged: true}).pipe(
+    this.subscriptions.push(this.secteurService.getAllSecteurs({unpaged: true}).pipe(
       tap((res: any) => res.content.forEach(secteur => this.secteurs.push(secteur))),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   updateVoie(voie: Voie) {
-    this.voieService.updateVoie(voie, this.user.id).pipe(
+    this.subscriptions.push(this.voieService.updateVoie(voie, this.user.id).pipe(
       tap((res: IVoie) => {
         this.voie = res;
         this.update = false;
       }),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   initLongueurForm() {
@@ -136,10 +138,10 @@ export class VoieDetailComponent implements OnInit {
     const formValue = this.longueurForm.value;
     const longueur = new Longueur(null, formValue.name, formValue.cotationMin, formValue.cotationMax,
       formValue.description, this.user.id, this.voieId);
-    this.longueurService.createLongueur(longueur).pipe(
+    this.subscriptions.push(this.longueurService.createLongueur(longueur).pipe(
       tap(() => this.loadLongueurs()),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   onEditLongueur(longueurId: number) {
@@ -147,7 +149,7 @@ export class VoieDetailComponent implements OnInit {
   }
 
   onDeleteLongueur(longueurId: number) {
-    this.longueurService.deleteLongueur(longueurId).pipe(
+    this.subscriptions.push(this.longueurService.deleteLongueur(longueurId).pipe(
       tap((res: any) => {
         if (res.status === HTTP_STATUS_NOCONTENT) {
           this.snackBar.open('Longueur supprimée', 'Ok', {duration: 5000});
@@ -157,6 +159,10 @@ export class VoieDetailComponent implements OnInit {
         }
       }),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

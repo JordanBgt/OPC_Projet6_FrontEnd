@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TopoService } from '../services/topo.service';
 import { Topo } from '../shared/model/topo.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -11,14 +11,14 @@ import { TokenStorageService } from '../security/token-storage.service';
 import { SpotService } from '../services/spot.service';
 import { catchError, tap } from 'rxjs/operators';
 import { SpotLight } from '../shared/model/spot-light.model';
-import { throwError } from 'rxjs';
+import { Subscription, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-topo',
   templateUrl: './topo.component.html',
   styleUrls: ['./topo.component.scss']
 })
-export class TopoComponent implements OnInit {
+export class TopoComponent implements OnInit, OnDestroy {
 
   topos: TopoLight[];
   topoForm: FormGroup;
@@ -34,6 +34,7 @@ export class TopoComponent implements OnInit {
   totalPages: number;
   isLoggedIn: boolean;
   user: any;
+  subscriptions: Subscription[];
 
   constructor(private topoService: TopoService,
               private formBuilder: FormBuilder,
@@ -46,10 +47,11 @@ export class TopoComponent implements OnInit {
     this.spots = [];
     this.size = ITEMS_PER_PAGE;
     this.page = 0;
+    this.subscriptions = [];
   }
 
   loadAll() {
-    this.topoService.getAllTopos({page: this.page, size: this.size, country: this.country, name: this.name,
+    this.subscriptions.push(this.topoService.getAllTopos({page: this.page, size: this.size, country: this.country, name: this.name,
       cotationMin: this.cotationMin, cotationMax: this.cotationMax}).pipe(
         tap(data => {
           this.totalPages = data.totalPages;
@@ -58,21 +60,21 @@ export class TopoComponent implements OnInit {
           }
         })
     )
-      .subscribe();
+      .subscribe());
   }
 
   loadCotations() {
-    this.cotationService.getAllCotations().pipe(
+    this.subscriptions.push(this.cotationService.getAllCotations().pipe(
       tap((res: ICotation[]) => this.cotations = res),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   loadSpots() {
-    this.spotService.getAllSpots({unpaged: true}).pipe(
+    this.subscriptions.push(this.spotService.getAllSpots({unpaged: true}).pipe(
       tap((res: any) => this.spots = res.content),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   ngOnInit() {
@@ -112,13 +114,13 @@ export class TopoComponent implements OnInit {
     const topo = new Topo({id: null, name: formValue.name, description: formValue.description,
       cotationMin: formValue.cotationMin, cotationMax: formValue.cotationMax, publicationDate: new Date(), photo: null});
     let topoCreated: Topo;
-    this.topoService.createTopo(topo).pipe(
+    this.subscriptions.push(this.topoService.createTopo(topo).pipe(
       tap((res: Topo) => {
         topoCreated = new Topo(res);
         this.router.navigate([`/topos/${topoCreated.id}`]);
       }),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   loadPage(page) {
@@ -139,5 +141,9 @@ export class TopoComponent implements OnInit {
   clearToposAndPage() {
     this.topos = [];
     this.page = 0;
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

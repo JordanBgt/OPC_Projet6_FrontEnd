@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Topo } from '../shared/model/topo.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ICotation } from '../shared/model/cotation.model';
@@ -12,7 +12,7 @@ import { HTTP_STATUS_NOCONTENT } from '../../../app.constants';
 import { TopoService } from '../services/topo.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { catchError, tap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { Subscription, throwError } from 'rxjs';
 import { TopoUser } from '../shared/model/topo-user.model';
 import { UserProfileService } from '../services/user-profile.service';
 import { TopoUserLight } from '../shared/model/topo-user-light.model';
@@ -22,7 +22,7 @@ import { TopoUserLight } from '../shared/model/topo-user-light.model';
   templateUrl: './topo-detail.component.html',
   styleUrls: ['./topo-detail.component.scss']
 })
-export class TopoDetailComponent implements OnInit {
+export class TopoDetailComponent implements OnInit, OnDestroy {
 
   topo: Topo;
   topoId: number;
@@ -34,6 +34,7 @@ export class TopoDetailComponent implements OnInit {
   uploadPhotoForm: FormGroup;
   isAuthorized = false;
   isOwnedByUser: boolean;
+  subscriptions: Subscription[];
 
   constructor(private topoService: TopoService,
               private route: ActivatedRoute,
@@ -46,6 +47,7 @@ export class TopoDetailComponent implements OnInit {
               private userProfileService: UserProfileService) {
     this.cotations = [];
     this.spots = [];
+    this.subscriptions = [];
   }
 
   ngOnInit() {
@@ -76,14 +78,14 @@ export class TopoDetailComponent implements OnInit {
     const file: File = this.uploadPhotoForm.value.photo.files[0];
     const extension = file.type.slice(file.type.indexOf('/') + 1);
     const filename = `${this.topo.name}-photo.${extension}`;
-    this.topoService.uploadPhoto(file, filename, this.topoId, this.topo.creatorId, this.user.id).pipe(
+    this.subscriptions.push(this.topoService.uploadPhoto(file, filename, this.topoId, this.topo.creatorId, this.user.id).pipe(
       tap((res: Topo) => this.topo = new Topo(res)),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   onDelete() {
-    this.topoService.deleteTopo(this.topoId).pipe(
+    this.subscriptions.push(this.topoService.deleteTopo(this.topoId).pipe(
       tap((res: any) => {
         if (res.status === HTTP_STATUS_NOCONTENT) {
           this.snackBar.open('Topo supprimé !', 'Ok', {duration: 5000});
@@ -93,50 +95,50 @@ export class TopoDetailComponent implements OnInit {
         }
       }),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   loadTopo() {
-    this.topoService.getOneTopo(this.topoId).pipe(
+    this.subscriptions.push(this.topoService.getOneTopo(this.topoId).pipe(
       tap((res: any) => {
         this.topo = new Topo(res);
         this.checkIfAuthorized();
         this.checkIfUserOwnsTopo();
       }),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   loadCotations() {
-    this.cotationService.getAllCotations().pipe(
+    this.subscriptions.push(this.cotationService.getAllCotations().pipe(
       tap((res: ICotation[]) => this.cotations = res),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   loadSpots() {
-    this.spotService.getAllSpots({unpaged: true}).pipe(
+    this.subscriptions.push(this.spotService.getAllSpots({unpaged: true}).pipe(
       tap((res: any) => {
         res.content.forEach(spot => this.spots.push(new SpotLight(spot)));
       }),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   updateTopo(topo: Topo) {
-    this.topoService.updateTopo(topo, this.user.id).pipe(
+    this.subscriptions.push(this.topoService.updateTopo(topo, this.user.id).pipe(
       tap((res: Topo) => {
         this.topo = new Topo(res);
         this.update = false;
       }),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   bookTopo(topoUser: TopoUser) {
     topoUser.available = false;
     topoUser.tenant = this.user;
-    this.topoService.bookTopo(this.topoId, topoUser).pipe(
+    this.subscriptions.push(this.topoService.bookTopo(this.topoId, topoUser).pipe(
       tap(topoUserUpdated => {
         this.snackBar.open('Topo reservé, en attente de confirmation de la part du propriétaire !',
           'Ok', {duration: 5000});
@@ -144,24 +146,28 @@ export class TopoDetailComponent implements OnInit {
         this.topo.topoUsers[index] = topoUserUpdated;
       }),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   onAddTopoToUser() {
     const topoUser = new TopoUser();
     topoUser.topo = this.topo;
     topoUser.owner = this.user;
-    this.userProfileService.createTopoUser(topoUser).pipe(
+    this.subscriptions.push(this.userProfileService.createTopoUser(topoUser).pipe(
       tap(topoUserCreated => {
         this.topo.topoUsers.push(topoUserCreated);
         this.checkIfUserOwnsTopo();
         this.snackBar.open('Topo ajouté à votre liste de topos possédés', 'Ok', {duration: 5000});
       })
-    ).subscribe();
+    ).subscribe());
   }
 
   // Pour vérifier si l'utilisateur possède ce topo
   checkIfUserOwnsTopo() {
     this.isOwnedByUser = this.topo.topoUsers.find(topoUser => topoUser.owner.id === this.user.id) !== undefined;
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

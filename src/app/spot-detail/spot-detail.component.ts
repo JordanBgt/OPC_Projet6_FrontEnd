@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Spot } from '../shared/model/spot.model';
 import { ICotation } from '../shared/model/cotation.model';
 import { SecteurLight } from '../shared/model/secteur-light.model';
@@ -14,7 +14,7 @@ import { SpotService } from '../services/spot.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Secteur } from '../shared/model/secteur.model';
 import { catchError, tap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { Subscription, throwError } from 'rxjs';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
@@ -22,7 +22,7 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
   templateUrl: './spot-detail.component.html',
   styleUrls: ['./spot-detail.component.scss']
 })
-export class SpotDetailComponent implements OnInit {
+export class SpotDetailComponent implements OnInit, OnDestroy {
 
   spot: Spot;
   spotId: number;
@@ -34,6 +34,7 @@ export class SpotDetailComponent implements OnInit {
   secteurForm: FormGroup;
   isAuthorized = false;
   uploadPhotoForm: FormGroup;
+  subscriptions: Subscription[];
 
   constructor(private spotService: SpotService,
               private route: ActivatedRoute,
@@ -47,6 +48,7 @@ export class SpotDetailComponent implements OnInit {
     this.carouselConfig.interval = 0;
     this.cotations = [];
     this.secteurs = [];
+    this.subscriptions = [];
   }
 
   checkIfAuthorized() {
@@ -79,14 +81,14 @@ export class SpotDetailComponent implements OnInit {
     const extension = file.type.slice(file.type.indexOf('/') + 1);
     const photoIndex = this.spot.photos != null ? this.spot.photos.length : 0;
     const fileName = `${this.spot.name}-photo-${photoIndex + 1}.${extension}`;
-    this.spotService.uploadPhoto(file, fileName, this.spotId, this.spot.userId, this.user.id).pipe(
+    this.subscriptions.push(this.spotService.uploadPhoto(file, fileName, this.spotId, this.spot.userId, this.user.id).pipe(
       tap((res: Spot) => this.spot = res),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   onDelete() {
-    this.spotService.deleteSpot(this.spotId).pipe(
+    this.subscriptions.push(this.spotService.deleteSpot(this.spotId).pipe(
       tap((res: any) => {
         if (res.status === HTTP_STATUS_NOCONTENT) {
           this.snackBar.open('Spot supprimé !', 'OK', {duration: 5000});
@@ -96,30 +98,30 @@ export class SpotDetailComponent implements OnInit {
         }
       }),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   loadSpot() {
-    this.spotService.getOneSpot(this.spotId).pipe(
+    this.subscriptions.push(this.spotService.getOneSpot(this.spotId).pipe(
       tap((res: any) => {
         this.spot = new Spot(res);
         this.checkIfAuthorized();
       }),
-    ).subscribe();
+    ).subscribe());
   }
 
   loadCotations() {
-    this.cotationService.getAllCotations().pipe(
+    this.subscriptions.push(this.cotationService.getAllCotations().pipe(
       tap((res: ICotation[]) => this.cotations = res),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   loadSecteurs() {
-    this.secteurService.getAllSecteurs({unpaged: true, spotId: this.spotId}).pipe(
+    this.subscriptions.push(this.secteurService.getAllSecteurs({unpaged: true, spotId: this.spotId}).pipe(
       tap((res: any) => res.content.forEach(secteur => this.secteurs.push(secteur))),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   initSecteurForm() {
@@ -130,26 +132,26 @@ export class SpotDetailComponent implements OnInit {
   }
 
   updateSpot(spot: Spot) {
-    this.spotService.updateSpot(spot, this.user.id).pipe(
+    this.subscriptions.push(this.spotService.updateSpot(spot, this.user.id).pipe(
       tap((res: Spot) => {
         this.spot = new Spot(res);
         this.update = false;
       }),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   onAddSecteur() {
     const formValue = this.secteurForm.value;
     const secteur = new Secteur(null, formValue.name, formValue.description, this.user.id, this.spotId);
-    this.secteurService.createSecteur(secteur).pipe(
+    this.subscriptions.push(this.secteurService.createSecteur(secteur).pipe(
       tap(() => this.loadSecteurs()),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   onDeleteSecteur(secteurId: number) {
-    this.secteurService.deleteSecteur(secteurId).pipe(
+    this.subscriptions.push(this.secteurService.deleteSecteur(secteurId).pipe(
       tap((res: any) => {
         if (res.status === HTTP_STATUS_NOCONTENT) {
           this.snackBar.open('Secteur supprimé', 'Ok', {duration: 5000});
@@ -159,7 +161,7 @@ export class SpotDetailComponent implements OnInit {
         }
       }),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   onEditSecteur(secteurId: number) {
@@ -169,5 +171,9 @@ export class SpotDetailComponent implements OnInit {
   onOfficialToggleChange(value: MatSlideToggleChange) {
     this.spot.official = value.checked;
     this.updateSpot(this.spot);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

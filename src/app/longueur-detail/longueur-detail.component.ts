@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ILongueur, Longueur } from '../shared/model/longueur.model';
 import { ICotation } from '../shared/model/cotation.model';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { LongueurService } from '../services/longueur.service';
 import { IVoieLight } from '../shared/model/voie-light.model';
 import { VoieService } from '../services/voie.service';
 import { catchError, tap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { Subscription, throwError } from 'rxjs';
 
 
 @Component({
@@ -19,7 +19,7 @@ import { throwError } from 'rxjs';
   templateUrl: './longueur-detail.component.html',
   styleUrls: ['./longueur-detail.component.scss']
 })
-export class LongueurDetailComponent implements OnInit {
+export class LongueurDetailComponent implements OnInit, OnDestroy {
 
   longueur: ILongueur;
   longueurId: number;
@@ -28,6 +28,7 @@ export class LongueurDetailComponent implements OnInit {
   user: any;
   isAdmin: boolean;
   voies: IVoieLight[];
+  subsriptions: Subscription[];
 
   constructor(private longueurService: LongueurService,
               private route: ActivatedRoute,
@@ -38,6 +39,7 @@ export class LongueurDetailComponent implements OnInit {
               private voieService: VoieService) {
     this.cotations = [];
     this.voies = [];
+    this.subsriptions = [];
   }
 
   ngOnInit() {
@@ -54,7 +56,7 @@ export class LongueurDetailComponent implements OnInit {
   }
 
   onDelete() {
-    this.longueurService.deleteLongueur(this.longueurId).pipe(
+    this.subsriptions.push(this.longueurService.deleteLongueur(this.longueurId).pipe(
       tap((res: any) => {
         if (res.status === HTTP_STATUS_NOCONTENT) {
           this.snackBar.open('Longueur supprimée !', 'Ok', {duration: 5000});
@@ -64,37 +66,41 @@ export class LongueurDetailComponent implements OnInit {
         }
       }),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   loadLongueur() {
-    this.longueurService.getOneLongueur(this.longueurId).pipe(
+    this.subsriptions.push(this.longueurService.getOneLongueur(this.longueurId).pipe(
       tap((res: ILongueur) => this.longueur = res),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   loadCotations() {
-    this.cotationService.getAllCotations().pipe(
+    this.subsriptions.push(this.cotationService.getAllCotations().pipe(
       tap((res: ICotation[]) => this.cotations = res),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   loadVoies() {
-    this.voieService.getAllVoies({unpaged: true}).pipe(
+    this.subsriptions.push(this.voieService.getAllVoies({unpaged: true}).pipe(
       tap((res: any) => res.content.forEach(voie => this.voies.push(voie))),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
   }
 
   updateLongueur(longueur: Longueur) {
-    this.longueurService.updateLongueur(longueur, this.user.id).pipe(
+    this.subsriptions.push(this.longueurService.updateLongueur(longueur, this.user.id).pipe(
       tap((res: ILongueur) => {
         this.longueur = res;
         this.update = false;
       }),
       catchError(error => throwError(error))
-    ).subscribe();
+    ).subscribe());
+  }
+
+  ngOnDestroy(): void {
+    this.subsriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

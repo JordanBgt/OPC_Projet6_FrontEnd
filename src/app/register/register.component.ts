@@ -1,19 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../security/auth.service';
 import { User } from '../shared/model/user.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   isSuccessful = false;
   isSignupFailed = false;
   errorMessage = '';
+  registerSubscription : Subscription;
 
   constructor(private authService: AuthService,
               private formBuilder: FormBuilder) { }
@@ -36,7 +38,7 @@ export class RegisterComponent implements OnInit {
     user.username = formValue.username;
     user.email = formValue.email;
     user.password = formValue.password;
-    this.authService.register(user).subscribe(
+    this.registerSubscription = this.authService.register(user).subscribe(
       data => {
         this.isSuccessful = true;
         this.isSignupFailed = false;
@@ -46,6 +48,10 @@ export class RegisterComponent implements OnInit {
         this.isSignupFailed = true;
       }
     );
+  }
+
+  ngOnDestroy(): void {
+    this.registerSubscription.unsubscribe();
   }
 
 }

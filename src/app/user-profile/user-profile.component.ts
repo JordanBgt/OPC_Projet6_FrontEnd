@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TokenStorageService } from '../security/token-storage.service';
 import { catchError, filter, tap } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
+import { Observable, Subscription, throwError } from 'rxjs';
 import { UserProfileService } from '../services/user-profile.service';
 import { UserProfile } from '../shared/model/user-profile.model';
 import { BookingState } from '../shared/model/booking-state.enum';
@@ -12,13 +12,14 @@ import { TopoUser } from '../shared/model/topo-user.model';
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit, OnDestroy {
 
   userConnected: any;
   isLoggedIn: boolean;
   userProfileObs$: Observable<UserProfile>;
   userProfile: UserProfile;
   bookingState = BookingState;
+  updateSubscription: Subscription;
 
   constructor(private tokenStorageService: TokenStorageService,
               private userProfileService: UserProfileService) { }
@@ -45,12 +46,16 @@ export class UserProfileComponent implements OnInit {
     } else {
       topoUser.bookingState = eventValue;
     }
-    this.userProfileService.updateTopoUser(topoUser).pipe(
+    this.updateSubscription = this.userProfileService.updateTopoUser(topoUser).pipe(
       tap(topoUserUpdated => {
         const index = this.userProfile.toposOwned.findIndex(element => element.id === topoUserUpdated.id);
         this.userProfile.toposOwned[index] = topoUserUpdated;
       })
     ).subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.updateSubscription.unsubscribe();
   }
 
 }
