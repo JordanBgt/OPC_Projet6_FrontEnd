@@ -1,0 +1,17 @@
+.create-form-panel {
+  width: 30%;
+  margin: 3rem auto;
+
+  .create-accordion {
+    width: 50%;
+    margin: auto;
+  }
+
+  .create-cotation {
+    width: 45% !important;
+  }
+
+  mat-form-field {
+    width: 80%;
+  }
+}

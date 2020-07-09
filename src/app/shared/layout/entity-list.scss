@@ -1,0 +1,39 @@
+.entity-list {
+  display: flex;
+  flex-flow: column wrap;
+  align-content: center;
+
+  >* {
+    border: 1px solid red;
+  }
+}
+
+.entity-resume {
+  width: 60%;
+  border-radius: 1.5rem;
+  margin: 3rem auto;
+  text-align: center;
+  padding: 1.5rem;
+}
+
+.search-form {
+  width: 60%;
+  margin: auto;
+
+  .row-1 {
+    display: flex;
+    justify-content: center;
+  }
+
+  mat-form-field {
+    margin : 0.75rem;
+  }
+
+  .search-buttons {
+    margin: 0 0.75rem;
+  }
+
+  .search-buttons button {
+    margin: 0 0.75rem;
+  }
+}

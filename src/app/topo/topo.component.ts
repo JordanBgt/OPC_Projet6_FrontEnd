@@ -104,8 +104,7 @@ export class TopoComponent implements OnInit, OnDestroy {
       country: '',
       name: '',
       cotationMin: '',
-      cotationMax: '',
-      available: ''
+      cotationMax: ''
     });
   }
 

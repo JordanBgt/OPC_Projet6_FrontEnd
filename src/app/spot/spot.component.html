@@ -1,5 +1,5 @@
 <div>
-  <div class="entityResume jumbotron">
+  <div class="entity-resume jumbotron">
     <h2>Liste des spots</h2>
     <hr>
     <span>Vous trouverez, ci-dessous, la liste des spots enregistrés par la communauté ou l'association. </span>
@@ -9,7 +9,7 @@
     <br />
     <img src="../assets/official.png" class="officialLogo" alt="logo officiel les amis de l'escalade">
   </div>
-  <div class="searchForm">
+  <div class="search-form">
     <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
       <mat-form-field appearance="outline">
         <mat-label>Pays</mat-label>
@@ -36,13 +36,13 @@
         </mat-select>
       </mat-form-field>
       <mat-slide-toggle formControlName="isOfficial">Officiel ?</mat-slide-toggle>
-      <div class="searchButtons" align="center">
+      <div class="search-buttons" align="center">
         <button mat-stroked-button color="primary" type="submit">Rechercher</button>
         <button mat-stroked-button type="reset">Effacer les critères</button>
       </div>
     </form>
   </div>
-  <div class="row createFormPanel">
+  <div class="row create-form-panel">
     <mat-accordion class="createAccordion">
       <mat-expansion-panel [disabled]="!isLoggedIn" matTooltip="Vous devez être connecté pour créer un spot"
                            [matTooltipDisabled]="isLoggedIn">

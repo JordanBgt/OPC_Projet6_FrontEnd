@@ -1,11 +1,11 @@
 <div>
-  <div class="entityResume jumbotron">
+  <div class="entity-resume jumbotron">
     <h2>Liste des longueurs</h2>
     <hr>
     <span>Vous trouverez, ci-dessous, la liste des longueurs enregistrées par la communauté ou l'association. </span>
     <span>Vous avez la possibilité de consulter leur fiche détaillée ainsi que d'en ajouter. </span>
   </div>
-  <div class="searchForm">
+  <div class="search-form">
     <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
       <mat-form-field appearance="outline">
         <mat-label>Nom</mat-label>
@@ -23,13 +23,13 @@
           <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
         </mat-select>
       </mat-form-field>
-      <div class="searchButtons" align="center">
+      <div class="search-buttons" align="center">
         <button mat-stroked-button color="primary" type="submit">Rechercher</button>
         <button mat-stroked-button type="reset">Effacer les critères</button>
       </div>
     </form>
   </div>
-  <div class="row createFormPanel">
+  <div class="row create-form-panel">
     <mat-accordion class="createAccordion">
       <mat-expansion-panel [disabled]="!isLoggedIn" matTooltip="Vous devez être connecté pour créer une longueur"
                            [matTooltipDisabled]="isLoggedIn">

@@ -1,5 +1,11 @@
 @import "src/app/shared/layout/card";
-@import "src/app/shared/layout/createForm";
-@import "src/app/shared/layout/searchForm";
-@import "src/app/shared/layout/entityResume";
+@import "src/app/shared/layout/entity-list";
+@import "src/app/shared/layout/create-form";
 
+ul {
+  list-style: none;
+
+  li {
+    padding: 0.25rem 0;
+  }
+}
