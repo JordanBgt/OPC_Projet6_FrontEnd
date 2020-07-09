@@ -5,11 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CommentComponent } from './comment/comment.component';
 import { LongueurComponent } from './longueur/longueur.component';
-import { PhotoComponent } from './photo/photo.component';
 import { SecteurComponent } from './secteur/secteur.component';
 import { SpotComponent } from './spot/spot.component';
 import { TopoComponent } from './topo/topo.component';
-import { UserComponent } from './user/user.component';
 import { VoieComponent } from './voie/voie.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -63,11 +61,9 @@ registerLocaleData(localeFr, 'fr');
     AppComponent,
     CommentComponent,
     LongueurComponent,
-    PhotoComponent,
     SecteurComponent,
     SpotComponent,
     TopoComponent,
-    UserComponent,
     VoieComponent,
     LoginComponent,
     RegisterComponent,
