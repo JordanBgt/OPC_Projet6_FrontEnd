@@ -50,7 +50,8 @@ export class TopoUpdateComponent implements OnInit {
     const formValue = this.topoUpdateForm.value;
     this.topoUpdated = new Topo({id: this.topo.id, name: formValue.name, description: formValue.description,
       country: formValue.country, region: formValue.region, spots: formValue.spots, creatorId: this.topo.creatorId,
-      publicationDate: this.topo.publicationDate, photo: this.topo.photo});
+      publicationDate: this.topo.publicationDate, photo: this.topo.photo, cotationMin: formValue.cotationMin,
+      cotationMax: formValue.cotationMax});
     this.topoUpdatedEvent.emit(this.topoUpdated);
   }
 

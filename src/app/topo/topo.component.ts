@@ -111,8 +111,10 @@ export class TopoComponent implements OnInit, OnDestroy {
 
   onCreate() {
     const formValue = this.topoForm.value;
+    const spots = formValue.spots !== '' ? formValue.spots : null;
     const topo = new Topo({id: null, name: formValue.name, description: formValue.description,
-      cotationMin: formValue.cotationMin, cotationMax: formValue.cotationMax, publicationDate: new Date(), photo: null});
+      cotationMin: formValue.cotationMin, cotationMax: formValue.cotationMax, publicationDate: new Date(), photo: null,
+      creatorId: this.user.id, spots, country: formValue.country, region: formValue.region});
     let topoCreated: Topo;
     this.subscriptions.push(this.topoService.createTopo(topo).pipe(
       tap((res: Topo) => {
