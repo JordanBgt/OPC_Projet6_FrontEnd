@@ -3,7 +3,8 @@ import { AuthService } from '../security/auth.service';
 import { TokenStorageService } from '../security/token-storage.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '../shared/model/user.model';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -15,12 +16,20 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
   isLoggedIn = false;
   isLoginFailed = false;
+  url: string;
 
   constructor(private authService: AuthService,
               private tokenStorage: TokenStorageService,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder,
+              private route: ActivatedRoute,
+              private router: Router) { }
 
   ngOnInit() {
+    this.route.queryParams.pipe(
+      tap(params => {
+        this.url = params.url;
+      })
+    ).subscribe();
     if (this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
     }
@@ -47,7 +56,11 @@ export class LoginComponent implements OnInit {
         this.isLoggedIn = true;
         this.isLoginFailed = false;
         setTimeout(() => {
-          window.location.replace('http://localhost:4200/home');
+          if (!!this.url) {
+            window.location.replace(`http://localhost:4200${this.url}`);
+          } else {
+            window.location.replace('http://localhost:4200/home');
+          }
         },
           500);
       }
