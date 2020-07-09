@@ -3,7 +3,7 @@ import { Spot } from '../shared/model/spot.model';
 import { SpotService } from '../services/spot.service';
 import { HttpResponse } from '@angular/common/http';
 import { ITEMS_PER_PAGE } from '../../../app.constants';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CotationService } from '../services/cotation.service';
 import { ICotation } from '../shared/model/cotation.model';
@@ -103,12 +103,12 @@ export class SpotComponent implements OnInit, OnDestroy {
 
   initCreateSpotForm() {
     this.createSpotForm = this.formBuilder.group({
-      name: '',
-      country: '',
-      city: '',
-      cotationMin: '',
-      cotationMax: '',
-      description: ''
+      name: ['', Validators.required],
+      country: ['', Validators.required],
+      city: ['', Validators.required],
+      cotationMin: ['', Validators.required],
+      cotationMax: ['', Validators.required],
+      description: ['', Validators.required]
     });
   }
 

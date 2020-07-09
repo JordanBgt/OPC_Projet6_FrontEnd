@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Cotation } from '../shared/model/cotation.model';
 import { Voie } from '../shared/model/voie.model';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { findIndexCotation, findIndexEntity } from '../shared/entity-utils';
 import { LongueurLight } from '../shared/model/longueur-light.model';
 import { SecteurLight } from '../shared/model/secteur-light.model';
@@ -31,10 +31,10 @@ export class VoieUpdateComponent implements OnInit {
 
   initForm() {
     this.voieUpdateForm = this.formBuilder.group({
-      name: this.voie.name,
-      description: this.voie.description,
-      cotationMin: this.cotations[this.indexCotationMin],
-      cotationMax: this.cotations[this.indexCotationMax],
+      name: [this.voie.name, Validators.required],
+      description: [this.voie.description, Validators.required],
+      cotationMin: [this.cotations[this.indexCotationMin], Validators.required],
+      cotationMax: [this.cotations[this.indexCotationMax], Validators.required],
       secteurs: this.secteurs[findIndexEntity(this.secteurs, this.voie.secteurId)]
     });
   }

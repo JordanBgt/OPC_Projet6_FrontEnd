@@ -39,7 +39,7 @@
               <mat-option *ngFor="let spot of spots" [value]="spot">{{spot.name}}</mat-option>
             </mat-select>
           </mat-form-field>
-          <button type="submit" class="btn btn-primary submit">Valider</button>
+          <button type="submit" class="btn btn-primary submit" [disabled]="!createSecteurForm.valid">Valider</button>
         </form>
       </mat-expansion-panel>
     </mat-accordion>

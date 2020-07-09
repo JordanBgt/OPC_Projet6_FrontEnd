@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Secteur } from '../shared/model/secteur.model';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SpotLight } from '../shared/model/spot-light.model';
 import { findIndexEntity } from '../shared/entity-utils';
 
@@ -25,8 +25,8 @@ export class SecteurUpdateComponent implements OnInit {
 
   initForm() {
     this.secteurUpdateForm = this.formBuilder.group({
-      name: this.secteur.name,
-      description: this.secteur.description,
+      name: [this.secteur.name, Validators.required],
+      description: [this.secteur.description, Validators.required],
       spots: this.spots[findIndexEntity(this.spots, this.secteur.spotId)]
     });
   }

@@ -65,7 +65,7 @@
               <mat-option *ngFor="let secteur of secteurs" [value]="secteur">{{secteur.name}}</mat-option>
             </mat-select>
           </mat-form-field>
-          <button type="submit" class="btn btn-primary submit">Valider</button>
+          <button type="submit" class="btn btn-primary submit" [disabled]="!createVoieForm.valid">Valider</button>
         </form>
       </mat-expansion-panel>
     </mat-accordion>

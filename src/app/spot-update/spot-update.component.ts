@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Spot } from '../shared/model/spot.model';
 import { Cotation } from '../shared/model/cotation.model';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { findIndexCotation } from '../shared/entity-utils';
 import { SecteurLight } from '../shared/model/secteur-light.model';
 
@@ -31,12 +31,12 @@ export class SpotUpdateComponent implements OnInit {
 
   initForm() {
     this.spotUpdateForm = this.formBuilder.group({
-      name: this.spot.name,
-      description: this.spot.description,
-      cotationMin: this.cotations[this.indexCotationMin],
-      cotationMax: this.cotations[this.indexCotationMax],
-      country: this.spot.country,
-      city: this.spot.city,
+      name: [this.spot.name, Validators.required],
+      description: [this.spot.description, Validators.required],
+      cotationMin: [this.cotations[this.indexCotationMin], Validators.required],
+      cotationMax: [this.cotations[this.indexCotationMax], Validators.required],
+      country: [this.spot.country, Validators.required],
+      city: [this.spot.city, Validators.required],
       secteurs: [''],
       isOfficial: this.spot.official
     });

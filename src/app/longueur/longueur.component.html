@@ -65,7 +65,7 @@
               <mat-option *ngFor="let voie of voies" [value]="voie">{{voie.name}}</mat-option>
             </mat-select>
           </mat-form-field>
-          <button type="submit" class="btn btn-primary submit">Valider</button>
+          <button type="submit" class="btn btn-primary submit" [disabled]="!createLongueurForm.valid">Valider</button>
         </form>
       </mat-expansion-panel>
     </mat-accordion>
