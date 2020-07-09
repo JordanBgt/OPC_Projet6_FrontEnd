@@ -1,6 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TokenStorageService } from '../security/token-storage.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -9,11 +7,12 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
 
+  isCollapsed = true;
+
   @Input() isLoggedIn: boolean;
   @Output() logoutEvent = new EventEmitter();
 
-  constructor(private tokenStorageService: TokenStorageService,
-              private router: Router) { }
+  constructor() { }
 
   ngOnInit() {}
 
