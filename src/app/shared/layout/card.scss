@@ -1,7 +1,7 @@
 .card {
-  width: 400px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  width: 25rem;
+  margin-top: 0.625rem;
+  margin-bottom: 0.625rem;
 }
 
 .card-header {
@@ -16,23 +16,27 @@
 }
 
 .mat-card-image {
-  height: 500px;
-  width: 366px;
+  height: 31.25rem;
+  width: 22.85rem;
   margin: auto;
 }
 
-.officialImg {
+.official-img {
   background-image: url("src/assets/official.png");
   background-size: cover;
 }
 
 .logo-entite-container {
-  height: 200px;
-  width: 366px;
+  height: 12.5rem;
   margin: auto;
 }
 
 .logo-entite {
   display: block;
   margin: auto;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: center;
 }

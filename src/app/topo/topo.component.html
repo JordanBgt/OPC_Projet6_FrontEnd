@@ -8,9 +8,9 @@
       <li>Si vous possédez un topo et qu'il a déjà été créé sur le site, vous pouvez indiquer, sur la page dudit topo, que vous le possédez et ainsi le rendre disponible à la location</li>
     </ul>
   </div>
-  <div class="search-focrm">
+  <div class="search-form">
     <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
-      <div class="row-1">
+      <div class="row-1 form-inputs">
       <mat-form-field appearance="outline">
         <mat-label>Pays</mat-label>
         <input matInput formControlName="country">
@@ -39,55 +39,70 @@
     </form>
   </div>
   <div class="create-form-panel">
-    <mat-accordion class="create-accordion">
+    <mat-accordion>
       <mat-expansion-panel [disabled]="!isLoggedIn" matTooltip="Vous devez être connecté pour créer un topo"
                            [matTooltipDisabled]="isLoggedIn">
         <mat-expansion-panel-header>
           <mat-panel-title>Créer topo</mat-panel-title>
         </mat-expansion-panel-header>
-        <form [formGroup]="topoForm" (ngSubmit)="onCreate()" class="create-form">
-          <mat-form-field appearance="outline">
-            <mat-label>Nom</mat-label>
-            <input matInput formControlName="name">
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>Pays</mat-label>
-            <input matInput formControlName="country">
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>Région</mat-label>
-            <input matInput formControlName="region">
-          </mat-form-field>
-          <mat-form-field appearance="outline" class="create-cotation">
-            <mat-label>Cotation min</mat-label>
-            <mat-select formControlName="cotationMin">
-              <mat-option disabled>Cotation min</mat-option>
-              <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field appearance="outline" class="create-cotation">
-            <mat-label>Cotation max</mat-label>
-            <mat-select formControlName="cotationMax">
-              <mat-option disabled>Cotation max</mat-option>
-              <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>Description</mat-label>
-            <textarea matInput formControlName="description"></textarea>
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>Liste des spots</mat-label>
-            <mat-select formControlName="spots" multiple>
-              <mat-option *ngFor="let spot of spots" [value]="spot">{{spot.name}}</mat-option>
-            </mat-select>
-          </mat-form-field>
+        <form [formGroup]="topoForm" (ngSubmit)="onCreate()" class="create-form-content">
+          <div class="row-1">
+            <mat-form-field appearance="outline">
+              <mat-label>Nom</mat-label>
+              <input matInput formControlName="name">
+            </mat-form-field>
+          </div>
+          <div class="row-1">
+            <mat-form-field appearance="outline">
+              <mat-label>Pays</mat-label>
+              <input matInput formControlName="country">
+            </mat-form-field>
+          </div>
+          <div class="row-1">
+            <mat-form-field appearance="outline">
+              <mat-label>Région</mat-label>
+              <input matInput formControlName="region">
+            </mat-form-field>
+          </div>
+          <div class="row-1">
+            <mat-form-field appearance="outline" class="create-cotation">
+              <mat-label>Cotation min</mat-label>
+              <mat-select formControlName="cotationMin">
+                <mat-option disabled>Cotation min</mat-option>
+                <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="row-1">
+            <mat-form-field appearance="outline" class="create-cotation">
+              <mat-label>Cotation max</mat-label>
+              <mat-select formControlName="cotationMax">
+                <mat-option disabled>Cotation max</mat-option>
+                <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="row-1">
+            <mat-form-field appearance="outline">
+              <mat-label>Description</mat-label>
+              <textarea matInput formControlName="description"></textarea>
+            </mat-form-field>
+          </div>
+          <div class="row-1">
+            <mat-form-field appearance="outline">
+              <mat-label>Liste des spots</mat-label>
+              <mat-select formControlName="spots" multiple>
+                <mat-option *ngFor="let spot of spots" [value]="spot">{{spot.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
           <button type="submit" class="btn btn-primary submit" [disabled]="!topoForm.valid">Valider</button>
         </form>
       </mat-expansion-panel>
     </mat-accordion>
   </div>
-  <div *ngIf="topos?.length > 0" class="card-container" infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= totalPages">
+  <div *ngIf="topos?.length > 0" class="card-container" infinite-scroll (scrolled)="loadPage(page + 1)"
+       [infiniteScrollDisabled]="page >= totalPages">
     <mat-card *ngFor="let topo of topos" class="card">
       <mat-card-header class="card-header">
         <mat-card-title>{{topo.name}}</mat-card-title>

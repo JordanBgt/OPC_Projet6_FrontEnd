@@ -2,10 +2,6 @@
   display: flex;
   flex-flow: column wrap;
   align-content: center;
-
-  >* {
-    border: 1px solid red;
-  }
 }
 
 .entity-resume {
@@ -17,12 +13,13 @@
 }
 
 .search-form {
-  width: 60%;
+  width: 70%;
   margin: auto;
 
-  .row-1 {
+
+  .form-inputs {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
   }
 
   mat-form-field {
@@ -30,10 +27,15 @@
   }
 
   .search-buttons {
-    margin: 0 0.75rem;
+    display: flex;
+    justify-content: center;
   }
 
   .search-buttons button {
     margin: 0 0.75rem;
   }
+}
+
+.card-container {
+  width: 100%;
 }

@@ -2,16 +2,21 @@
   width: 30%;
   margin: 3rem auto;
 
-  .create-accordion {
-    width: 50%;
-    margin: auto;
+  .create-form-content {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
   }
 
-  .create-cotation {
-    width: 45% !important;
+  .row-1 {
+    width: 100%;
   }
 
   mat-form-field {
-    width: 80%;
+    width: 100%;
+  }
+
+  button {
+    margin: auto;
   }
 }
