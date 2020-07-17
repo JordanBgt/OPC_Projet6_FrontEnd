@@ -1,6 +1,6 @@
 <ng-container *ngIf="userProfileObs$ | async as userProfile">
   <div class="profile-container">
-    <mat-card class="profil" align="center">
+    <mat-card class="profil">
       <mat-card-header>
         <div mat-card-avatar class="profil-image"></div>
         <mat-card-title>Informations profil</mat-card-title>
@@ -8,18 +8,18 @@
       <mat-card-content>
         <mat-list>
           <mat-list-item>
-            <span class="item-header">Username</span>
-            <span class="item-data">{{userProfile.user.username}}</span>
+            <mat-icon class="item-header">account_circle</mat-icon>
+            <span>{{userProfile.user.username}}</span>
           </mat-list-item>
           <mat-list-item>
-            <span class="item-header">Email</span>
-            <span class="item-data">{{userProfile.user.email}}</span>
+            <mat-icon class="item-header">alternate_email</mat-icon>
+            <span>{{userProfile.user.email}}</span>
           </mat-list-item>
         </mat-list>
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="spots" align="center">
+    <mat-card class="spots">
       <mat-card-header>
         <div mat-card-avatar class="list-image"></div>
         <mat-card-title>Liste des spots créés</mat-card-title>
@@ -29,7 +29,6 @@
           <mat-list>
             <mat-list-item *ngFor="let spot of userProfile.spotsCreated">
               <button mat-button [routerLink]="['/spots', spot.id]">{{spot.name}}</button>
-              <mat-divider></mat-divider>
             </mat-list-item>
           </mat-list>
         </ng-container>
@@ -39,7 +38,7 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="topos-created" align="center">
+    <mat-card class="topos-created">
       <mat-card-header>
         <div mat-card-avatar class="list-image"></div>
         <mat-card-title>Liste des topos créés</mat-card-title>
@@ -49,7 +48,6 @@
           <mat-list>
             <mat-list-item *ngFor="let topo of userProfile.toposCreated">
               <button mat-button [routerLink]="['/topos', topo.id]">{{topo.name}}</button>
-              <mat-divider></mat-divider>
             </mat-list-item>
           </mat-list>
         </ng-container>
@@ -59,7 +57,7 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="topos-owned" align="center">
+    <mat-card class="topos-owned">
       <mat-card-header>
         <div mat-card-avatar class="list-image"></div>
         <mat-card-title>Liste des topos possédés</mat-card-title>
@@ -105,7 +103,7 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="topos-rent" align="center">
+    <mat-card class="topos-rent">
       <mat-card-header>
         <div mat-card-avatar class="list-image"></div>
         <mat-card-title>Liste des topos loués (location en cours)</mat-card-title>

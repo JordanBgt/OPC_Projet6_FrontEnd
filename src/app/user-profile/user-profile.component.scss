@@ -1,5 +1,9 @@
 @import "src/app/shared/layout/topo-spot-detail";
 
+*:not(mat-card-title):not(mat-icon) {
+  font-size: 0.95rem;
+}
+
 .profile-container {
   margin: auto;
   width: 70%;
@@ -32,4 +36,17 @@
 
 .default {
   background-color: lightgrey;
+}
+
+.item-header {
+  font-size: 2rem;
+  margin-right: 1rem;
+}
+
+mat-list-item, mat-expansion-panel {
+  margin-bottom: 1rem;
+}
+
+mat-chip-list {
+  margin-right: 1rem;
 }
