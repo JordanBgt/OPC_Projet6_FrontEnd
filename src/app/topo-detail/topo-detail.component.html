@@ -1,43 +1,58 @@
-<div class="entityDetailContent" *ngIf="!update && topo">
-  <mat-card class="header" align="center">
-    <img *ngIf="topo.photo" class="entityImage" [src]="topo.photo.fileToBase64String"/>
-    <form [formGroup]="uploadPhotoForm">
-      <mat-form-field appearance="outline">
-        <mat-label>Modifier photo</mat-label>
-        <ngx-mat-file-input formControlName="photo" accept="image/*, image/jpg" (change)="onUploadPhoto()"></ngx-mat-file-input>
-      </mat-form-field>
-    </form>
-    <div class="content">
-      <mat-card-header class="card-header">
+<div class="entity-detail-content" *ngIf="!update && topo">
+  <mat-card class="header">
+    <div class="header-img col">
+      <img *ngIf="topo.photo" class="entity-img" [src]="topo.photo.fileToBase64String"/>
+      <form [formGroup]="uploadPhotoForm">
+        <mat-form-field appearance="outline">
+          <mat-label>Modifier photo</mat-label>
+          <ngx-mat-file-input formControlName="photo" accept="image/*, image/jpg" (change)="onUploadPhoto()">
+          </ngx-mat-file-input>
+        </mat-form-field>
+      </form>
+    </div>
+    <div class="content col">
+      <mat-card-header>
         <mat-card-title>{{topo.name}}</mat-card-title>
       </mat-card-header>
-      <mat-card-content class="card-header-content">
+      <mat-card-content>
         <ul>
           <li><img src="../assets/location.svg"/>{{topo.country}} - {{topo.region}}</li>
           <li><img src="../assets/cotation.svg"/>{{topo.cotationMin.label}} - {{topo.cotationMax.label}}</li>
           <li><img src="../assets/calendar.svg">{{topo.publicationDate}}</li>
         </ul>
-        <button mat-stroked-button (click)="onUpdate()" *ngIf="isAuthorized">Modifier</button>
-        <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
-        <button mat-stroked-button (click)="onAddTopoToUser()" *ngIf="!isOwnedByUser">Ajouter à ma liste de topos</button>
       </mat-card-content>
+      <mat-card-actions>
+        <div class="row">
+          <button mat-stroked-button color="primary" (click)="onUpdate()" *ngIf="isAuthorized">Modifier</button>
+        </div>
+        <div class="row">
+          <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
+        </div>
+        <div class="row">
+          <button mat-stroked-button (click)="onAddTopoToUser()" *ngIf="!isOwnedByUser">
+            Ajouter à ma liste de topos
+          </button>
+        </div>
+      </mat-card-actions>
   </div>
   </mat-card>
-  <mat-card class="description" align="center">
+  <mat-card class="description">
     <mat-card-header>
       <div mat-card-avatar class="description-image"></div>
       <mat-card-title>Description</mat-card-title>
     </mat-card-header>
     <mat-card-content>{{topo.description}}</mat-card-content>
   </mat-card>
-  <mat-card *ngIf="topo.spots?.length > 0" align="center">
+  <mat-card *ngIf="topo.spots?.length > 0">
     <mat-card-header>
       <div mat-card-avatar class="list-image"></div>
       <mat-card-title [matBadge]="topo.spots.length | numberToString" matBadgeOverlap="false" matBadgeColor="warn">
         Liste des spots
       </mat-card-title>
     </mat-card-header>
-    <mat-card-content *ngFor="let spot of topo.spots">{{spot.name}}</mat-card-content>
+    <mat-card-content *ngFor="let spot of topo.spots">
+      <button mat-button routerLink="/spots/{{spot.id}}">{{spot.name}}</button>
+    </mat-card-content>
   </mat-card>
   <mat-card>
     <mat-card-header>
@@ -48,7 +63,8 @@
     </mat-card-header>
     <mat-card-content *ngFor="let topoUser of topo.topoUsers">
       {{topoUser.owner.username}}
-      <button mat-button [disabled]="!topoUser.available || topoUser.owner.id === user.id || isOwnedByUser" (click)="bookTopo(topoUser)">Réserver</button>
+      <button mat-button [disabled]="!topoUser.available || topoUser.owner.id === user.id || isOwnedByUser"
+              (click)="bookTopo(topoUser)">Réserver</button>
     </mat-card-content>
   </mat-card>
 </div>

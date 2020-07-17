@@ -1,0 +1,113 @@
+.entity-detail-content {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+
+  *:not(mat-card-title) {
+    font-size: 0.95rem;
+  }
+}
+
+mat-card {
+  width: 80%;
+  margin-top: 50px;
+}
+
+mat-card-header {
+  background-color: #f7f7f7;
+}
+
+.header {
+  height: 40rem;
+  display: flex;
+
+  .col {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .form {
+    height: fit-content;
+  }
+
+  &-img mat-form-field {
+    margin-top: 0.5rem;
+  }
+
+  .content {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-items: center;
+
+    >* {
+      width: 80%;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  mat-card-title {
+    padding: 0.5rem;
+    font-size: 1.5rem;
+  }
+
+  mat-card-content {
+
+    li {
+      margin-top: 0.5rem;
+    }
+  }
+
+  mat-card-actions {
+    flex-direction: column;
+    align-items: center;
+
+    .row {
+      width: 100%;
+    }
+
+    button {
+      margin-top: 0.5rem;
+      width: 100%;
+    }
+
+    mat-slide-toggle {
+      margin-top: 2rem;
+    }
+  }
+}
+
+li {
+  list-style: none;
+}
+
+mat-card-content {
+  margin-top: 2rem;
+}
+
+.description-image {
+  background-image: url("src/assets/description.svg");
+  background-size: cover;
+}
+
+.list-image {
+  background-image: url("src/assets/list.svg");
+  background-size: cover;
+}
+
+.entity-img {
+  width: 80%;
+  height: 80%;
+}
+
+.carousel-img {
+  width: 26.25rem;
+  height: 30rem;
+}
+
+.create-form-panel {
+  width: 50% !important;
+}

@@ -1,31 +1,26 @@
-<div class="entityDetailContent" *ngIf="!update && secteur">
-  <mat-card class="header" align="center">
+<div class="entity-detail-content" *ngIf="!update && secteur">
+  <mat-card class="header">
     <div class="content">
       <mat-card-header class="card-header">
         <mat-card-title>{{secteur.name}}</mat-card-title>
       </mat-card-header>
       <mat-card-content class="card-header-content">
-        <ul>
-          <li>
-            <button mat-stroked-button (click)="onUpdate()" *ngIf="isAuthorized">
-              Modifier
-            </button>
-          </li>
-          <li>
-            <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
-          </li>
-        </ul>
+        <img src="assets/secteur.png">
+          <button mat-stroked-button (click)="onUpdate()" *ngIf="isAuthorized">
+            Modifier
+          </button>
+          <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
       </mat-card-content>
     </div>
   </mat-card>
-  <mat-card class="description" align="center">
+  <mat-card class="description">
     <mat-card-header>
       <div mat-card-avatar class="description-image"></div>
       <mat-card-title>Description</mat-card-title>
     </mat-card-header>
     <mat-card-content>{{secteur.description}}</mat-card-content>
   </mat-card>
-  <mat-card  align="center">
+  <mat-card>
     <mat-card-header>
       <div mat-card-avatar class="list-image"></div>
       <mat-card-title [matBadge]="voies.length | numberToString" matBadgeOverlap="false" matBadgeColor="warn">
@@ -41,31 +36,31 @@
     </mat-card-content>
     <mat-card-actions *ngIf="isAuthorized">
       <div class="row create-form-panel">
-        <mat-accordion class="createAccordion">
+        <mat-accordion>
           <mat-expansion-panel>
             <mat-expansion-panel-header>
               <mat-panel-title>Créer voie</mat-panel-title>
             </mat-expansion-panel-header>
-            <form [formGroup]="voieForm" (ngSubmit)="onAddVoie()" class="createForm">
-              <mat-form-field appearance="outline" class="createName">
+            <form [formGroup]="voieForm" (ngSubmit)="onAddVoie()" class="create-form-content">
+              <mat-form-field appearance="outline">
                 <mat-label>Nom</mat-label>
                 <input matInput formControlName="name">
               </mat-form-field>
-              <mat-form-field appearance="outline" class="createCotation">
+              <mat-form-field appearance="outline">
                 <mat-label>Cotation min</mat-label>
                 <mat-select formControlName="cotationMin">
                   <mat-option disabled>Cotation min</mat-option>
                   <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
                 </mat-select>
               </mat-form-field>
-              <mat-form-field appearance="outline" class="createCotation">
+              <mat-form-field appearance="outline">
                 <mat-label>Cotation max</mat-label>
                 <mat-select formControlName="cotationMax">
                   <mat-option disabled>Cotation max</mat-option>
                   <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
                 </mat-select>
               </mat-form-field>
-              <mat-form-field appearance="outline" class="createDescription">
+              <mat-form-field appearance="outline">
                 <mat-label>Description</mat-label>
                 <textarea matInput formControlName="description"></textarea>
               </mat-form-field>
