@@ -10,7 +10,7 @@
 
 mat-card {
   width: 80%;
-  margin-top: 50px;
+  margin-top: 3.125rem;
 }
 
 mat-card-header {
@@ -101,15 +101,15 @@ mat-card-content {
 .description-image {
   background-image: url("src/assets/description.svg");
   background-size: cover;
-  height: 50px;
-  width: 50px;
+  height: 3.125rem;
+  width: 3.125rem;
 }
 
 .list-image {
   background-image: url("src/assets/list.svg");
   background-size: cover;
-  height: 50px;
-  width: 50px;
+  height: 3.125rem;
+  width: 3.125rem;
 }
 
 .entity-img {
