@@ -2,25 +2,21 @@
   <mat-card class="header">
     <div class="content">
       <mat-card-header class="card-header">
+        <div mat-card-avatar class="header-img"></div>
         <mat-card-title>{{longueur.name}}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content class="card-header-content">
-        <img src="assets/longueur.png">
-        <div>
+        <mat-card-subtitle>
           <img src="assets/cotation.svg"/>
           {{longueur.cotationMin.label}} - {{longueur.cotationMax.label}}
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content class="card-header-content">
+        <div class="description">
+          {{longueur.description}}
         </div>
         <button mat-stroked-button (click)="onUpdate()" *ngIf="isAdmin || longueur.userId === user.id">Modifier</button>
         <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
       </mat-card-content>
     </div>
-  </mat-card>
-  <mat-card class="description">
-    <mat-card-header>
-      <div mat-card-avatar class="description-image"></div>
-      <mat-card-title>Description</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>{{longueur.description}}</mat-card-content>
   </mat-card>
 </div>
 <app-longueur-update *ngIf="update" [longueur]="longueur" [cotations]="cotations" [voies]="voies"

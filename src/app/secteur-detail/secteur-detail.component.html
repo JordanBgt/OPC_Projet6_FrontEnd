@@ -2,23 +2,19 @@
   <mat-card class="header">
     <div class="content">
       <mat-card-header class="card-header">
+        <div mat-card-avatar class="header-img"></div>
         <mat-card-title>{{secteur.name}}</mat-card-title>
       </mat-card-header>
       <mat-card-content class="card-header-content">
-        <img src="assets/secteur.png">
-          <button mat-stroked-button (click)="onUpdate()" *ngIf="isAuthorized">
-            Modifier
-          </button>
-          <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
+        <div class="description">
+          {{secteur.description}}
+        </div>
+        <button mat-stroked-button (click)="onUpdate()" *ngIf="isAuthorized">
+          Modifier
+        </button>
+        <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
       </mat-card-content>
     </div>
-  </mat-card>
-  <mat-card class="description">
-    <mat-card-header>
-      <div mat-card-avatar class="description-image"></div>
-      <mat-card-title>Description</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>{{secteur.description}}</mat-card-content>
   </mat-card>
   <mat-card>
     <mat-card-header>
@@ -27,7 +23,7 @@
         Liste des voies
       </mat-card-title>
     </mat-card-header>
-    <mat-card-content *ngFor="let voie of voies" class="voies">
+    <mat-card-content *ngFor="let voie of voies" class="entity-list">
       <span>{{voie.name}}</span>
       <div *ngIf="isAuthorized">
         <button mat-mini-fab color="primary" (click)="onEditVoie(voie.id)"><img src="assets/edit.svg"></button>

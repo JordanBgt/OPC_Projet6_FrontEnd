@@ -1,6 +1,7 @@
 @import "src/app/shared/layout/secteur-voie-longueur-detail";
 @import "src/app/shared/layout/create-form";
 
-.voies {
-  height: 50px;
+.header-img {
+  background-image: url("src/assets/secteur.png");
+  background-size: cover;
 }

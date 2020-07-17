@@ -15,13 +15,11 @@ mat-card {
 
 mat-card-header {
   background-color: #f7f7f7;
-  display: flex;
-  justify-content: center;
+  padding: 1rem;
 }
 
 
 .header {
-  width: 50%;
   display: flex;
   flex-flow: column wrap;
   align-items: center;
@@ -30,15 +28,36 @@ mat-card-header {
     width: 70%;
   }
 
+  mat-card-header {
+    display: flex;
+    justify-content: center;
+  }
+
   mat-card-content {
     display: flex;
     flex-flow: column wrap;
     align-items: center;
   }
 
-  mat-card-content *:not(img) {
-    width: 100%;
+  .description {
+    margin-bottom: 1.5rem;
+    width: 80%;
   }
+
+  button {
+    width: 50%;
+    margin: 0.5rem 0;
+  }
+
+  .header-img {
+    height: 50px;
+    width: 50px;
+  }
+
+}
+
+mat-card-title {
+  padding-top: 0.8rem;
 }
 
 .card-header-content {
@@ -59,17 +78,17 @@ mat-card-content {
   margin-top: 2rem;
 }
 
-.description-image {
-  background-image: url("src/assets/description.svg");
-  background-size: cover;
-}
-
 .list-image {
   background-image: url("src/assets/list.svg");
   background-size: cover;
+
 }
 
 .create-form-panel {
   width: 50% !important;
   margin: 20px auto;
+}
+
+.entity-list {
+  height: 50px;
 }

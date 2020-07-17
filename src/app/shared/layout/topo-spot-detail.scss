@@ -15,6 +15,7 @@ mat-card {
 
 mat-card-header {
   background-color: #f7f7f7;
+  padding: 1rem;
 }
 
 .header {
@@ -89,6 +90,10 @@ li {
   list-style-type: none;
 }
 
+mat-card-title {
+  padding-top: 0.40rem;
+}
+
 mat-card-content {
   margin-top: 2rem;
 }
@@ -96,11 +101,15 @@ mat-card-content {
 .description-image {
   background-image: url("src/assets/description.svg");
   background-size: cover;
+  height: 50px;
+  width: 50px;
 }
 
 .list-image {
   background-image: url("src/assets/list.svg");
   background-size: cover;
+  height: 50px;
+  width: 50px;
 }
 
 .entity-img {
