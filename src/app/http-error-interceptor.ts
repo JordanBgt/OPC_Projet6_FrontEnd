@@ -8,7 +8,7 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
@@ -22,7 +22,11 @@ export class HttpErrorInterceptor implements HttpInterceptor {
           if (error.status === 403) {
             errorMessage = 'Vous ne disposez pas des autorisations nécessaires pour effectuer cette action';
           } else if (error.status === 401) {
-            errorMessage = 'Vous devez vous identifier pour accéder à cette ressource';
+            if (error.url.endsWith('signin')) {
+              errorMessage = 'Identifiants incorrects';
+            } else {
+              errorMessage = 'Vous devez vous identifier pour accéder à cette ressource';
+            }
           } else {
             if (error.error instanceof ErrorEvent) {
               // client-side error

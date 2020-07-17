@@ -3,7 +3,7 @@ import { AuthService } from '../security/auth.service';
 import { TokenStorageService } from '../security/token-storage.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '../shared/model/user.model';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
@@ -23,8 +23,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(private authService: AuthService,
               private tokenStorage: TokenStorageService,
               private formBuilder: FormBuilder,
-              private route: ActivatedRoute,
-              private router: Router) {
+              private route: ActivatedRoute) {
     this.subscriptions = [];
   }
 
@@ -53,23 +52,23 @@ export class LoginComponent implements OnInit, OnDestroy {
     const user = new User();
     user.username = formValue.username;
     user.password = formValue.password;
-    this.subscriptions.push(this.authService.login(user).subscribe(
-      data => {
-        this.tokenStorage.saveToken(data.token);
-        this.tokenStorage.saveUser(data);
-
-        this.isLoggedIn = true;
-        this.isLoginFailed = false;
-        setTimeout(() => {
-          if (!!this.url) {
-            window.location.replace(`http://localhost:4200${this.url}`);
-          } else {
-            window.location.replace('http://localhost:4200/home');
-          }
-        },
-          500);
-      }
-    ));
+    this.subscriptions.push(
+      this.authService.login(user).pipe(
+        tap(res => {
+          this.tokenStorage.saveToken(res.token);
+          this.tokenStorage.saveUser(res);
+          this.isLoggedIn = true;
+          this.isLoginFailed = false;
+          setTimeout(() => {
+              if (!!this.url) {
+                window.location.replace(`http://localhost:4200${this.url}`);
+              } else {
+                window.location.replace('http://localhost:4200/home');
+              }
+            },
+            500);
+        })
+      ).subscribe());
   }
 
   ngOnDestroy(): void {
