@@ -80,8 +80,13 @@ mat-card-header {
   }
 }
 
+ul {
+  margin: 0;
+  padding: 0;
+}
+
 li {
-  list-style: none;
+  list-style-type: none;
 }
 
 mat-card-content {

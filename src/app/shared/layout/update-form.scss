@@ -1,9 +1,29 @@
 .form {
-  width: 800px;
+  width: 50%;
   margin: 50px auto;
 }
 
+form {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+}
+
 mat-form-field {
-  width: 50%;
+  width: 80%;
+  margin: auto;
+}
+
+.row {
+  width: 80%;
+
+  mat-form-field {
+    width: 49%;
+  }
+}
+
+button {
+  width: 25%;
+  display: block;
   margin: auto;
 }

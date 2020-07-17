@@ -1,11 +1,9 @@
 <div class="form">
   <form [formGroup]="longueurUpdateForm" (ngSubmit)="onUpdate()">
-    <div class="row">
-      <mat-form-field appearance="outline" id="nameField">
-        <mat-label>Nom</mat-label>
-        <input matInput formControlName="name">
-      </mat-form-field>
-    </div>
+    <mat-form-field appearance="outline" id="nameField">
+      <mat-label>Nom</mat-label>
+      <input matInput formControlName="name">
+    </mat-form-field>
     <div class="row">
       <mat-form-field appearance="outline">
         <mat-label>Cotation min</mat-label>
@@ -20,12 +18,10 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="row">
-      <mat-form-field appearance="outline" id="descriptionField">
-        <mat-label>Description</mat-label>
-        <textarea matInput formControlName="description"></textarea>
-      </mat-form-field>
-    </div>
+    <mat-form-field appearance="outline" id="descriptionField">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Liste des voies</mat-label>
       <mat-select formControlName="voies">
