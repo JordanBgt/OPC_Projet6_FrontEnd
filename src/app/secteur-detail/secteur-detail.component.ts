@@ -159,10 +159,6 @@ export class SecteurDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
-  onEditVoie(voieId: number) {
-    this.router.navigate([`voies/${voieId}`]);
-  }
-
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }

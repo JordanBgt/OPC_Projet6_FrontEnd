@@ -30,7 +30,7 @@
       <mat-label>Description</mat-label>
       <textarea matInput formControlName="description"></textarea>
     </mat-form-field>
-    <button mat-stroked-button color="primary" type="submit" class="btn btn-primary submit"
-            [disabled]="!spotUpdateForm.valid">Valider</button>
+    <button mat-stroked-button color="primary" type="submit"
+            [disabled]="spotUpdateForm.invalid">Valider</button>
   </form>
 </div>

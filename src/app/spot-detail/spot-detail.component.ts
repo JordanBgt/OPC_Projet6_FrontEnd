@@ -167,10 +167,6 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
-  onEditSecteur(secteurId: number) {
-    this.router.navigate([`secteurs/${secteurId}`]);
-  }
-
   onOfficialToggleChange(value: MatSlideToggleChange) {
     this.spot.official = value.checked;
     this.updateSpot(this.spot);

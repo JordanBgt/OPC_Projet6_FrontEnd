@@ -3,7 +3,7 @@
   flex-flow: column wrap;
   align-items: center;
 
-  *:not(mat-card-title) {
+  *:not(mat-card-title):not(mat-icon) {
     font-size: 0.95rem;
   }
 }
@@ -124,4 +124,19 @@ mat-card-content {
 
 .create-form-panel {
   width: 50% !important;
+}
+
+.entity-list {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 3rem;
+  margin-right: 3rem;
+
+  >button {
+    margin-right: 3rem;
+  }
+}
+
+mat-icon {
+  font-size: 1.5rem;
 }

@@ -144,10 +144,6 @@ export class VoieDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
-  onEditLongueur(longueurId: number) {
-    this.router.navigate([`longueurs/${longueurId}`]);
-  }
-
   onDeleteLongueur(longueurId: number) {
     this.subscriptions.push(this.longueurService.deleteLongueur(longueurId).pipe(
       tap((res: any) => {

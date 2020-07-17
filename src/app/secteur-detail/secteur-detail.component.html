@@ -24,10 +24,9 @@
       </mat-card-title>
     </mat-card-header>
     <mat-card-content *ngFor="let voie of voies" class="entity-list">
-      <span>{{voie.name}}</span>
+      <button mat-button routerLink="/voies/{{voie.id}}">{{voie.name}}</button>
       <div *ngIf="isAuthorized">
-        <button mat-mini-fab color="primary" (click)="onEditVoie(voie.id)"><img src="assets/edit.svg"></button>
-        <button mat-mini-fab color="warn" (click)="onDeleteVoie(voie.id)"><img src="assets/delete.svg"></button>
+        <button mat-icon-button color="warn" (click)="onDeleteVoie(voie.id)"><mat-icon>delete</mat-icon></button>
       </div>
     </mat-card-content>
     <mat-card-actions *ngIf="isAuthorized">
@@ -60,7 +59,7 @@
                 <mat-label>Description</mat-label>
                 <textarea matInput formControlName="description"></textarea>
               </mat-form-field>
-              <button type="submit" class="btn btn-primary submit">Valider</button>
+              <button mat-stroked-button color="primary" type="submit" [disabled]="voieForm.invalid">Valider</button>
             </form>
           </mat-expansion-panel>
         </mat-accordion>

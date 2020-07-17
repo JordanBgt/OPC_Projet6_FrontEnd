@@ -26,10 +26,9 @@
       </mat-card-title>
     </mat-card-header>
     <mat-card-content *ngFor="let longueur of longueurs" class="entity-list">
-      <span>{{longueur.name}}</span>
+      <button mat-button routerLink="/longueurs/{{longueur.id}}">{{longueur.name}}</button>
       <div *ngIf="isAuthorized">
-        <button mat-mini-fab color="primary" (click)="onEditLongueur(longueur.id)"><img src="assets/edit.svg"></button>
-        <button mat-mini-fab color="warn" (click)="onDeleteLongueur(longueur.id)"><img src="assets/delete.svg"></button>
+        <button mat-icon-button color="warn" (click)="onDeleteLongueur(longueur.id)"><mat-icon>delete</mat-icon></button>
       </div>
     </mat-card-content>
     <mat-card-actions *ngIf="isAuthorized">
@@ -62,7 +61,7 @@
                 <mat-label>Description</mat-label>
                 <textarea matInput formControlName="description"></textarea>
               </mat-form-field>
-              <button type="submit" class="btn btn-primary submit">Valider</button>
+              <button mat-stroked-button color="primary" type="submit" [disabled]="longueurForm.invalid">Valider</button>
             </form>
           </mat-expansion-panel>
         </mat-accordion>

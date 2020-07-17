@@ -57,11 +57,10 @@
         Liste des secteurs
       </mat-card-title>
     </mat-card-header>
-    <mat-card-content *ngFor="let secteur of secteurs" class="secteur">
-      <span>{{secteur.name}}</span>
+    <mat-card-content *ngFor="let secteur of secteurs" class="entity-list">
+      <button mat-button routerLink="/secteurs/{{secteur.id}}">{{secteur.name}}</button>
       <div *ngIf="isAuthorized">
-        <button mat-mini-fab color="primary" (click)="onEditSecteur(secteur.id)"><img src="assets/edit.svg"></button>
-        <button mat-mini-fab color="warn" (click)="onDeleteSecteur(secteur.id)"><img src="assets/delete.svg"></button>
+        <button mat-icon-button color="warn" (click)="onDeleteSecteur(secteur.id)"><mat-icon>delete</mat-icon></button>
       </div>
     </mat-card-content>
     <mat-card-actions *ngIf="isAuthorized">
@@ -80,7 +79,7 @@
                 <mat-label>Description</mat-label>
                 <textarea matInput formControlName="description"></textarea>
               </mat-form-field>
-              <button type="submit" class="btn btn-primary submit">Valider</button>
+              <button mat-stroked-button color="primary" type="submit" [disabled]="secteurForm.invalid">Valider</button>
             </form>
           </mat-expansion-panel>
         </mat-accordion>

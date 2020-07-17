@@ -38,7 +38,7 @@
         <mat-option *ngFor="let spot of spots" [value]="spot">{{spot.name}}</mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-stroked-button color="primary" type="submit" class="btn btn-primary submit"
-            [disabled]="!topoUpdateForm.valid">Valider</button>
+    <button mat-stroked-button color="primary" type="submit"
+            [disabled]="topoUpdateForm.invalid">Valider</button>
   </form>
 </div>

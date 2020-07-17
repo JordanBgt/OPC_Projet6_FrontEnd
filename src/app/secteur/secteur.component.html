@@ -47,7 +47,7 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <button type="submit" class="btn btn-primary submit" [disabled]="!createSecteurForm.valid">Valider</button>
+          <button mat-stroked-button color="primary" type="submit" [disabled]="createSecteurForm.invalid">Valider</button>
         </form>
       </mat-expansion-panel>
     </mat-accordion>

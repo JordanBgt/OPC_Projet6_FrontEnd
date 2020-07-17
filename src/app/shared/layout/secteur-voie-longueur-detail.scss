@@ -3,7 +3,7 @@
   flex-flow: column wrap;
   align-items: center;
 
-  *:not(mat-card-title) {
+  *:not(mat-card-title):not(mat-icon) {
     font-size: 0.95rem;
   }
 }
@@ -90,5 +90,16 @@ mat-card-content {
 }
 
 .entity-list {
-  height: 3.125rem;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 3rem;
+  margin-right: 3rem;
+
+  >button {
+    margin-right: 3rem;
+  }
+}
+
+mat-icon {
+  font-size: 1.5rem;
 }

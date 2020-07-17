@@ -94,7 +94,7 @@
               <textarea matInput formControlName="description"></textarea>
             </mat-form-field>
           </div>
-          <button type="submit" class="btn btn-primary submit" [disabled]="!createSpotForm.valid">Valider</button>
+          <button mat-stroked-button color="primary" type="submit" [disabled]="createSpotForm.invalid">Valider</button>
         </form>
       </mat-expansion-panel>
     </mat-accordion>

@@ -28,7 +28,7 @@
         <mat-option *ngFor="let secteur of secteurs" [value]="secteur">{{secteur.name}}</mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-stroked-button color="primary" type="submit" class="btn btn-primary submit"
-            [disabled]="!voieUpdateForm.valid">Valider</button>
+    <button mat-stroked-button color="primary" type="submit"
+            [disabled]="voieUpdateForm.invalid">Valider</button>
   </form>
 </div>

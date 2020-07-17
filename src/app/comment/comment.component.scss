@@ -13,18 +13,6 @@
   margin: 1.25rem auto;
 }
 
-.delete-img {
-  background-image: url("src/assets/delete.svg");
-  width: 1.5625rem;
-  height: 1.5625rem;
-}
-
-.edit-img {
-  background-image: url("src/assets/edit.svg");
-  width: 1.5625rem;
-  height: 1.5625rem;
-}
-
 mat-card-content mat-card-header {
   display: flex;
   flex-direction: row;
@@ -51,4 +39,8 @@ mat-card-content mat-card-header {
 .create-button {
   display: block;
   margin: auto;
+}
+
+mat-icon {
+  font-size: 1.5rem;
 }
