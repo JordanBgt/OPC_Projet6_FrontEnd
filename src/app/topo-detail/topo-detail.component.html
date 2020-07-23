@@ -1,40 +1,42 @@
 <div class="entity-detail-content" *ngIf="!update && topo">
-  <mat-card class="header">
-    <div class="header-img col">
-      <img *ngIf="topo.photo" class="entity-img" [src]="topo.photo.fileToBase64String"/>
-      <form [formGroup]="uploadPhotoForm">
-        <mat-form-field appearance="outline">
-          <mat-label>Modifier photo</mat-label>
-          <ngx-mat-file-input formControlName="photo" accept="image/*, image/jpg" (change)="onUploadPhoto()">
-          </ngx-mat-file-input>
-        </mat-form-field>
-      </form>
+  <mat-card class="container header">
+    <div class="row">
+      <div class="header-img col-lg-6 col-md-12 col-sm-12">
+        <img *ngIf="topo.photo" class="entity-img" [src]="topo.photo.fileToBase64String"/>
+        <form [formGroup]="uploadPhotoForm">
+          <mat-form-field appearance="outline">
+            <mat-label>Modifier photo</mat-label>
+            <ngx-mat-file-input formControlName="photo" accept="image/*, image/jpg" (change)="onUploadPhoto()">
+            </ngx-mat-file-input>
+          </mat-form-field>
+        </form>
+      </div>
+      <div class="content col-lg-6 col-md-12 col-sm-12">
+        <mat-card-header>
+          <mat-card-title>{{topo.name}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ul>
+            <li><img src="../assets/location.svg"/>{{topo.country}} - {{topo.region}}</li>
+            <li><img src="../assets/cotation.svg"/>{{topo.cotationMin.label}} - {{topo.cotationMax.label}}</li>
+            <li><mat-icon>calendar_today</mat-icon>{{topo.publicationDate}}</li>
+          </ul>
+        </mat-card-content>
+        <mat-card-actions>
+          <div class="row">
+            <button mat-stroked-button color="primary" (click)="onUpdate()" *ngIf="isAuthorized">Modifier</button>
+          </div>
+          <div class="row">
+            <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
+          </div>
+          <div class="row">
+            <button mat-stroked-button (click)="onAddTopoToUser()" *ngIf="!isOwnedByUser">
+              Ajouter à ma liste de topos
+            </button>
+          </div>
+        </mat-card-actions>
+      </div>
     </div>
-    <div class="content col">
-      <mat-card-header>
-        <mat-card-title>{{topo.name}}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <ul>
-          <li><img src="../assets/location.svg"/>{{topo.country}} - {{topo.region}}</li>
-          <li><img src="../assets/cotation.svg"/>{{topo.cotationMin.label}} - {{topo.cotationMax.label}}</li>
-          <li><mat-icon>calendar_today</mat-icon>{{topo.publicationDate}}</li>
-        </ul>
-      </mat-card-content>
-      <mat-card-actions>
-        <div class="row">
-          <button mat-stroked-button color="primary" (click)="onUpdate()" *ngIf="isAuthorized">Modifier</button>
-        </div>
-        <div class="row">
-          <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
-        </div>
-        <div class="row">
-          <button mat-stroked-button (click)="onAddTopoToUser()" *ngIf="!isOwnedByUser">
-            Ajouter à ma liste de topos
-          </button>
-        </div>
-      </mat-card-actions>
-  </div>
   </mat-card>
   <mat-card class="description">
     <mat-card-header>

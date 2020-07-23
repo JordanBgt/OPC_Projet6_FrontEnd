@@ -1,46 +1,49 @@
 <div class="entity-detail-content" *ngIf="!update && spot">
-  <mat-card class="header">
-    <div class="header-img col">
-     <ngb-carousel class="entity-img" *ngIf="spot.photos?.length > 0; else defaultPhoto">
-        <ng-template ngbSlide *ngFor="let photo of spot.photos">
-          <img [src]="photo.fileToBase64String" class="carousel-img">
+  <mat-card class="container header">
+    <div class="row">
+      <div class="header-img col-lg-6 col-md-12 col-sm-12">
+       <ngb-carousel class="entity-img" *ngIf="spot.photos?.length > 0; else defaultPhoto">
+          <ng-template ngbSlide *ngFor="let photo of spot.photos">
+            <img [src]="photo.fileToBase64String" class="carousel-img">
+          </ng-template>
+        </ngb-carousel>
+        <ng-template #defaultPhoto>
+          <img src="assets/logo.png">
         </ng-template>
-      </ngb-carousel>
-      <ng-template #defaultPhoto>
-        <img src="assets/logo.png">
-      </ng-template>
-      <form [formGroup]="uploadPhotoForm" *ngIf="isAuthorized">
-        <mat-form-field appearance="outline">
-          <mat-label>Ajouter photo</mat-label>
-          <ngx-mat-file-input formControlName="photo" accept="image/*, image/jpg" (change)="onUploadPhoto()"></ngx-mat-file-input>
-        </mat-form-field>
-      </form>
-    </div>
-    <div class="content col">
-      <mat-card-header class="card-header">
-        <div *ngIf="spot.official" mat-card-avatar class="official-logo"></div>
-        <mat-card-title>{{spot.name}}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <ul>
-          <li><img src="assets/location.svg"/>{{spot.country}} - {{spot.city}}</li>
-          <li><img src="assets/cotation.svg"/>{{spot.cotationMin.label}} - {{spot.cotationMax.label}}</li>
-        </ul>
-      </mat-card-content>
-      <mat-card-actions>
-        <div class="row">
-          <button mat-stroked-button (click)="onUpdate()" *ngIf="isAuthorized">Modifier</button>
-        </div>
-        <div class="row">
-          <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
-        </div>
-        <div class="row">
-          <mat-slide-toggle *ngIf="isAdmin" (change)="onOfficialToggleChange($event)" color="primary"
-                            [checked]="spot.official" labelPosition="before">
-            Officialisé par Les amis de l'escalade ?
-          </mat-slide-toggle>
-        </div>
-      </mat-card-actions>
+        <form [formGroup]="uploadPhotoForm" *ngIf="isAuthorized">
+          <mat-form-field appearance="outline">
+            <mat-label>Ajouter photo</mat-label>
+            <ngx-mat-file-input formControlName="photo" accept="image/*, image/jpg" (change)="onUploadPhoto()">
+            </ngx-mat-file-input>
+          </mat-form-field>
+        </form>
+      </div>
+      <div class="content col-lg-6 col-md-12 col-sm-12">
+        <mat-card-header>
+          <div *ngIf="spot.official" mat-card-avatar class="official-logo"></div>
+          <mat-card-title>{{spot.name}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <ul>
+            <li><img src="assets/location.svg"/>{{spot.country}} - {{spot.city}}</li>
+            <li><img src="assets/cotation.svg"/>{{spot.cotationMin.label}} - {{spot.cotationMax.label}}</li>
+          </ul>
+        </mat-card-content>
+        <mat-card-actions>
+          <div class="row">
+            <button mat-stroked-button (click)="onUpdate()" *ngIf="isAuthorized">Modifier</button>
+          </div>
+          <div class="row">
+            <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
+          </div>
+          <div class="row">
+            <mat-slide-toggle *ngIf="isAdmin" (change)="onOfficialToggleChange($event)" color="primary"
+                              [checked]="spot.official" labelPosition="before">
+              Officialisé par Les amis de l'escalade ?
+            </mat-slide-toggle>
+          </div>
+        </mat-card-actions>
+      </div>
     </div>
   </mat-card>
   <mat-card class="description">

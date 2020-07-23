@@ -19,8 +19,11 @@ mat-card-header {
 }
 
 .header {
-  height: 40rem;
   display: flex;
+
+  .row {
+    width: 100%;
+  }
 
   .col {
     display: flex;
@@ -48,6 +51,12 @@ mat-card-header {
       display: flex;
       justify-content: center;
     }
+  }
+
+  .header-img {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
   }
 
   mat-card-title {
@@ -114,11 +123,12 @@ mat-card-content {
 
 .entity-img {
   width: 70%;
-  height: 80%;
+  height: 30rem;
 }
 
 :host::ng-deep .carousel-inner{
   height: 100%;
+  width: 100%;
 }
 
 :host::ng-deep .carousel-item {
