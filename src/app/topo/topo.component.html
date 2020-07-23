@@ -8,33 +8,53 @@
       <li>Si vous possédez un topo et qu'il a déjà été créé sur le site, vous pouvez indiquer, sur la page dudit topo, que vous le possédez et ainsi le rendre disponible à la location</li>
     </ul>
   </div>
-  <div class="search-form">
+  <div class="container search-form">
     <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
-      <div class="row-1 form-inputs">
-      <mat-form-field appearance="outline">
-        <mat-label>Pays</mat-label>
-        <input matInput formControlName="country">
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Nom</mat-label>
-        <input matInput formControlName="name">
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Cotation min</mat-label>
-        <mat-select formControlName="cotationMin">
-          <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Cotation max</mat-label>
-        <mat-select formControlName="cotationMax">
-          <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-12 p-0 form-input">
+              <mat-form-field appearance="outline" class="no-margin">
+                <mat-label>Pays</mat-label>
+                <input matInput formControlName="country">
+              </mat-form-field>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 p-0 form-input">
+              <mat-form-field appearance="outline" class="no-margin">
+                <mat-label>Nom</mat-label>
+                <input matInput formControlName="name">
+              </mat-form-field>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 p-0 form-input">
+              <mat-form-field appearance="outline" class="no-margin">
+                <mat-label>Cotation min</mat-label>
+                <mat-select formControlName="cotationMin">
+                  <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 p-0 form-input">
+              <mat-form-field appearance="outline" class="no-margin">
+                <mat-label>Cotation max</mat-label>
+                <mat-select formControlName="cotationMax">
+                  <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="search-buttons row-1">
-        <button mat-stroked-button color="primary" type="submit">Rechercher</button>
-        <button mat-stroked-button type="reset">Effacer les critères</button>
+      <div class="row mt-2">
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-12 p-0 ml-auto form-input">
+              <button mat-stroked-button color="primary" type="submit">Rechercher</button>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 p-0 mr-auto form-input">
+              <button mat-stroked-button type="reset">Effacer les critères</button>
+            </div>
+          </div>
+        </div>
       </div>
     </form>
   </div>

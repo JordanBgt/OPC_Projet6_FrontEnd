@@ -5,20 +5,36 @@
     <span>Vous trouverez, ci-dessous, la liste des secteurs enregistrés par la communauté ou l'association. </span>
     <span>Vous avez la possibilité de consulter leur fiche détaillée ainsi que d'en ajouter. </span>
   </div>
-  <div class="search-form">
+
+  <div class="container search-form">
     <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
-      <div class="row-1 form-inputs">
-        <mat-form-field appearance="outline">
-          <mat-label>Nom</mat-label>
-          <input matInput formControlName="name">
-        </mat-form-field>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 p-0 m-auto form-input">
+              <mat-form-field appearance="outline" class="no-margin">
+                <mat-label>Nom</mat-label>
+                <input matInput formControlName="name">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="search-buttons row-1">
-        <button mat-stroked-button color="primary" type="submit">Rechercher</button>
-        <button mat-stroked-button type="reset">Effacer les critères</button>
+      <div class="row mt-2">
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-12 p-0 ml-auto form-input">
+              <button mat-stroked-button color="primary" type="submit">Rechercher</button>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 p-0 mr-auto form-input">
+              <button mat-stroked-button type="reset">Effacer les critères</button>
+            </div>
+          </div>
+        </div>
       </div>
     </form>
   </div>
+
   <div class="create-form-panel">
     <mat-accordion>
       <mat-expansion-panel [disabled]="!isLoggedIn" matTooltip="Vous devez être connecté pour créer un secteur"

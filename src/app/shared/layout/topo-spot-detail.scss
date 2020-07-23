@@ -113,13 +113,22 @@ mat-card-content {
 }
 
 .entity-img {
-  width: 80%;
+  width: 70%;
   height: 80%;
 }
 
+:host::ng-deep .carousel-inner{
+  height: 100%;
+}
+
+:host::ng-deep .carousel-item {
+  height: 100%;
+  width: 100%;
+}
+
 .carousel-img {
-  width: 26.25rem;
-  height: 30rem;
+  height: 100%;
+  width: 100%;
 }
 
 .create-form-panel {

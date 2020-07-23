@@ -9,41 +9,67 @@
     <br />
     <img src="../assets/official.png" class="officialLogo" alt="logo officiel les amis de l'escalade">
   </div>
-  <div class="search-form">
+
+  <div class="container search-form">
     <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
-      <div class="row-1 form-inputs">
-        <mat-form-field appearance="outline">
-          <mat-label>Pays</mat-label>
-          <input matInput formControlName="country">
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Ville</mat-label>
-          <input matInput formControlName="city">
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Nom</mat-label>
-          <input matInput formControlName="name">
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Cotation min</mat-label>
-          <mat-select formControlName="cotationMin">
-            <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Cotation max</mat-label>
-          <mat-select formControlName="cotationMax">
-            <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-12 p-0 form-input">
+              <mat-form-field appearance="outline" class="no-margin">
+                <mat-label>Pays</mat-label>
+                <input matInput formControlName="country">
+              </mat-form-field>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 p-0 form-input">
+              <mat-form-field appearance="outline" class="no-margin">
+                <mat-label>Ville</mat-label>
+                <input matInput formControlName="city">
+              </mat-form-field>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 p-0 form-input">
+              <mat-form-field appearance="outline" class="no-margin">
+                <mat-label>Nom</mat-label>
+                <input matInput formControlName="name">
+              </mat-form-field>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 p-0 form-input">
+              <mat-form-field appearance="outline" class="no-margin">
+                <mat-label>Cotation min</mat-label>
+                <mat-select formControlName="cotationMin">
+                  <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="search-buttons row-1">
-        <mat-slide-toggle formControlName="isOfficial">Officiel ?</mat-slide-toggle>
-        <button mat-stroked-button color="primary" type="submit">Rechercher</button>
-        <button mat-stroked-button type="reset">Effacer les critères</button>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-12 p-0 form-input">
+              <mat-form-field appearance="outline" class="no-margin">
+                <mat-label>Cotation max</mat-label>
+                <mat-select formControlName="cotationMax">
+                  <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 p-0 form-input">
+              <mat-slide-toggle formControlName="isOfficial">Officiel ?</mat-slide-toggle>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 p-0 form-input">
+              <button mat-stroked-button color="primary" type="submit">Rechercher</button>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 p-0 form-input">
+              <button mat-stroked-button type="reset">Effacer les critères</button>
+            </div>
+          </div>
+        </div>
       </div>
     </form>
   </div>
+
   <div class="create-form-panel">
     <mat-accordion>
       <mat-expansion-panel [disabled]="!isLoggedIn" matTooltip="Vous devez être connecté pour créer un spot"
@@ -99,6 +125,7 @@
       </mat-expansion-panel>
     </mat-accordion>
   </div>
+
   <div *ngIf="spots?.length > 0" class="card-container" infinite-scroll (scrolled)="loadPage(page +1)"
        [infiniteScrollDisabled]="page >= totalPages">
     <mat-card *ngFor="let spot of spots" class="card">

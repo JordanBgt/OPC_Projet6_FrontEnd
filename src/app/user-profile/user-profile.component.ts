@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TokenStorageService } from '../security/token-storage.service';
-import { catchError, filter, tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { Observable, Subscription, throwError } from 'rxjs';
 import { UserProfileService } from '../services/user-profile.service';
 import { UserProfile } from '../shared/model/user-profile.model';
@@ -55,7 +55,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.updateSubscription.unsubscribe();
+    if (!!this.updateSubscription) {
+      this.updateSubscription.unsubscribe();
+    }
   }
 
 }

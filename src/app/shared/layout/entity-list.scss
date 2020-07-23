@@ -16,26 +16,17 @@
   width: 70%;
   margin: auto;
 
-
-  .form-inputs {
-    display: flex;
-    justify-content: space-around;
-  }
-
-  mat-form-field {
-    margin : 0.75rem;
-  }
-
-  .search-buttons {
+  .form-input {
     display: flex;
     justify-content: center;
-  }
-
-  .search-buttons button {
-    margin: 0 0.75rem;
+    align-items: center;
   }
 }
 
 .card-container {
   width: 100%;
+}
+
+.no-margin {
+  margin-bottom: -1.25rem;
 }
