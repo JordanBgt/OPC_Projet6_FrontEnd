@@ -15,7 +15,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   isSuccessful = false;
   isSignupFailed = false;
   errorMessage = '';
-  registerSubscription : Subscription;
+  registerSubscription: Subscription;
 
   constructor(private authService: AuthService,
               private formBuilder: FormBuilder) { }
@@ -51,7 +51,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.registerSubscription.unsubscribe();
+    if (!!this.registerSubscription) {
+      this.registerSubscription.unsubscribe();
+    }
   }
 
 }
