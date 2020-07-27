@@ -80,7 +80,7 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     const file: File = this.uploadPhotoForm.value.photo.files[0];
     const extension = file.type.slice(file.type.indexOf('/') + 1);
     const photoIndex = this.spot.photos != null ? this.spot.photos.length : 0;
-    const fileName = `${this.spot.name}-photo-${photoIndex + 1}.${extension}`;
+    const fileName = `spot${this.spot.id}${photoIndex + 1}.${extension}`;
     this.subscriptions.push(this.spotService.uploadPhoto(file, fileName, this.spotId, this.spot.userId, this.user.id).pipe(
       tap((res: Spot) => {
         this.spot = new Spot(res);

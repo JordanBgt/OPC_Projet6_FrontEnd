@@ -77,7 +77,7 @@ export class TopoDetailComponent implements OnInit, OnDestroy {
   onUploadPhoto() {
     const file: File = this.uploadPhotoForm.value.photo.files[0];
     const extension = file.type.slice(file.type.indexOf('/') + 1);
-    const filename = `${this.topo.name}-photo.${extension}`;
+    const filename = `topo${this.topo.id}.${extension}`;
     this.subscriptions.push(this.topoService.uploadPhoto(file, filename, this.topoId, this.topo.creatorId, this.user.id).pipe(
       tap((res: Topo) => {
         this.topo = new Topo(res);

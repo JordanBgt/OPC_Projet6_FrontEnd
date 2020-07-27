@@ -128,7 +128,10 @@
         <mat-card-title>{{topo.name}}</mat-card-title>
         <mat-card-subtitle>{{topo.country}}, {{topo.region}}</mat-card-subtitle>
       </mat-card-header>
-      <img *ngIf="topo.photo" mat-card-image [src]="topo.photo.fileToBase64String" alt="photo topo">
+      <img *ngIf="topo.photo; else defaultPhoto" mat-card-image [src]="topo.photo.fileToBase64String" alt="photo topo">
+      <ng-template #defaultPhoto>
+        <img src="assets/logo.png" mat-card-image alt="photo topo">
+      </ng-template>
       <mat-card-actions >
         <button mat-stroked-button routerLink="{{topo.id}}">Detail</button>
       </mat-card-actions>
