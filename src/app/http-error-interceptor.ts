@@ -10,6 +10,10 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 
+/**
+ * Http interceptor to handle errors sent by the server in order to display them with a personalized message
+ */
+
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
 

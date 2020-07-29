@@ -3,6 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Spot } from '../shared/model/spot.model';
 import { Observable } from 'rxjs';
 import { createRequestOption } from '../shared/request-utils';
+import { API_URL } from '../../../app.constants';
+
+/**
+ * Service to send Spot requests to server
+ */
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +15,7 @@ import { createRequestOption } from '../shared/request-utils';
 export class SpotService {
 
 
-  public ressourceUrl = 'http://localhost:8080/api/spots';
+  public ressourceUrl = API_URL + '/spots';
 
   constructor(protected http: HttpClient) { }
 

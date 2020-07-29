@@ -3,13 +3,18 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { IVoie, Voie } from '../shared/model/voie.model';
 import { Observable } from 'rxjs';
 import { createRequestOption } from '../shared/request-utils';
+import { API_URL } from '../../../app.constants';
+
+/**
+ * Service to send Voie requests to server
+ */
 
 @Injectable({
   providedIn: 'root'
 })
 export class VoieService {
 
-  public ressourceUrl = 'http://localhost:8080/api/voies';
+  public ressourceUrl = API_URL + '/voies';
 
   constructor(protected http: HttpClient) { }
 

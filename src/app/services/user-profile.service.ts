@@ -4,13 +4,18 @@ import { Observable } from 'rxjs';
 import { UserProfile } from '../shared/model/user-profile.model';
 import { createRequestOption } from '../shared/request-utils';
 import { TopoUser } from '../shared/model/topo-user.model';
+import { API_URL } from '../../../app.constants';
+
+/**
+ * Service to send UserProfile requests to server
+ */
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserProfileService {
 
-  public ressourceUrl = 'http://localhost:8080/api/profile';
+  public ressourceUrl = API_URL + '/profile';
 
   constructor(private readonly http: HttpClient) { }
 

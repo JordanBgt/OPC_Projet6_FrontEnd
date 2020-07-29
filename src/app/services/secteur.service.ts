@@ -3,13 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { ISecteur, Secteur } from '../shared/model/secteur.model';
 import { Observable } from 'rxjs';
 import { createRequestOption } from '../shared/request-utils';
+import { API_URL } from '../../../app.constants';
+
+/**
+ * Serice to send Secteur requests to server
+ */
 
 @Injectable({
   providedIn: 'root'
 })
 export class SecteurService {
 
-  public ressourceUrl = 'http://localhost:8080/api/secteurs';
+  public ressourceUrl = API_URL + '/secteurs';
 
   constructor(protected http: HttpClient) { }
 

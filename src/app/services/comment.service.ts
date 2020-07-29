@@ -5,13 +5,18 @@ import { Observable } from 'rxjs';
 import { createRequestOption } from '../shared/request-utils';
 import { CommentSave } from '../shared/model/comment-save.model';
 import { Comment } from '../shared/model/comment.model';
+import { API_URL } from '../../../app.constants';
+
+/**
+ * Service to send Comment requests to server
+ */
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommentService {
 
-  public ressourceUrl = 'http://localhost:8080/api/comments';
+  public ressourceUrl = API_URL + '/comments';
 
   constructor(protected http: HttpClient) { }
 

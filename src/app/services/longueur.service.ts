@@ -3,13 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { ILongueur, Longueur } from '../shared/model/longueur.model';
 import { Observable } from 'rxjs';
 import { createRequestOption } from '../shared/request-utils';
+import { API_URL } from '../../../app.constants';
+
+/**
+ * Service to send Longueur requests to server
+ */
 
 @Injectable({
   providedIn: 'root'
 })
 export class LongueurService {
 
-  public ressourceUrl = 'http://localhost:8080/api/longueurs';
+  public ressourceUrl = API_URL + '/longueurs';
 
   constructor(protected http: HttpClient) { }
 

@@ -4,13 +4,18 @@ import { Topo } from '../shared/model/topo.model';
 import { Observable } from 'rxjs';
 import { createRequestOption } from '../shared/request-utils';
 import { TopoUser } from '../shared/model/topo-user.model';
+import { API_URL } from '../../../app.constants';
+
+/**
+ * Service to send Topo requests to server
+ */
 
 @Injectable({
   providedIn: 'root'
 })
 export class TopoService {
 
-  public ressourceUrl = 'http://localhost:8080/api/topos';
+  public ressourceUrl = API_URL + '/topos';
 
   constructor(private http: HttpClient) {}
 
