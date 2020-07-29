@@ -5,6 +5,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { findIndexCotation, findIndexEntity } from '../shared/entity-utils';
 import { VoieLight } from '../shared/model/voie-light.model';
 
+/**
+ * Component to manage the longueur update form. It will be called by the LongueurDetailComponent
+ */
+
 @Component({
   selector: 'app-longueur-update',
   templateUrl: './longueur-update.component.html',
@@ -23,11 +27,17 @@ export class LongueurUpdateComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder) { }
 
+  /**
+   * Find index of the longueur's cotations and init the longueur update form
+   */
   ngOnInit() {
     this.findIndexCotationOption();
     this.initForm();
   }
 
+  /**
+   * Init the longueur update form with the longueur information
+   */
   initForm() {
     this.longueurUpdateForm = this.formBuilder.group({
       name: [this.longueur.name, Validators.required],
@@ -38,11 +48,17 @@ export class LongueurUpdateComponent implements OnInit {
     });
   }
 
+  /**
+   * Method to find index of longueurs cotations and select them in the select inputs
+   */
   findIndexCotationOption() {
     this.indexCotationMin = findIndexCotation(this.cotations, this.longueur.cotationMin);
     this.indexCotationMax = findIndexCotation(this.cotations, this.longueur.cotationMax);
   }
 
+  /**
+   * Emits the updated longueur so that the LongueurDetailComponent sends it to the server
+   */
   onUpdate() {
     const formValue = this.longueurUpdateForm.value;
     this.longueurUpdated = new Longueur(this.longueur.id, formValue.name, formValue.cotationMin, formValue.cotationMax,

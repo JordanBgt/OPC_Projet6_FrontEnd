@@ -13,7 +13,7 @@
         <div class="description">
           {{longueur.description}}
         </div>
-        <button mat-stroked-button (click)="onUpdate()" *ngIf="isAdmin || longueur.userId === user.id">Modifier</button>
+        <button mat-stroked-button (click)="onUpdate()" *ngIf="isAuthorized">Modifier</button>
         <button mat-stroked-button (click)="onDelete()" color="warn" *ngIf="isAdmin">Supprimer</button>
       </mat-card-content>
     </div>

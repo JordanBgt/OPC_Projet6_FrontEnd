@@ -1,5 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+/**
+ * Pipe which returns a color value according to BookingState value
+ */
+
 @Pipe({
   name: 'bookingStateToColor'
 })

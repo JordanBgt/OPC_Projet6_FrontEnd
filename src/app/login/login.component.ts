@@ -7,6 +7,10 @@ import { ActivatedRoute } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
+/**
+ * Component to manage login actions
+ */
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -27,6 +31,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.subscriptions = [];
   }
 
+  /**
+   * When the component is initialized, we extract the url that the user wanted to visit before being redirected to the
+   * login component, then we check if he is logged or not. If he isn't logged, we initialize the login form.
+   */
   ngOnInit() {
     this.subscriptions.push(this.route.queryParams.pipe(
       tap(params => {
@@ -40,6 +48,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.initForm();
   }
 
+  /**
+   * It initializes the login form
+   */
   initForm() {
     this.form = this.formBuilder.group({
       username: ['', Validators.required],
@@ -47,6 +58,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * When the form is submitted, we call the Authentication service to log the user and redirect him to the precedent
+   * url if he was redirected to this page, or redirect him to the home page
+   */
   onSubmit() {
     const formValue = this.form.value;
     const user = new User();
@@ -71,6 +86,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       ).subscribe());
   }
 
+  /**
+   * When the component is destroyed, we must unsubscribe all subscriptions
+   */
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }

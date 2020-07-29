@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ISecteur, Secteur } from '../shared/model/secteur.model';
-import { HttpResponse } from '@angular/common/http';
 import { VoieLight } from '../shared/model/voie-light.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VoieService } from '../services/voie.service';
@@ -17,6 +16,10 @@ import { SpotService } from '../services/spot.service';
 import { SpotLight } from '../shared/model/spot-light.model';
 import { catchError, tap } from 'rxjs/operators';
 import { Subscription, throwError } from 'rxjs';
+
+/**
+ * Component to manage Secteur detail. It displays a page with all the information of the requested secteur
+ */
 
 @Component({
   selector: 'app-secteur-detail',
@@ -52,6 +55,10 @@ export class SecteurDetailComponent implements OnInit, OnDestroy {
     this.subscriptions = [];
   }
 
+  /**
+   * When the component is initialized, we check if the user has ROLE_ADMIN, pickup the secteur id from the url params
+   * and load the needed entities
+   */
   ngOnInit() {
     this.user = this.tokenStorageService.getUser();
     this.isAdmin = isAdmin(this.user.roles);
@@ -63,6 +70,9 @@ export class SecteurDetailComponent implements OnInit, OnDestroy {
     this.initVoieForm();
   }
 
+  /**
+   * Return true if the user had ROLE_ADMIN or if he is the secteur creator
+   */
   checkIfAuthorized() {
     this.isAuthorized = this.isAdmin || this.user.id === this.secteur.userId;
   }
@@ -71,6 +81,9 @@ export class SecteurDetailComponent implements OnInit, OnDestroy {
     this.update = true;
   }
 
+  /**
+   * Method to delete the secteur. It will redirect the user to the secteur listing page
+   */
   onDelete() {
     this.subscriptions.push(this.secteurService.deleteSecteur(this.secteurId).pipe(
       tap((res: any) => {
@@ -85,6 +98,9 @@ export class SecteurDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to get the requested secteur
+   */
   loadSecteur() {
     this.subscriptions.push(this.secteurService.getOneSecteur(this.secteurId).pipe(
       tap((res: ISecteur) => {
@@ -95,13 +111,19 @@ export class SecteurDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to get all voies that belong to the secteur
+   */
   loadVoies() {
     this.subscriptions.push(this.voieService.getAllVoies({unpaged: true, secteurId: this.secteurId}).pipe(
-      tap((res: any) => res.content.forEach(voie => this.voies.push(voie))),
+      tap((res: any) => this.voies = res.content),
       catchError(error => throwError(error))
     ).subscribe());
   }
 
+  /**
+   * Method to get all cotations. We need them in the secteur update form and in the voie creation form
+   */
   loadCotations() {
     this.subscriptions.push(this.cotationService.getAllCotations().pipe(
       tap((res: ICotation[]) => this.cotations = res),
@@ -109,6 +131,9 @@ export class SecteurDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to get all spots. We need them in the secteur update form
+   */
   loadSpots() {
     this.subscriptions.push(this.spotService.getAllSpots({unpaged: true}).pipe(
       tap((res: any) => this.spots = res.content),
@@ -116,6 +141,10 @@ export class SecteurDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to update the secteur
+   * @param secteur to update
+   */
   updateSecteur(secteur: Secteur) {
     this.subscriptions.push(this.secteurService.updateSecteur(secteur, this.user.id).pipe(
       tap((res: ISecteur) => {
@@ -126,6 +155,9 @@ export class SecteurDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Initializes the voie creation form
+   */
   initVoieForm() {
     this.voieForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -135,6 +167,9 @@ export class SecteurDetailComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Creates the voie
+   */
   onAddVoie() {
     const formValue = this.voieForm.value;
     const voie = new Voie(null, formValue.name, formValue.cotationMin, formValue.cotationMax, formValue.description,
@@ -145,12 +180,16 @@ export class SecteurDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Delete the voie
+   * @param voieId id of the voie to delete
+   */
   onDeleteVoie(voieId: number) {
     this.subscriptions.push(this.voieService.deleteVoie(voieId).pipe(
       tap((res: any) => {
         if (res.status === HTTP_STATUS_NOCONTENT) {
-          this.snackBar.open('Voie supprimée', 'Ok', {duration: 5000});
           this.loadVoies();
+          this.snackBar.open('Voie supprimée', 'Ok', {duration: 5000});
         } else {
           this.snackBar.open('Erreur lors de la suppression de la voie', 'Ok', {duration: 5000});
         }
@@ -159,6 +198,9 @@ export class SecteurDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * When the component is destroyed, we must unsubscribe all subscriptions
+   */
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }

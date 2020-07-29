@@ -13,6 +13,10 @@ import { VoieService } from '../services/voie.service';
 import { catchError, tap } from 'rxjs/operators';
 import { Subscription, throwError } from 'rxjs';
 
+/**
+ * Component to manage Longueur. It displays a list of LongueurLight
+ */
+
 @Component({
   selector: 'app-longueur',
   templateUrl: './longueur.component.html',
@@ -49,6 +53,9 @@ export class LongueurComponent implements OnInit, OnDestroy {
     this.subscriptions = [];
   }
 
+  /**
+   * Method to get all longueurs
+   */
   loadAll() {
     this.subscriptions.push(this.longueurService.getAllLongueurs({size: this.size, page: this.page, name: this.name,
       cotationMin: this.cotationMin, cotationMax: this.cotationMax}).pipe(
@@ -57,6 +64,9 @@ export class LongueurComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to get all cotations. We need them in the longueur creation form.
+   */
   loadCotations() {
     this.subscriptions.push(this.cotationService.getAllCotations().pipe(
       tap((res: ICotation[]) => this.cotations = res),
@@ -64,6 +74,9 @@ export class LongueurComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to get all voies. We need them in the longueur creation form.
+   */
   loadVoies() {
     this.subscriptions.push(this.voieService.getAllVoies({unpaged: true}).pipe(
       tap((res: any) => res.content.forEach(voie => this.voies.push(voie))),
@@ -71,6 +84,9 @@ export class LongueurComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * When the component is initialized, we check if the user is logged, we load all needed entities and init forms
+   */
   ngOnInit() {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
     this.user = this.tokenStorageService.getUser();
@@ -81,6 +97,10 @@ export class LongueurComponent implements OnInit, OnDestroy {
     this.initCreateLongueurForm();
   }
 
+  /**
+   * Allows to pickup longueurs from the server's response
+   * @param data server's response
+   */
   paginateLongueurs(data: any) {
     this.totalPages = data.totalPages;
     for (const longueur of data.content) {
@@ -88,11 +108,18 @@ export class LongueurComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Method to load a new page of longueurs
+   * @param page index of the page claimed
+   */
   loadPage(page) {
     this.page = page;
     this.loadAll();
   }
 
+  /**
+   * Initializes the search form
+   */
   initSearchForm() {
     this.searchForm = this.formBuilder.group({
       name : '',
@@ -101,6 +128,9 @@ export class LongueurComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Initializes the longueur creation form
+   */
   initCreateLongueurForm() {
     this.createLongueurForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -111,6 +141,9 @@ export class LongueurComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Request a page of longueurs with search criteria
+   */
   onSearch() {
     const formValue = this.searchForm.value;
     this.name = formValue.name !== '' ? formValue.name : null;
@@ -120,6 +153,10 @@ export class LongueurComponent implements OnInit, OnDestroy {
     this.loadAll();
   }
 
+  /**
+   * Method to create a longueur. When the longueur is created, the user is redirected to the longueur created details
+   * page
+   */
   onCreate() {
     const formValue = this.createLongueurForm.value;
     const longueur = new Longueur(null, formValue.name, formValue.cotationMin, formValue.cotationMax,
@@ -133,11 +170,17 @@ export class LongueurComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Clears the longueurs arrays and the index of the page
+   */
   clearLongueursAndPage() {
     this.longueurs = [];
     this.page = 0;
   }
 
+  /**
+   * When the component is destroyed, we must unsubscribe all subscriptions
+   */
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }

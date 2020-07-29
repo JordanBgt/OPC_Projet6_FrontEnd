@@ -2,6 +2,10 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
+/**
+ * Dialog to write or update a comment
+ */
+
 @Component({
   selector: 'app-comment-dialog',
   templateUrl: './comment-dialog.component.html',

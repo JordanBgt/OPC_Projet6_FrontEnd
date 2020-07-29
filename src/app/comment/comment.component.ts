@@ -10,6 +10,10 @@ import { TokenStorageService } from '../security/token-storage.service';
 import { catchError, tap } from 'rxjs/operators';
 import { Subscription, throwError } from 'rxjs';
 
+/**
+ * Component to manage Comment. It displays a list of spot comments
+ */
+
 @Component({
   selector: 'app-comment',
   templateUrl: './comment.component.html',
@@ -35,11 +39,17 @@ export class CommentComponent implements OnInit, OnDestroy {
     this.subscriptions = [];
   }
 
+  /**
+   * After the initialization of the component, we get the current user and load all spot's comments
+   */
   ngOnInit() {
     this.user = this.tokenStorageService.getUser();
     this.loadAll();
   }
 
+  /**
+   * Method to load all comments of the spot whose id it provided by the parent component
+   */
   loadAll() {
     this.subscriptions.push(this.commentService.getAllComments({page: this.page, spotId: this.spotId}).pipe(
       tap((res: any) => this.paginateComments(res)),
@@ -47,6 +57,10 @@ export class CommentComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Allows to pickup comments from the server's response
+   * @param data server's response
+   */
   paginateComments(data: any) {
     this.totalPages = data.totalPages;
     for (const comment of data.content) {
@@ -54,11 +68,19 @@ export class CommentComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Method to load a new page of comments
+   * @param page index of the page claimed
+   */
   loadPage(page) {
     this.page = page;
     this.loadAll();
   }
 
+  /**
+   * Method to delete a comment
+   * @param commentId id of the comment to delete
+   */
   onDelete(commentId) {
     let status: number;
     this.subscriptions.push(this.commentService.deleteComment(commentId)
@@ -74,6 +96,10 @@ export class CommentComponent implements OnInit, OnDestroy {
       }));
   }
 
+  /**
+   * Method to update a comment : it displays a dialog with comment information which can then be modified
+   * @param comment the comment to save
+   */
   onUpdate(comment) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
@@ -86,6 +112,9 @@ export class CommentComponent implements OnInit, OnDestroy {
       () => this.subscriptions.push(this.commentService.updateComment(comment, this.user.id).subscribe())));
   }
 
+  /**
+   * Method to create a comment : it displays a dialog to write a comment
+   */
   onCreate() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
@@ -109,6 +138,9 @@ export class CommentComponent implements OnInit, OnDestroy {
     }));
   }
 
+  /**
+   * When the component is destroyed, we must unsubscribe all subscriptions
+   */
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }

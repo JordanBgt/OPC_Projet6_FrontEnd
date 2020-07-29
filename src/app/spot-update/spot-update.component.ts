@@ -5,6 +5,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { findIndexCotation } from '../shared/entity-utils';
 import { SecteurLight } from '../shared/model/secteur-light.model';
 
+/**
+ * Component to manage the spot update form. It will be called by the SpotDetailComponent
+ */
+
 @Component({
   selector: 'app-spot-update',
   templateUrl: './spot-update.component.html',
@@ -29,6 +33,9 @@ export class SpotUpdateComponent implements OnInit {
     this.initForm();
   }
 
+  /**
+   * Initializes the spot update form with the spot information
+   */
   initForm() {
     this.spotUpdateForm = this.formBuilder.group({
       name: [this.spot.name, Validators.required],
@@ -42,11 +49,17 @@ export class SpotUpdateComponent implements OnInit {
     });
   }
 
+  /**
+   * Method to find index of spot cotations and select them in the select inputs
+   */
   findIndexCotationOption() {
     this.indexCotationMin = findIndexCotation(this.cotations, this.spot.cotationMin);
     this.indexCotationMax = findIndexCotation(this.cotations, this.spot.cotationMax);
   }
 
+  /**
+   * Emits the updated spot so that the SpotDetailComponent sends it to the server
+   */
   onUpdate() {
     const formValue = this.spotUpdateForm.value;
     this.spotUpdated = new Spot({id: this.spot.id, country: formValue.country, city: formValue.city,

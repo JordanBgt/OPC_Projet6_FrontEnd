@@ -11,6 +11,10 @@ import { SpotLight } from '../shared/model/spot-light.model';
 import { catchError, tap } from 'rxjs/operators';
 import { Subscription, throwError } from 'rxjs';
 
+/**
+ * Component to manage Secteur. It displays a list of SecteurLight
+ */
+
 @Component({
   selector: 'app-secteur',
   templateUrl: './secteur.component.html',
@@ -42,6 +46,9 @@ export class SecteurComponent implements OnInit, OnDestroy {
     this.subscriptions = [];
   }
 
+  /**
+   * Method that loads all secteurs
+   */
   loadAll() {
     this.subscriptions.push(this.secteurService.getAllSecteurs({page: this.page, size: this.size, name: this.name}).pipe(
       tap((res: any) => this.paginateSecteurs(res)),
@@ -49,6 +56,9 @@ export class SecteurComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to get all spots. We need them in the Secteur creation form
+   */
   loadSpots() {
     this.subscriptions.push(this.spotService.getAllSpots({unpaged: true}).pipe(
       tap((res: any) => {
@@ -57,6 +67,9 @@ export class SecteurComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * When the component is initialized, we check if the user is logged, we load all needed entities and init forms
+   */
   ngOnInit() {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
     this.user = this.tokenStorageService.getUser();
@@ -66,6 +79,10 @@ export class SecteurComponent implements OnInit, OnDestroy {
     this.initCreateSecteurForm();
   }
 
+  /**
+   * Allows to pickup secteurs from the server's response
+   * @param data server's response
+   */
   paginateSecteurs(data: any) {
     this.totalPages = data.totalPages;
     for (const secteur of data.content) {
@@ -73,17 +90,27 @@ export class SecteurComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Method to load a new page of secteurs
+   * @param page index of the page claimed
+   */
   loadPage(page) {
     this.page = page;
     this.loadAll();
   }
 
+  /**
+   * Initializes the search form
+   */
   initSearchForm() {
     this.searchForm = this.formBuilder.group({
       name: ''
     });
   }
 
+  /**
+   * Initializes the secteur creation form
+   */
   initCreateSecteurForm() {
     this.createSecteurForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -92,12 +119,19 @@ export class SecteurComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Request a page of secteurs with search criteria
+   */
   onSearch() {
     this.name = this.searchForm.value.name !== '' ? this.searchForm.value.name : null;
     this.clearSecteursAndPage();
     this.loadAll();
   }
 
+  /**
+   * Method to create a secteur. When the secteur is created, the user is redirected to the secteur created details
+   * page
+   */
   onCreate() {
     const formValue = this.createSecteurForm.value;
     const secteur = new Secteur(null, formValue.name, formValue.description, this.user.id, formValue.spots.id);
@@ -111,11 +145,17 @@ export class SecteurComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Clears the secteurs arrays and the index of the page
+   */
   clearSecteursAndPage() {
     this.secteurs = [];
     this.page = 0;
   }
 
+  /**
+   * When the component is destroyed, we must unsubscribe all subscriptions
+   */
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }

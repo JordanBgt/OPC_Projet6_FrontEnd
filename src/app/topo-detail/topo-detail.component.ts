@@ -12,10 +12,13 @@ import { HTTP_STATUS_NOCONTENT } from '../../../app.constants';
 import { TopoService } from '../services/topo.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { catchError, tap } from 'rxjs/operators';
-import { config, Subscription, throwError } from 'rxjs';
+import { Subscription, throwError } from 'rxjs';
 import { TopoUser } from '../shared/model/topo-user.model';
 import { UserProfileService } from '../services/user-profile.service';
-import { TopoUserLight } from '../shared/model/topo-user-light.model';
+
+/**
+ * Component to manage Topo detail. It displays a page with all information of the requested topo
+ */
 
 @Component({
   selector: 'app-topo-detail',
@@ -50,6 +53,10 @@ export class TopoDetailComponent implements OnInit, OnDestroy {
     this.subscriptions = [];
   }
 
+  /**
+   * When the component is initialized, we check if the user has ROLE_ADMIN, pickup the topo id from the url params
+   * and load the needed entities
+   */
   ngOnInit() {
     this.user = this.tokenStorageService.getUser();
     this.isAdmin = isAdmin(this.user.roles);
@@ -60,6 +67,9 @@ export class TopoDetailComponent implements OnInit, OnDestroy {
     this.initUploadPhotoForm();
   }
 
+  /**
+   * Return true if the user had ROLE_ADMIN or if he is the topo creator
+   */
   checkIfAuthorized() {
     this.isAuthorized = this.isAdmin || this.user.id === this.topo.creatorId;
   }
@@ -68,12 +78,18 @@ export class TopoDetailComponent implements OnInit, OnDestroy {
     this.update = true;
   }
 
+  /**
+   * Initializes the photo upload form
+   */
   initUploadPhotoForm() {
     this.uploadPhotoForm = this.formBuilder.group({
       photo: ''
     });
   }
 
+  /**
+   * Method to upload a photo
+   */
   onUploadPhoto() {
     const file: File = this.uploadPhotoForm.value.photo.files[0];
     const extension = file.type.slice(file.type.indexOf('/') + 1);
@@ -87,6 +103,9 @@ export class TopoDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to delete a topo. It will redirect the user to topo listing page
+   */
   onDelete() {
     this.subscriptions.push(this.topoService.deleteTopo(this.topoId).pipe(
       tap((res: any) => {
@@ -101,6 +120,9 @@ export class TopoDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to load the requested topo
+   */
   loadTopo() {
     this.subscriptions.push(this.topoService.getOneTopo(this.topoId).pipe(
       tap((res: any) => {
@@ -112,6 +134,9 @@ export class TopoDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to get all cotations. We need them in the topo update form
+   */
   loadCotations() {
     this.subscriptions.push(this.cotationService.getAllCotations().pipe(
       tap((res: ICotation[]) => this.cotations = res),
@@ -119,6 +144,9 @@ export class TopoDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to get all spots. We need them in the topo update form
+   */
   loadSpots() {
     this.subscriptions.push(this.spotService.getAllSpots({unpaged: true}).pipe(
       tap((res: any) => {
@@ -128,6 +156,10 @@ export class TopoDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to update the topo
+   * @param topo to update
+   */
   updateTopo(topo: Topo) {
     this.subscriptions.push(this.topoService.updateTopo(topo, this.user.id).pipe(
       tap((res: Topo) => {
@@ -138,6 +170,10 @@ export class TopoDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to book a topo
+   * @param topoUser the TopoUser which contains information about the topo, its owner and the user who want to book it
+   */
   bookTopo(topoUser: TopoUser) {
     topoUser.available = false;
     topoUser.tenant = this.user;
@@ -152,6 +188,9 @@ export class TopoDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method which allows a user to indicate that he owns the topo
+   */
   onAddTopoToUser() {
     const topoUser = new TopoUser();
     topoUser.topo = this.topo;
@@ -165,11 +204,16 @@ export class TopoDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
-  // Pour vérifier si l'utilisateur possède ce topo
+  /**
+   * Check if the current user owns the topo
+   */
   checkIfUserOwnsTopo() {
     this.isOwnedByUser = this.topo.topoUsers.find(topoUser => topoUser.owner.id === this.user.id) !== undefined;
   }
 
+  /**
+   * When the component is destroyed, we must unsubscribe all subscriptions
+   */
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }

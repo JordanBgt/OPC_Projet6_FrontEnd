@@ -13,6 +13,10 @@ import { catchError, tap } from 'rxjs/operators';
 import { SpotLight } from '../shared/model/spot-light.model';
 import { Subscription, throwError } from 'rxjs';
 
+/**
+ * Component to manage Topo. It displays a list of TopoLight
+ */
+
 @Component({
   selector: 'app-topo',
   templateUrl: './topo.component.html',
@@ -50,6 +54,9 @@ export class TopoComponent implements OnInit, OnDestroy {
     this.subscriptions = [];
   }
 
+  /**
+   * Method to load all topos
+   */
   loadAll() {
     this.subscriptions.push(this.topoService.getAllTopos({page: this.page, size: this.size, country: this.country, name: this.name,
       cotationMin: this.cotationMin, cotationMax: this.cotationMax}).pipe(
@@ -63,6 +70,9 @@ export class TopoComponent implements OnInit, OnDestroy {
       .subscribe());
   }
 
+  /**
+   * Method to get all cotations. We need them in the topo creation form
+   */
   loadCotations() {
     this.subscriptions.push(this.cotationService.getAllCotations().pipe(
       tap((res: ICotation[]) => this.cotations = res),
@@ -70,6 +80,9 @@ export class TopoComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to load all spots. We need them in the topo creation form
+   */
   loadSpots() {
     this.subscriptions.push(this.spotService.getAllSpots({unpaged: true}).pipe(
       tap((res: any) => this.spots = res.content),
@@ -77,6 +90,9 @@ export class TopoComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * When the component is initialized, we check if the user is logged, we load all needed entities and init forms
+   */
   ngOnInit() {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
     this.user = this.tokenStorageService.getUser();
@@ -87,6 +103,9 @@ export class TopoComponent implements OnInit, OnDestroy {
     this.initSearchForm();
   }
 
+  /**
+   * Initializes the topo creation form
+   */
   initTopoForm() {
     this.topoForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -99,6 +118,9 @@ export class TopoComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Initializes the search form
+   */
   initSearchForm() {
     this.searchForm = this.formBuilder.group({
       country: '',
@@ -108,6 +130,9 @@ export class TopoComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Method to create a topo. When the topo is created, the user is redirect to the topo created detail page
+   */
   onCreate() {
     const formValue = this.topoForm.value;
     const spots = formValue.spots !== '' ? formValue.spots : null;
@@ -124,11 +149,18 @@ export class TopoComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to load a new page of topos
+   * @param page index of the page claimed
+   */
   loadPage(page) {
     this.page = page;
     this.loadAll();
   }
 
+  /**
+   * Request a page of topos with search criteria
+   */
   onSearch() {
     const formValue = this.searchForm.value;
     this.country = formValue.country !== '' ? formValue.country : null;
@@ -139,11 +171,17 @@ export class TopoComponent implements OnInit, OnDestroy {
     this.loadAll();
   }
 
+  /**
+   * Clears the topos arrays and the index of the page
+   */
   clearToposAndPage() {
     this.topos = [];
     this.page = 0;
   }
 
+  /**
+   * When the component is destroyed, we must unsubscribe all subscriptions
+   */
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }

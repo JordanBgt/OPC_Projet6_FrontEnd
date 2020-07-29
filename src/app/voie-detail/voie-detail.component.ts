@@ -17,6 +17,10 @@ import { SecteurService } from '../services/secteur.service';
 import { catchError, tap } from 'rxjs/operators';
 import { Subscription, throwError } from 'rxjs';
 
+/**
+ * Component to manage Voie detail. It displays a page with all the information of the requested voie
+ */
+
 @Component({
   selector: 'app-voie-detail',
   templateUrl: './voie-detail.component.html',
@@ -51,6 +55,10 @@ export class VoieDetailComponent implements OnInit, OnDestroy {
     this.subscriptions = [];
   }
 
+  /**
+   * When the component is initialized, we check if the user has ROLE_ADMIN, pickup the voies id from the url params
+   * and load the needed entities
+   */
   ngOnInit() {
     this.user = this.tokenStorageService.getUser();
     this.isAdmin = isAdmin(this.user.roles);
@@ -62,6 +70,9 @@ export class VoieDetailComponent implements OnInit, OnDestroy {
     this.initLongueurForm();
   }
 
+  /**
+   * Return true if the user had ROLE_ADMIN or if he is the voie creator
+   */
   checkIfAuthorized() {
     this.isAuthorized = this.isAdmin || this.user.id === this.voie.userId;
   }
@@ -70,6 +81,9 @@ export class VoieDetailComponent implements OnInit, OnDestroy {
     this.update = true;
   }
 
+  /**
+   * Method to delete a voie. It will redirect the user to voie listing page
+   */
   onDelete() {
     this.subscriptions.push(this.voieService.deleteVoie(this.voieId).pipe(
       tap((res: any) => {
@@ -84,6 +98,9 @@ export class VoieDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to get the requested voie
+   */
   loadVoie() {
     this.subscriptions.push(this.voieService.getOneVoie(this.voieId).pipe(
       tap((res: IVoie) => {
@@ -94,6 +111,9 @@ export class VoieDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to get all cotations. We need them in the voie update form
+   */
   loadCotations() {
     this.subscriptions.push(this.cotationService.getAllCotations().pipe(
       tap((res: ICotation[]) => this.cotations = res),
@@ -101,13 +121,19 @@ export class VoieDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to get all longueurs. it's used to add longueurs to the voie
+   */
   loadLongueurs() {
     this.subscriptions.push(this.longueurService.getAllLongueurs({unpaged: true, voieId: this.voieId}).pipe(
-      tap((res: any) => res.content.forEach(longueur => this.longueurs.push(longueur))),
+      tap((res: any) => this.longueurs = res.content),
       catchError(error => throwError(error))
     ).subscribe());
   }
 
+  /**
+   * Method to get all secteurs. It's used, in the voie update form, to select the secteur to wich the spot belongs
+   */
   loadSecteurs() {
     this.subscriptions.push(this.secteurService.getAllSecteurs({unpaged: true}).pipe(
       tap((res: any) => res.content.forEach(secteur => this.secteurs.push(secteur))),
@@ -115,6 +141,10 @@ export class VoieDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to update the voie
+   * @param voie to update
+   */
   updateVoie(voie: Voie) {
     this.subscriptions.push(this.voieService.updateVoie(voie, this.user.id).pipe(
       tap((res: IVoie) => {
@@ -125,6 +155,9 @@ export class VoieDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Initializes the longueur creation form
+   */
   initLongueurForm() {
     this.longueurForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -134,6 +167,9 @@ export class VoieDetailComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * It creates the longueur
+   */
   onAddLongueur() {
     const formValue = this.longueurForm.value;
     const longueur = new Longueur(null, formValue.name, formValue.cotationMin, formValue.cotationMax,
@@ -144,6 +180,10 @@ export class VoieDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * It deletes the longueur
+   * @param longueurId id of the longueur to delete
+   */
   onDeleteLongueur(longueurId: number) {
     this.subscriptions.push(this.longueurService.deleteLongueur(longueurId).pipe(
       tap((res: any) => {
@@ -158,6 +198,9 @@ export class VoieDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * When the component is destroyed, we must unsubscribe all subscriptions
+   */
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }

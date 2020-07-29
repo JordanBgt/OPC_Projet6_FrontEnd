@@ -3,8 +3,11 @@ import { Cotation } from '../shared/model/cotation.model';
 import { Voie } from '../shared/model/voie.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { findIndexCotation, findIndexEntity } from '../shared/entity-utils';
-import { LongueurLight } from '../shared/model/longueur-light.model';
 import { SecteurLight } from '../shared/model/secteur-light.model';
+
+/**
+ * Component to manage the voie update form. It will be called by the VoieDetailComponent
+ */
 
 @Component({
   selector: 'app-voie-update',
@@ -29,6 +32,9 @@ export class VoieUpdateComponent implements OnInit {
     this.initForm();
   }
 
+  /**
+   * Initializes the voie update form with the spot information
+   */
   initForm() {
     this.voieUpdateForm = this.formBuilder.group({
       name: [this.voie.name, Validators.required],
@@ -39,11 +45,17 @@ export class VoieUpdateComponent implements OnInit {
     });
   }
 
+  /**
+   * Method to find index of voie cotations and select them in the select inputs
+   */
   findIndexCotationOption() {
     this.indexCotationMin = findIndexCotation(this.cotations, this.voie.cotationMin);
     this.indexCotationMax = findIndexCotation(this.cotations, this.voie.cotationMax);
   }
 
+  /**
+   * Emits the updated voie so that the VoieDetailComponent sends it to the server
+   */
   onUpdate() {
     const formValue = this.voieUpdateForm.value;
     this.voieUpdated = new Voie(this.voie.id, formValue.name, formValue.cotationMin, formValue.cotationMax,

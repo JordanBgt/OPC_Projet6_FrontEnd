@@ -4,6 +4,10 @@ import { AuthService } from '../security/auth.service';
 import { User } from '../shared/model/user.model';
 import { Subscription } from 'rxjs';
 
+/**
+ * Component to manage user registration
+ */
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -24,6 +28,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.initForm();
   }
 
+  /**
+   * Initializes register form
+   */
   initForm() {
     this.form = this.formBuilder.group({
       username: ['', Validators.required],
@@ -32,6 +39,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * it calls the Authentication service to register the user
+   */
   onSubmit() {
     const formValue = this.form.value;
     const user = new User();
@@ -50,6 +60,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
     );
   }
 
+  /**
+   * If there is a subscription, we unsubscribe it when the component is destroyed
+   */
   ngOnDestroy(): void {
     if (!!this.registerSubscription) {
       this.registerSubscription.unsubscribe();

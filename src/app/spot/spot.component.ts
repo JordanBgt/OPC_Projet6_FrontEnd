@@ -13,6 +13,10 @@ import { catchError, tap } from 'rxjs/operators';
 import { Subscription, throwError } from 'rxjs';
 import { SpotLight } from '../shared/model/spot-light.model';
 
+/**
+ * Component to manage Spot. It displays a list of SpotLight
+ */
+
 @Component({
   selector: 'app-spot',
   templateUrl: './spot.component.html',
@@ -51,6 +55,9 @@ export class SpotComponent implements OnInit, OnDestroy {
     this.subscriptions = [];
   }
 
+  /**
+   * Method that loads all spots
+   */
   loadAll() {
     this.subscriptions.push(this.spotService.getAllSpots({page: this.page, size: this.size, country: this.country, city: this.city,
       name: this.name, isOfficial: this.isOfficial, cotationMin: this.cotationMin, cotationMax: this.cotationMax})
@@ -61,7 +68,9 @@ export class SpotComponent implements OnInit, OnDestroy {
       .subscribe());
   }
 
-
+  /**
+   * Method to get all cotations. We need them in the spot creation form
+   */
   loadCotations() {
     this.subscriptions.push(this.cotationService.getAllCotations().pipe(
       tap((res: ICotation[]) => this.cotations = res),
@@ -69,6 +78,9 @@ export class SpotComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * When the component is initialized, we check if the user is logged, we load all needed entities and init forms
+   */
   ngOnInit() {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
     this.user = this.tokenStorageService.getUser();
@@ -78,6 +90,10 @@ export class SpotComponent implements OnInit, OnDestroy {
     this.initCreateSpotForm();
   }
 
+  /**
+   * Allows to pickup spots from the server's response
+   * @param data server's response
+   */
   paginateTopos(data: any) {
     this.totalPages = data.totalPages;
     for (const spot of data.content) {
@@ -85,11 +101,18 @@ export class SpotComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Method to load a new page of spots
+   * @param page index of the page claimed
+   */
   loadPage(page) {
     this.page = page;
     this.loadAll();
   }
 
+  /**
+   * Initializes the search form
+   */
   initSearchForm() {
     this.searchForm = this.formBuilder.group({
       country: '',
@@ -101,6 +124,9 @@ export class SpotComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Initializes the spot creation form
+   */
   initCreateSpotForm() {
     this.createSpotForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -112,6 +138,9 @@ export class SpotComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Requests a page of spots with search criteria
+   */
   onSearch() {
     const formValue = this.searchForm.value;
     this.country = formValue.country !== '' ? formValue.country : null;
@@ -124,6 +153,9 @@ export class SpotComponent implements OnInit, OnDestroy {
     this.loadAll();
   }
 
+  /**
+   * Method to create a spot. When the spot is created, the user is redirected to the spot created details page
+   */
   onCreate() {
     const formValue = this.createSpotForm.value;
     const spot = new Spot({id: null, country: formValue.country, city: formValue.city,
@@ -137,11 +169,17 @@ export class SpotComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Clears the spots arrays and the index of the page
+   */
   clearSpotsAndPage() {
     this.spots = [];
     this.page = 0;
   }
 
+  /**
+   * When the component is destroyed, we must unsubscribe all subscriptions
+   */
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }

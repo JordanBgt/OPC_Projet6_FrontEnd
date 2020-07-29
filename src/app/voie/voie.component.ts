@@ -13,6 +13,10 @@ import { SecteurService } from '../services/secteur.service';
 import { catchError, tap } from 'rxjs/operators';
 import { Subscription, throwError } from 'rxjs';
 
+/**
+ * Component to manage Voie. It displays a list of VoieLight
+ */
+
 @Component({
   selector: 'app-voie',
   templateUrl: './voie.component.html',
@@ -49,6 +53,9 @@ export class VoieComponent implements OnInit, OnDestroy {
     this.subscriptions = [];
   }
 
+  /**
+   * Method to load all voies
+   */
   loadAll() {
     this.subscriptions.push(this.voieService.getAllVoies({page: this.page, size: this.size, name: this.name, cotationMin: this.cotationMin,
       cotationMax: this.cotationMax}).pipe(
@@ -57,6 +64,9 @@ export class VoieComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to get all cotations. We need them in the voie creation form
+   */
   loadCotations() {
     this.subscriptions.push(this.cotationService.getAllCotations().pipe(
       tap((res: ICotation[]) => this.cotations = res),
@@ -64,6 +74,9 @@ export class VoieComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to get all secteurs. We need them in the voie creation form
+   */
   loadSecteurs() {
     this.subscriptions.push(this.secteurService.getAllSecteurs({unpaged: true}).pipe(
       tap((res: any) => res.content.forEach(secteur => this.secteurs.push(secteur))),
@@ -71,6 +84,9 @@ export class VoieComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * When the component is initialized, we check if the user is logged, we load all needed entities and init forms
+   */
   ngOnInit() {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
     this.user = this.tokenStorageService.getUser();
@@ -81,6 +97,10 @@ export class VoieComponent implements OnInit, OnDestroy {
     this.initCreateVoieForm();
   }
 
+  /**
+   * Allows to pickup voies from the server's response
+   * @param data server's response
+   */
   paginateVoies(data: any) {
     this.totalPages = data.content.totalPages;
     for (const voie of data.content) {
@@ -88,11 +108,18 @@ export class VoieComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Method to load a new page of voies
+   * @param page index of the page claimed
+   */
   loadPage(page) {
     this.page = page;
     this.loadAll();
   }
 
+  /**
+   * Initializes the search form
+   */
   initSearchForm() {
     this.searchForm = this.formBuilder.group({
       name: '',
@@ -101,6 +128,9 @@ export class VoieComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Initializes the voie creation form
+   */
   initCreateVoieForm() {
     this.createVoieForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -111,6 +141,9 @@ export class VoieComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Requests a page of voies with search criteria
+   */
   onSearch() {
     const formValue = this.searchForm.value;
     this.name = formValue.name !== '' ? formValue.name : null;
@@ -120,6 +153,9 @@ export class VoieComponent implements OnInit, OnDestroy {
     this.loadAll();
   }
 
+  /**
+   * Method to create a voie. When the voie is created, the user is redirected to the voie created details page
+   */
   onCreate() {
     const formValue = this.createVoieForm.value;
     const voie = new Voie(null, formValue.name, formValue.cotationMin, formValue.cotationMax, formValue.description,
@@ -134,11 +170,17 @@ export class VoieComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Clears the voies arrays and the index of the page
+   */
   clearVoiesAndPage() {
     this.voies = [];
     this.page = 0;
   }
 
+  /**
+   * When the component is destroyed, we must unsubscribe all subscriptions
+   */
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }

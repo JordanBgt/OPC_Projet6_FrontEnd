@@ -17,6 +17,10 @@ import { catchError, tap } from 'rxjs/operators';
 import { Subscription, throwError } from 'rxjs';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
+/**
+ * Component to manage Spot detail. It displays a page with all the information of the requested spot
+ */
+
 @Component({
   selector: 'app-spot-detail',
   templateUrl: './spot-detail.component.html',
@@ -51,10 +55,17 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     this.subscriptions = [];
   }
 
+  /**
+   * Return true if the user had ROLE_ADMIN or if he is the spot creator
+   */
   checkIfAuthorized() {
     this.isAuthorized = this.isAdmin || this.user.id === this.spot.userId;
   }
 
+  /**
+   * When the component is initialized, we check if the user has ROLE_ADMIN, pickup the spot id from the url params
+   * and load the needed entities
+   */
   ngOnInit() {
     this.spotId = +this.route.snapshot.paramMap.get('id');
     this.user = this.tokenStorageService.getUser();
@@ -70,12 +81,18 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     this.update = true;
   }
 
+  /**
+   * Initializes the upload photo form
+   */
   initUploadPhotoForm() {
     this.uploadPhotoForm = this.formBuilder.group({
       photo: ''
     });
   }
 
+  /**
+   * It proceeds to the photo upload
+   */
   onUploadPhoto() {
     const file: File = this.uploadPhotoForm.value.photo.files[0];
     const extension = file.type.slice(file.type.indexOf('/') + 1);
@@ -90,6 +107,9 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to delete a spot. It will redirect the user to spot listing page
+   */
   onDelete() {
     this.subscriptions.push(this.spotService.deleteSpot(this.spotId).pipe(
       tap((res: any) => {
@@ -104,6 +124,9 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to get the requested spot
+   */
   loadSpot() {
     this.subscriptions.push(this.spotService.getOneSpot(this.spotId).pipe(
       tap((res: any) => {
@@ -113,6 +136,9 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to get all cotations. We need them in the spot update form
+   */
   loadCotations() {
     this.subscriptions.push(this.cotationService.getAllCotations().pipe(
       tap((res: ICotation[]) => this.cotations = res),
@@ -120,13 +146,19 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to get all secteurs that belong to the spot
+   */
   loadSecteurs() {
     this.subscriptions.push(this.secteurService.getAllSecteurs({unpaged: true, spotId: this.spotId}).pipe(
-      tap((res: any) => res.content.forEach(secteur => this.secteurs.push(secteur))),
+      tap((res: any) => this.secteurs = res.content),
       catchError(error => throwError(error))
     ).subscribe());
   }
 
+  /**
+   * Initializes the secteur creation form
+   */
   initSecteurForm() {
     this.secteurForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -134,6 +166,10 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Method to update the spot
+   * @param spot the spot to update
+   */
   updateSpot(spot: Spot) {
     this.subscriptions.push(this.spotService.updateSpot(spot, this.user.id).pipe(
       tap((res: Spot) => {
@@ -144,6 +180,9 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Creates a secteur
+   */
   onAddSecteur() {
     const formValue = this.secteurForm.value;
     const secteur = new Secteur(null, formValue.name, formValue.description, this.user.id, this.spotId);
@@ -153,6 +192,10 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Deletes a secteur
+   * @param secteurId id of the secteur to delete
+   */
   onDeleteSecteur(secteurId: number) {
     this.subscriptions.push(this.secteurService.deleteSecteur(secteurId).pipe(
       tap((res: any) => {
@@ -167,11 +210,18 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * It updates the spot according to the spot official value
+   * @param value value of the toggle input
+   */
   onOfficialToggleChange(value: MatSlideToggleChange) {
     this.spot.official = value.checked;
     this.updateSpot(this.spot);
   }
 
+  /**
+   * When the component is destroyed, we must unsubscribe all subscriptions
+   */
   ngOnDestroy(): void {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }

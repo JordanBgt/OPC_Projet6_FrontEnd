@@ -4,6 +4,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SpotLight } from '../shared/model/spot-light.model';
 import { findIndexEntity } from '../shared/entity-utils';
 
+/**
+ * Component to manage the secteur update form. It will be called by the SecteurDetailComponent
+ */
+
 @Component({
   selector: 'app-secteur-update',
   templateUrl: './secteur-update.component.html',
@@ -23,6 +27,9 @@ export class SecteurUpdateComponent implements OnInit {
     this.initForm();
   }
 
+  /**
+   * Initializes secteur update form
+   */
   initForm() {
     this.secteurUpdateForm = this.formBuilder.group({
       name: [this.secteur.name, Validators.required],
@@ -31,6 +38,9 @@ export class SecteurUpdateComponent implements OnInit {
     });
   }
 
+  /**
+   * Emits the updated secteur so that the SecteurDetailComponent sends it to the server
+   */
   onUpdate() {
     const formValue = this.secteurUpdateForm.value;
     this.secteurUpdated = new Secteur(this.secteur.id, formValue.name, formValue.description, this.secteur.userId, formValue.spots.id);

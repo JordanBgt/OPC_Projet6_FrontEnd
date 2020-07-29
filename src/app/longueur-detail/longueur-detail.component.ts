@@ -13,6 +13,9 @@ import { VoieService } from '../services/voie.service';
 import { catchError, tap } from 'rxjs/operators';
 import { Subscription, throwError } from 'rxjs';
 
+/**
+ * Component to manage Longueur detail. It displays a page with all the information of the requested longueur
+ */
 
 @Component({
   selector: 'app-longueur-detail',
@@ -29,6 +32,7 @@ export class LongueurDetailComponent implements OnInit, OnDestroy {
   isAdmin: boolean;
   voies: IVoieLight[];
   subsriptions: Subscription[];
+  isAuthorized = false;
 
   constructor(private longueurService: LongueurService,
               private route: ActivatedRoute,
@@ -42,6 +46,10 @@ export class LongueurDetailComponent implements OnInit, OnDestroy {
     this.subsriptions = [];
   }
 
+  /**
+   * When the component is initialized, we check if the user has ROLE_ADMIN, pickup the longueur id from the url params
+   * and load the needed entities
+   */
   ngOnInit() {
     this.user = this.tokenStorageService.getUser();
     this.isAdmin = isAdmin(this.user.roles);
@@ -51,10 +59,20 @@ export class LongueurDetailComponent implements OnInit, OnDestroy {
     this.loadVoies();
   }
 
+  /**
+   * Return true if the user had ROLE_ADMIN or if he is the longueur creator
+   */
+  checkIfAuthorized() {
+    this.isAuthorized = this.isAdmin || this.user.id === this.longueur.id;
+  }
+
   onUpdate() {
     this.update = true;
   }
 
+  /**
+   * Method to delete the longueur. It will redirect the user to the longueur listing page
+   */
   onDelete() {
     this.subsriptions.push(this.longueurService.deleteLongueur(this.longueurId).pipe(
       tap((res: any) => {
@@ -69,13 +87,22 @@ export class LongueurDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to get the requested longueur
+   */
   loadLongueur() {
     this.subsriptions.push(this.longueurService.getOneLongueur(this.longueurId).pipe(
-      tap((res: ILongueur) => this.longueur = res),
+      tap((res: ILongueur) => {
+        this.longueur = res;
+        this.checkIfAuthorized();
+      }),
       catchError(error => throwError(error))
     ).subscribe());
   }
 
+  /**
+   * Method to get all cotations. We need them in the longueur update form
+   */
   loadCotations() {
     this.subsriptions.push(this.cotationService.getAllCotations().pipe(
       tap((res: ICotation[]) => this.cotations = res),
@@ -83,6 +110,9 @@ export class LongueurDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to get all voies. We need them in the longueur update form.
+   */
   loadVoies() {
     this.subsriptions.push(this.voieService.getAllVoies({unpaged: true}).pipe(
       tap((res: any) => res.content.forEach(voie => this.voies.push(voie))),
@@ -90,6 +120,10 @@ export class LongueurDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * Method to update the longueur
+   * @param longueur longueur to update
+   */
   updateLongueur(longueur: Longueur) {
     this.subsriptions.push(this.longueurService.updateLongueur(longueur, this.user.id).pipe(
       tap((res: ILongueur) => {
@@ -100,6 +134,9 @@ export class LongueurDetailComponent implements OnInit, OnDestroy {
     ).subscribe());
   }
 
+  /**
+   * When the component is destroyed, we must unsubscribe all subscriptions
+   */
   ngOnDestroy(): void {
     this.subsriptions.forEach(subscription => subscription.unsubscribe());
   }

@@ -1,5 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
+/**
+ * Component to manage the navbar
+ */
+
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -16,6 +20,10 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {}
 
+  /**
+   * When the user clicks on the disconnect button, the method sends this event to AppComponent which will logout the
+   * user
+   */
   onLogout() {
     this.logoutEvent.emit(true);
   }
