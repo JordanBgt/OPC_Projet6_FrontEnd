@@ -73,6 +73,9 @@
                 <button mat-button [routerLink]="['/topos', topoUser.topo.id]">Consulter topo</button>
                 <ng-container *ngIf="topoUser.tenant; else noBooking">
                   <p>Demande de réservation : {{topoUser.tenant.username}}</p>
+                  <ng-container *ngIf="topoUser.bookingState == 'ACCEPTED'">
+                    <p>Email : {{topoUser.tenant.email}}</p>
+                  </ng-container>
                   <p>Date : {{topoUser.bookingDate}}</p>
                   <mat-form-field appearance="outline">
                     <mat-label>État de la réservation</mat-label>

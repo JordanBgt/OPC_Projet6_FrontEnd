@@ -44,9 +44,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
    */
   loadUserProfile() {
     this.userProfileObs$ = this.userProfileService.getUserProfile(this.userConnected.id).pipe(
-      tap(res => {
-        this.userProfile = res;
-      }),
+      tap(res => this.userProfile = res),
       catchError(error => throwError(error))
     );
   }
