@@ -1,9 +1,10 @@
 @import "src/app/shared/layout/card";
 @import "src/app/shared/layout/entity-list";
-@import "src/app/shared/layout/create-form";
 
 .search-form {
   mat-form-field {
     width: 100%;
   }
+
+  margin-bottom: 5rem;
 }

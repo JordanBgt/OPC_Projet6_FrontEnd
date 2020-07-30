@@ -1,3 +1,6 @@
 @import "src/app/shared/layout/card";
 @import "src/app/shared/layout/entity-list";
-@import "src/app/shared/layout/create-form";
+
+.card-container {
+  margin-top: 5rem;
+}

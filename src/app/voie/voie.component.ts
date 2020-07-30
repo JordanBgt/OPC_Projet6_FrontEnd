@@ -1,15 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { IVoie, Voie } from '../shared/model/voie.model';
 import { VoieService } from '../services/voie.service';
 import { IVoieLight } from '../shared/model/voie-light.model';
 import { ICotation } from '../shared/model/cotation.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { CotationService } from '../services/cotation.service';
 import { Router } from '@angular/router';
 import { ITEMS_PER_PAGE } from '../../../app.constants';
 import { TokenStorageService } from '../security/token-storage.service';
-import { ISecteurLight } from '../shared/model/secteur-light.model';
-import { SecteurService } from '../services/secteur.service';
 import { catchError, tap } from 'rxjs/operators';
 import { Subscription, throwError } from 'rxjs';
 
@@ -33,21 +30,17 @@ export class VoieComponent implements OnInit, OnDestroy {
   cotationMin: number;
   cotationMax: number;
   searchForm: FormGroup;
-  createVoieForm: FormGroup;
   isLoggedIn: boolean;
   user: any;
-  secteurs: ISecteurLight[];
   subscriptions: Subscription[];
 
   constructor(private voieService: VoieService,
               private formBuilder: FormBuilder,
               private cotationService: CotationService,
               private router: Router,
-              private tokenStorageService: TokenStorageService,
-              private secteurService: SecteurService) {
+              private tokenStorageService: TokenStorageService) {
     this.voies = [];
     this.cotations = [];
-    this.secteurs = [];
     this.size = ITEMS_PER_PAGE;
     this.page = 0;
     this.subscriptions = [];
@@ -65,21 +58,11 @@ export class VoieComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Method to get all cotations. We need them in the voie creation form
+   * Method to get all cotations. We need them in the search form
    */
   loadCotations() {
     this.subscriptions.push(this.cotationService.getAllCotations().pipe(
       tap((res: ICotation[]) => this.cotations = res),
-      catchError(error => throwError(error))
-    ).subscribe());
-  }
-
-  /**
-   * Method to get all secteurs. We need them in the voie creation form
-   */
-  loadSecteurs() {
-    this.subscriptions.push(this.secteurService.getAllSecteurs({unpaged: true}).pipe(
-      tap((res: any) => res.content.forEach(secteur => this.secteurs.push(secteur))),
       catchError(error => throwError(error))
     ).subscribe());
   }
@@ -92,9 +75,7 @@ export class VoieComponent implements OnInit, OnDestroy {
     this.user = this.tokenStorageService.getUser();
     this.loadAll();
     this.loadCotations();
-    this.loadSecteurs();
     this.initSearchForm();
-    this.initCreateVoieForm();
   }
 
   /**
@@ -129,19 +110,6 @@ export class VoieComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Initializes the voie creation form
-   */
-  initCreateVoieForm() {
-    this.createVoieForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      description: ['', Validators.required],
-      cotationMin: ['', Validators.required],
-      cotationMax: ['', Validators.required],
-      secteurs: ['']
-    });
-  }
-
-  /**
    * Requests a page of voies with search criteria
    */
   onSearch() {
@@ -151,23 +119,6 @@ export class VoieComponent implements OnInit, OnDestroy {
     this.cotationMax = formValue.cotationMax !== null ? formValue.cotationMax.id : null;
     this.clearVoiesAndPage();
     this.loadAll();
-  }
-
-  /**
-   * Method to create a voie. When the voie is created, the user is redirected to the voie created details page
-   */
-  onCreate() {
-    const formValue = this.createVoieForm.value;
-    const voie = new Voie(null, formValue.name, formValue.cotationMin, formValue.cotationMax, formValue.description,
-      this.user.id, formValue.secteurs.id);
-    let voieCreated: IVoie;
-    this.subscriptions.push(this.voieService.createVoie(voie).pipe(
-      tap((res: IVoie) => {
-        voieCreated = res;
-        this.router.navigate([`/voies/${voieCreated.id}`]);
-      }),
-      catchError(error => throwError(error))
-    ).subscribe());
   }
 
   /**

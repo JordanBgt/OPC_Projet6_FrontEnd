@@ -1,15 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ILongueur, Longueur } from '../shared/model/longueur.model';
 import { LongueurService } from '../services/longueur.service';
 import { ILongueurLight } from '../shared/model/longueur-light.model';
 import { ICotation } from '../shared/model/cotation.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CotationService } from '../services/cotation.service';
 import { ITEMS_PER_PAGE } from '../../../app.constants';
 import { TokenStorageService } from '../security/token-storage.service';
-import { IVoieLight } from '../shared/model/voie-light.model';
-import { VoieService } from '../services/voie.service';
 import { catchError, tap } from 'rxjs/operators';
 import { Subscription, throwError } from 'rxjs';
 
@@ -26,12 +23,10 @@ export class LongueurComponent implements OnInit, OnDestroy {
 
   longueurs: ILongueurLight[];
   cotations: ICotation[];
-  voies: IVoieLight[];
   size: number;
   page: number;
   totalPages: number;
   searchForm: FormGroup;
-  createLongueurForm: FormGroup;
   name: string;
   cotationMin: number;
   cotationMax: number;
@@ -43,11 +38,9 @@ export class LongueurComponent implements OnInit, OnDestroy {
               private formBuilder: FormBuilder,
               private router: Router,
               private cotationService: CotationService,
-              private tokenStorageService: TokenStorageService,
-              private voieService: VoieService) {
+              private tokenStorageService: TokenStorageService) {
     this.longueurs = [];
     this.cotations = [];
-    this.voies = [];
     this.page = 0;
     this.size = ITEMS_PER_PAGE;
     this.subscriptions = [];
@@ -65,21 +58,11 @@ export class LongueurComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Method to get all cotations. We need them in the longueur creation form.
+   * Method to get all cotations. We need them in the search form.
    */
   loadCotations() {
     this.subscriptions.push(this.cotationService.getAllCotations().pipe(
       tap((res: ICotation[]) => this.cotations = res),
-      catchError(error => throwError(error))
-    ).subscribe());
-  }
-
-  /**
-   * Method to get all voies. We need them in the longueur creation form.
-   */
-  loadVoies() {
-    this.subscriptions.push(this.voieService.getAllVoies({unpaged: true}).pipe(
-      tap((res: any) => res.content.forEach(voie => this.voies.push(voie))),
       catchError(error => throwError(error))
     ).subscribe());
   }
@@ -92,9 +75,7 @@ export class LongueurComponent implements OnInit, OnDestroy {
     this.user = this.tokenStorageService.getUser();
     this.loadAll();
     this.loadCotations();
-    this.loadVoies();
     this.initSearchForm();
-    this.initCreateLongueurForm();
   }
 
   /**
@@ -129,19 +110,6 @@ export class LongueurComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Initializes the longueur creation form
-   */
-  initCreateLongueurForm() {
-    this.createLongueurForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      description: ['', Validators.required],
-      cotationMin: ['', Validators.required],
-      cotationMax: ['', Validators.required],
-      voies: ['']
-    });
-  }
-
-  /**
    * Request a page of longueurs with search criteria
    */
   onSearch() {
@@ -151,23 +119,6 @@ export class LongueurComponent implements OnInit, OnDestroy {
     this.cotationMax = formValue.cotationMax !== null ? formValue.cotationMax.id : null;
     this.clearLongueursAndPage();
     this.loadAll();
-  }
-
-  /**
-   * Method to create a longueur. When the longueur is created, the user is redirected to the longueur created details
-   * page
-   */
-  onCreate() {
-    const formValue = this.createLongueurForm.value;
-    const longueur = new Longueur(null, formValue.name, formValue.cotationMin, formValue.cotationMax,
-      formValue.description, this.user.id, formValue.voies.id);
-    let longueurCreated: ILongueur;
-    this.subscriptions.push(this.longueurService.createLongueur(longueur).pipe(
-      tap((res: ILongueur) => {
-        longueurCreated = res;
-        this.router.navigate([`/longueurs/${longueurCreated.id}`]);
-      })
-    ).subscribe());
   }
 
   /**

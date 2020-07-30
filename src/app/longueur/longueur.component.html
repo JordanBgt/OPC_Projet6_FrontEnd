@@ -51,57 +51,6 @@
     </form>
   </div>
 
-  <div class="create-form-panel">
-    <mat-accordion>
-      <mat-expansion-panel [disabled]="!isLoggedIn" matTooltip="Vous devez être connecté pour créer une longueur"
-                           [matTooltipDisabled]="isLoggedIn">
-        <mat-expansion-panel-header>
-          <mat-panel-title>Créer longueur</mat-panel-title>
-        </mat-expansion-panel-header>
-        <form [formGroup]="createLongueurForm" (ngSubmit)="onCreate()" class="create-form-content">
-          <div class="row-1">
-            <mat-form-field appearance="outline">
-              <mat-label>Nom</mat-label>
-              <input matInput formControlName="name">
-            </mat-form-field>
-          </div>
-          <div class="row-1">
-            <mat-form-field appearance="outline">
-              <mat-label>Cotation min</mat-label>
-              <mat-select formControlName="cotationMin">
-                <mat-option disabled>Cotation min</mat-option>
-                <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div class="row-1">
-            <mat-form-field appearance="outline">
-              <mat-label>Cotation max</mat-label>
-              <mat-select formControlName="cotationMax">
-                <mat-option disabled>Cotation max</mat-option>
-                <mat-option *ngFor="let cotation of cotations" [value]="cotation">{{cotation.label}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div class="row-1">
-            <mat-form-field appearance="outline">
-              <mat-label>Description</mat-label>
-              <textarea matInput formControlName="description"></textarea>
-            </mat-form-field>
-          </div>
-          <div class="row-1">
-            <mat-form-field appearance="outline">
-              <mat-label>Liste des voies</mat-label>
-              <mat-select formControlName="voies">
-                <mat-option *ngFor="let voie of voies" [value]="voie">{{voie.name}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <button mat-stroked-button color="primary" type="submit" [disabled]="createLongueurForm.invalid">Valider</button>
-        </form>
-      </mat-expansion-panel>
-    </mat-accordion>
-  </div>
   <div *ngIf="longueurs?.length > 0" class="card-container" infinite-scroll (scrolled)="loadPage(page +1)" [infiniteScrollDisabled]="page >= totalPages">
     <mat-card *ngFor="let longueur of longueurs" class="card">
       <mat-card-header class="card-header">
