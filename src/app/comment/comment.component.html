@@ -4,7 +4,6 @@
       <div mat-card-avatar class="comment-image"></div>
       <mat-card-title>Commentaires</mat-card-title>
     </mat-card-header>
-    <button mat-stroked-button (click)="onCreate()" class="create-button">Ecrire un commentaire</button>
     <mat-card-content>
       <mat-card *ngFor="let comment of comments" class="card-comment">
         <mat-card-header>
@@ -24,5 +23,6 @@
         <mat-card-content>{{comment.content}}</mat-card-content>
       </mat-card>
     </mat-card-content>
+      <button mat-stroked-button (click)="onCreate()" class="create-button">Ecrire un commentaire</button>
   </mat-card>
 </div>
