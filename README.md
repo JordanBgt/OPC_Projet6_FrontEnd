@@ -52,20 +52,16 @@ Application Angular
 * Ngx-material-file-input 2.1.1
 
 ## Déploiement
- *A VENIR*
+
+* Clôner le projet
+* Lancer la commande `npm install` ou `yarn install`
 
 ## Lancement de l'application
-
-Pour installer les dépendances : 
-
-    npm install
-    
-Ou : 
-
-    yarn install
     
 Pour lancer le serveur :
 
     ng serve
     
 Application disponible à l'adresse suivante : [http://localhost:4200](http://localhost:4200)
+
+/!\ Le serveur back doit être lancé pour profiter de ses fonctionnalités
