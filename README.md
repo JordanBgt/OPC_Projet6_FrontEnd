@@ -53,8 +53,13 @@ Application Angular
 
 ## Déploiement
 
+* Installer Node.js : [lien Node.js](https://nodejs.org/en/download/)
+* Installer Npm ou Yarn : 
+    - Npm : `npm install -g npm@latest`
+    - [Lien Yarn](https://classic.yarnpkg.com/fr/docs/install/)
+* Installer le CLI Angular : `npm install -g @angular/cli` ou `yarn global add @angular/cli`
 * Clôner le projet
-* Lancer la commande `npm install` ou `yarn install`
+* Lancer la commande `npm install` ou `yarn`
 
 ## Lancement de l'application
     
